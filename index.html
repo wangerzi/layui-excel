@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>excel导出扩展分享</title>
+	<link rel="stylesheet" type="text/css" href="layui/css/layui.css">
+	<script type="text/javascript" src="layui/layui.js"></script>
+</head>
+<body>
+<div class="layui-container">
+	<div class="layui-row">
+		<div class="layui-col-md11 layui-col-md-offset1">
+			<fieldset class="layui-elem-field layui-field-title"><legend>excel导出操作演示</legend></fieldset>
+			<blockquote class="layui-elem-quote">
+					导出数据速度由运行的电脑性能决定，插件基于 xlsx.js，只是做了一个简单的封装。<br>
+					经本人工作电脑测试，前端导出 <b>9列10w</b> 的数据量需要 <b>5秒左右</b>的时间<br><br>
+
+					电脑配置及系统状况：<br>
+						CPU(占用24%)：Intel(R) Core(TM) i5-6300U CPU @ 2.40GHz <br>
+						内存(占用73%)： 8.0 GB DDR3,Speed:	1600 MHz
+			</blockquote>
+			<div class="layui-form">
+				<div class="layui-form-item">
+					<div class="layui-form-label">普通操作</div>
+					<div class="layui-form-block">
+						<button type="button" class="layui-btn layui-btn-primary" onclick="exportDataByUser()">导出数据测试</button>
+						<button type="button" class="layui-btn layui-btn-primary" onclick="exportApiDemo('./list.json')">导出接口数据</button>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<div class="layui-form-label">更新及文档</div>
+					<div class="layui-form-block">
+						<a class="layui-btn layui-btn-primary" target="_blank" href="https://fly.layui.com/jie/24206/">社区原帖</a>
+						<a class="layui-btn layui-btn-primary" target="_blank" href="https://github.com/wangerzi/layui-excel">最新源码+文档</a>
+						<a class="layui-btn layui-btn-primary" target="_blank" href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=zfT5_fv19fn1-428vOOuoqA">邮件反馈</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</body>
+<script type="text/javascript">
+layui.config({
+	base: 'extends/',
+}).extend({
+	excel: 'excel',
+});
+</script>
+<script type="text/javascript">
+/**
+ * 导出数据的测试
+ * @return {[type]} [description]
+ */
+function exportDataByUser() {
+	layui.use(['layer'], function() {
+		layer.prompt({
+			title: '请输入测试数据量'
+			,value: 30000
+		}, function(value, index, elem) {
+			var num = parseInt(value);
+			var timestart = Date.now();
+			exportDataTest(num)
+			var timeend = Date.now();
+
+			var spent = (timeend - timestart) / 1000;
+			layer.alert('耗时 '+spent+' s');
+			layer.close(index);
+		});
+	});
+}
+/**
+ * 导出接口数据的样例
+ * @return {[type]} [description]
+ */
+function exportApiDemo(url) {
+	layui.use(['jquery', 'excel', 'layer'], function() {
+		var $ = layui.jquery;
+		var layer = layui.layer;
+		var excel = layui.excel;
+
+
+		// 模拟从后端接口读取需要导出的数据
+		$.ajax({
+			url: url
+			,dataType: 'json'
+			,success(res) {
+				var data = res.data;
+				// 重点！！！如果后端给的数据顺序和映射关系不对，请执行梳理函数后导出
+				data = excel.filterExportData(data, [
+					'id'
+					,'username'
+					,'experience'
+					,'sex'
+					,'score'
+					,'city'
+					,'classify'
+					,'wealth'
+					,'sign'
+				]);
+				// 重点2！！！一般都需要加一个表头，表头的键名顺序需要与最终导出的数据一致
+				data.unshift({ id: "ID", username: "用户名", experience: '积分', sex: '性别', score: '评分', city: '城市', classify: '职业', wealth: '财富', sign: '签名' });
+
+				var timestart = Date.now();
+				excel.downloadExcel(data, '导出接口数据', 'xlsx');
+				var timeend = Date.now();
+
+				var spent = (timeend - timestart) / 1000;
+				layer.alert('单纯导出耗时 '+spent+' s');
+			}
+			,error() {
+				layer.alert('获取数据失败，请检查是否部署在本地服务器环境下');
+			}
+		});
+	});
+}
+/**
+ * 导出 total 数据测试
+ * @param  {[type]} total [description]
+ * @return {[type]}       [description]
+ */
+function exportDataTest(total) {
+	layui.use(['excel'], function() {
+		var excel = layui.excel;
+
+		var data = [
+			{ id: "ID", username: "用户名", experience: '积分', sex: '性别', score: '评分', city: '城市', sign: '签名', classify: '职业', wealth: '财富' }
+		];
+		if (total > 0 ) {
+			// 造 num 条数据
+			for (var i = 0; i < total; i++) {
+				data.push({
+					id: 'LAY-'+i,
+					username: 'test'+i,
+					sex: '男',
+					experience: 200,
+					score: 100,
+					city: '魔都',
+					sign: 'test'+i,
+					classify: '程序猿',
+					wealth: 100 * i,
+				});
+			}
+		}
+
+		excel.downloadExcel(data, '测试导出'+total+'条数据', 'xlsx');
+	});
+}
+</script>
