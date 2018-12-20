@@ -14,7 +14,9 @@
 
 ## 期望收集
 
-空
+
+- [ ] 支持导出到IE
+
 
 ## BUG收集
 
@@ -229,7 +231,7 @@ index.html			页面文件+JS处理文件
 
 list.json				模拟导出的数据
 
-extends/authtree.js	权限树扩展
+extends/excel.js	权限树扩展
 
 layui/				官网下载的layui
 
