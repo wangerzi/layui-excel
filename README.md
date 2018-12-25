@@ -15,8 +15,8 @@
 ## 期望收集
 
 
-- [ ] 支持导出到IE、Firefox(社区[TeAmo](https://fly.layui.com/u/2297904/))
-- [ ] 梳理数据函数支持列合并(社区[SoloAsural](https://fly.layui.com/u/10405920/))
+- [ ] 支持导出到IE、Firefox(社区：[TeAmo](https://fly.layui.com/u/2297904/))
+- [ ] 梳理数据函数支持列合并(社区：[SoloAsural](https://fly.layui.com/u/10405920/))
 - [ ] 可以读取Excel内容(个人)
 
 
