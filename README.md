@@ -4,6 +4,8 @@
 
 > 环境提示：预览环境需要部署在服务器下，不然无法异步获取需要导出的数据
 
+> 浏览器兼容性：支持IE10+、Firefox、chrome
+
 ## 功能演示：
 
 ##### 在线演示：
@@ -15,7 +17,7 @@
 ## 期望收集
 
 
-- [ ] 支持导出到IE、Firefox(社区：[TeAmo](https://fly.layui.com/u/2297904/))
+- [x] 支持导出到IE、Firefox(社区：[TeAmo](https://fly.layui.com/u/2297904/))
 - [ ] 梳理数据函数支持列合并(社区：[SoloAsural](https://fly.layui.com/u/10405920/))
 - [ ] 可以读取Excel内容(个人)
 
@@ -239,7 +241,7 @@ layui/				官网下载的layui
 
 ## 更新预告：
 
-无
+v1.1 重写内部下载逻辑，支持IE、Firefox、chrome等主流浏览器，梳理数据函数支持合并列
 
 ## 更新记录：
 
