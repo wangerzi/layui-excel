@@ -14,6 +14,25 @@
 	</script>
 	<!-- IE需要把JS放在上边，否则onclick失效 -->
 	<script type="text/javascript">
+	// 使用样例
+	layui.use(['excel'], function(){
+		var excel = layui.excel;
+		var data = [
+			{ username: '123',sex: '男', city: '上海', 'score': 100, 'start': '2018-12-29', 'end': '2018-12-30' }
+		];// 假设的后台的数据
+		data = excel.filterExportData(data, {
+		    username: 'name',
+		    sex:'sex',
+		    city: 'city',
+		    range: function(value, line, data) {
+		        return line['start'] + '~' + line['end'];
+		    },
+		    score: function(value, line, data) {
+		        return value * 10;
+		    }
+		});
+		console.log(data);
+	});
 	/**
 	 * 导出数据的测试
 	 * @return {[type]} [description]

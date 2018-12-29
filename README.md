@@ -98,8 +98,8 @@ fields 用于表示对象中的属性顺序和映射关系，支持『数组』�
 
 ```javascript
 var data = [];// 假设的后台的数据
-excel.filterExportData(data, ['id', 'sex', 'username', 'city']);
-excel.exportExcel(data, '导出测试', 'xlsx');
+data = excel.filterExportData(data, ['id', 'sex', 'username', 'city']);
+excel.exportExcel(data, '导出测试.xlsx', 'xlsx');
 ```
 
 **对象方式：**
@@ -110,12 +110,34 @@ excel.exportExcel(data, '导出测试', 'xlsx');
 
 ```javascript
 var data = [];// 假设的后台的数据
-excel.filterExportData(data, {
+data = excel.filterExportData(data, {
     username: 'name',
     sex:'sex',
     city: 'city'
 });
-excel.exportExcel(data, '导出测试', 'xlsx');
+excel.exportExcel(data, '导出测试.xlsx', 'xlsx');
+```
+
+##### 回调方式：
+
+可以用于排序、重命名字段、字段过滤、自定义列，比如我希望 `range` 由 `start` `end` 聚合并以 `~` 分割；修改 `score` 为原有值的 10倍，并且 `username` 字段重命名为 `name`，保留 `sex` 和 `city`  字段。
+
+那么，我可以这样写：
+
+```javascript
+var data = [];// 假设的后台的数据
+data = excel.filterExportData(data, {
+    username: 'name',
+    sex:'sex',
+    city: 'city',
+    range: function(value, line, data) {
+        return line['start'] + '~' + line['end'];
+    },
+    score: function(value, line, data) {
+        return value * 10;
+    }
+});
+excel.exportExcel(data, '导出测试.xlsx', 'xlsx');
 ```
 
 ##### 调用样例
@@ -125,6 +147,7 @@ excel.exportExcel(data, '导出测试', 'xlsx');
 ## 功能概览：
 
 - 支持梳理导出的数据并导出多种格式数据
+- 支持IE、火狐、chrome等主流浏览器
 
 ## 使用方法：
 
