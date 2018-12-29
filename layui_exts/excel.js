@@ -1,47 +1,69 @@
 /*
 * @Author: Jeffrey Wang
-* @Desc: 改造网络上 xlsx 代码而成，如有侵权，请联系我删掉重写(～￣▽￣)～ 
+* @Desc:  整理强大的 SheetJS 功能，依赖 XLSX.js 和 FileSaver
+* @Version: v1.1
 * @Date:   2018-03-24 09:54:17
 * @Last Modified by:   Jeffrey Wang
-* @Last Modified time: 2018-12-14 21:45:50
+* @Last Modified time: 2018-12-29 12:06:18
 */
-layui.define(['xlsx'], function(exports){
+layui.define(['jquery', 'xlsx', 'FileSaver'], function(exports){
 	exports('excel', {
-		saveAs : function(obj, fileName) {//可以自定义简单的下载文件实现方式 
-		    var tmpa = document.createElement("a");
-		    tmpa.download = fileName || "下载";
-		    tmpa.href = URL.createObjectURL(obj); //绑定a标签
-		    tmpa.click(); //模拟点击实现下载
-		    setTimeout(function () { //延时释放
-		        URL.revokeObjectURL(obj); //用URL.revokeObjectURL()来释放这个object URL
-		    }, 100);
+		// 导出Excel
+		exportExcel : function(data, filename, type, opt) {
+			type = type ? type : 'xlsx';
+			filename = filename ? filename : '导出数据.'+type;
+
+			// 创建一个 XLSX 对象
+			var wb = XLSX.utils.book_new();
+			// 1. 定义excel对的基本属性
+			var Props = {
+				Title: filename,
+				Subject: 'Export From web browser',
+				Author: "excel.wj2015.com",
+				CreatedData: new Date(),
+			};
+			opt && $.extend(Props, opt.Props);
+			wb.Props = Props;
+			// 2. 设置sheet名称
+			var sheet_name = 'sheet1';
+			wb.SheetNames.push(sheet_name);
+			// 3. 分配工作表对象到 sheet
+			var ws = XLSX.utils.aoa_to_sheet(this.filterDataToAoaData(data));
+			wb.Sheets[sheet_name] = ws;
+
+			// 4. 输出工作表
+			var wbout = XLSX.write(wb, {bookType: type, type: 'binary'});
+
+			// 5. 跨浏览器支持，采用 FileSaver 三方库
+			saveAs(new Blob([this.s2ab(wbout)], {type: "application/octet-stream"}), filename);
 		},
-		// const wopts = { bookType: 'xlsx', bookSST: false, type: 'binary' };//这里的数据是用来定义导出的格式类型
-		// const wopts = { bookType: 'csv', bookSST: false, type: 'binary' };//ods格式
-		// const wopts = { bookType: 'ods', bookSST: false, type: 'binary' };//ods格式
-		// const wopts = { bookType: 'xlsb', bookSST: false, type: 'binary' };//xlsb格式
-		// const wopts = { bookType: 'fods', bookSST: false, type: 'binary' };//fods格式
-		// const wopts = { bookType: 'biff2', bookSST: false, type: 'binary' };//xls格式
-		// 
-		// 弹出下载框
-		downloadExcel : function(data, filename, type) {
-			type = type || 'xlsx';
-			var wopts = { bookType: type, bookSST: false, type: 'binary' }
-		    const wb = { SheetNames: ['Sheet1'], Sheets: {}, Props: {} };
-		    wb.Sheets['Sheet1'] = XLSX.utils.json_to_sheet(data, { skipHeader: true});//通过json_to_sheet转成单页(Sheet)数据
-		    this.saveAs(new Blob([this.s2ab(XLSX.write(wb, wopts))], { type: "application/octet-stream" }), filename + '.' + (wopts.bookType=="biff2"?"xls":wopts.bookType));
+		/**
+		 * 将二进制数据转为8位字节
+		 * @param  {[type]} s [description]
+		 * @return {[type]}   [description]
+		 */
+		s2ab: function(s) {
+			var buf = new ArrayBuffer(s.length);
+			var view = new Uint8Array(buf);
+			for (var i = 0; i < s.length; i++) {
+				view[i] = s.charCodeAt(i) & 0xFF;
+			}
+			return buf;
 		},
-		s2ab : function(s) {
-		    if (typeof ArrayBuffer !== 'undefined') {
-		        var buf = new ArrayBuffer(s.length);
-		        var view = new Uint8Array(buf);
-		        for (var i = 0; i != s.length; ++i) view[i] = s.charCodeAt(i) & 0xFF;
-		        return buf;
-		    } else {
-		        var buf = new Array(s.length);
-		        for (var i = 0; i != s.length; ++i) buf[i] = s.charCodeAt(i) & 0xFF;
-		        return buf;
-		    }
+		/**
+		 * 将导出的数据格式，转换为可以aoa导出的格式
+		 * @return {[type]} [description]
+		 */
+		filterDataToAoaData: function(filterData){
+			var aoaData = [];
+			layui.each(filterData, function(index, item) {
+				var itemData = [];
+				for (var i in item) {
+					itemData.push(item[i]);
+				}
+				aoaData.push(itemData);	
+			});
+			return aoaData;
 		},
 		/**
 		 * 梳理导出的数据，包括字段排序和多余数据过滤
@@ -49,11 +71,11 @@ layui.define(['xlsx'], function(exports){
 		 * @param  {[type]} fields [支持数组和对象，用于映射关系和字段排序]
 		 * @return {[type]}        [description]
 		 */
-		filterExportData(data, fields) {
+		filterExportData: function(data, fields) {
 			// PS:之所以不直接引用 data 节省内存，是因为担心如果 fields 可能存在如下情况： { "id": 'test_id', 'test_id': 'new_id' }，会导致处理异常
 			var exportData = [];
 			var true_fields = [];
-			// filed 支持两种模式，数组则单纯排序，对象则转换映射关系，为了统一处理，将数组转换为符合要求的统一对象
+			// filed 支持两种模式，数组则单纯排序，对象则转换映射关系，为了统一处理，将数组转换为符合要求的映射关系对象
 			if (Array.isArray(fields)) {
 				for (var i in fields) {
 					true_fields[fields[i]] = fields[i];

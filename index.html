@@ -102,7 +102,7 @@ function exportApiDemo(url) {
 				data.unshift({ id: "ID", username: "用户名", experience: '积分', sex: '性别', score: '评分', city: '城市', classify: '职业', wealth: '财富', sign: '签名' });
 
 				var timestart = Date.now();
-				excel.downloadExcel(data, '导出接口数据', 'xlsx');
+				excel.exportExcel(data, '导出接口数据.xlsx', 'xlsx');
 				var timeend = Date.now();
 
 				var spent = (timeend - timestart) / 1000;
@@ -143,7 +143,7 @@ function exportDataTest(total) {
 			}
 		}
 
-		excel.downloadExcel(data, '测试导出'+total+'条数据', 'xlsx');
+		excel.exportExcel(data, '测试导出'+total+'条数据.xlsx', 'xlsx');
 	});
 }
 </script>
