@@ -3,12 +3,19 @@
 * @Desc:  整理强大的 SheetJS 功能，依赖 XLSX.js 和 FileSaver
 * @Version: v1.1
 * @Date:   2018-03-24 09:54:17
-* @Last Modified by:   Jeffrey Wang
-* @Last Modified time: 2018-12-29 12:06:18
+* @Last Modified by:   94468
+* @Last Modified time: 2018-12-29 15:45:32
 */
 layui.define(['jquery', 'xlsx', 'FileSaver'], function(exports){
 	exports('excel', {
-		// 导出Excel
+		/**
+		 * 导出Excel并弹出下载框，具体使用方法和范围请参考文档
+		 * @param  {[type]} data     [description]
+		 * @param  {[type]} filename [description]
+		 * @param  {[type]} type     [description]
+		 * @param  {[type]} opt      [description]
+		 * @return {[type]}          [description]
+		 */
 		exportExcel : function(data, filename, type, opt) {
 			type = type ? type : 'xlsx';
 			filename = filename ? filename : '导出数据.'+type;
@@ -66,7 +73,7 @@ layui.define(['jquery', 'xlsx', 'FileSaver'], function(exports){
 			return aoaData;
 		},
 		/**
-		 * 梳理导出的数据，包括字段排序和多余数据过滤
+		 * 梳理导出的数据，包括字段排序和多余数据过滤，具体功能请参见文档
 		 * @param  {[type]} data   [需要梳理的数据]
 		 * @param  {[type]} fields [支持数组和对象，用于映射关系和字段排序]
 		 * @return {[type]}        [description]
@@ -89,10 +96,15 @@ layui.define(['jquery', 'xlsx', 'FileSaver'], function(exports){
 				for (key in true_fields) {
 					var old_field_name = key;
 					var new_field_name = true_fields[key];
-					if (typeof item[old_field_name] != 'undefined') {
-						exportData[i][new_field_name] = item[old_field_name];
+					// 如果传入的是回调，则回调的值则为新值
+					if (typeof new_field_name == 'function' && new_field_name.apply) {
+						exportData[i][old_field_name] = new_field_name.apply(window, [item[old_field_name], item, data]);
 					} else {
-						exportData[i][new_field_name] = '';
+						if (typeof item[old_field_name] != 'undefined') {
+							exportData[i][new_field_name] = item[old_field_name];
+						} else {
+							exportData[i][new_field_name] = '';
+						}
 					}
 				}
 			}
