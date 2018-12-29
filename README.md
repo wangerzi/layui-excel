@@ -1,6 +1,6 @@
 # 扩展 layui 的导出插件 layui.excel
 
-之前在工作过程中还有社区交流过程中，发现对导出 Excel 文件有需求，所以就萌发了封装插件的想法。导出excel功能基于 XLSX.js，部分代码参考网上的资料。
+之前在工作过程中还有社区交流过程中，发现对导出 Excel 文件有需求，所以就萌发了封装插件的想法。导出excel功能基于 XLSX.js，下载功能基于 FileSaver。
 
 > 环境提示：预览环境需要部署在服务器下，不然无法异步获取需要导出的数据
 
@@ -20,6 +20,7 @@
 - [x] 支持导出到IE、Firefox(社区：[TeAmo](https://fly.layui.com/u/2297904/))
 - [x] 梳理数据函数支持列合并(社区：[SoloAsural](https://fly.layui.com/u/10405920/))
 - [ ] 可以读取Excel内容(个人)
+- [ ] 支持一个Excel导出多个sheet（个人）
 
 
 ## BUG收集
@@ -82,7 +83,9 @@ fields 用于表示对象中的属性顺序和映射关系，支持『数组』�
             "logins":24,
             "wealth":82830700,
             "classify":"作家",
-            "score":57
+            "score":57,
+            "start": '2018-12-29',
+            "end": "2018-12-30"
         }
     ]
 }
@@ -111,7 +114,7 @@ excel.exportExcel(data, '导出测试.xlsx', 'xlsx');
 ```javascript
 var data = [];// 假设的后台的数据
 data = excel.filterExportData(data, {
-    username: 'name',
+    name: 'username',
     sex:'sex',
     city: 'city'
 });
@@ -127,7 +130,7 @@ excel.exportExcel(data, '导出测试.xlsx', 'xlsx');
 ```javascript
 var data = [];// 假设的后台的数据
 data = excel.filterExportData(data, {
-    username: 'name',
+    name: 'username',
     sex:'sex',
     city: 'city',
     range: function(value, line, data) {
@@ -156,9 +159,9 @@ excel.exportExcel(data, '导出测试.xlsx', 'xlsx');
 ##### js使用样例：
 
 ```javascript
-// 注：extends/excel.js的存放路径
+// 注：lay_exts/ 为扩展中所有文件的存放路径
 layui.config({
-	base: 'extends/',
+	base: 'lay_exts/',
 }).extend({
 	excel: 'excel',
 });
