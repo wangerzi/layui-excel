@@ -18,7 +18,7 @@
 
 
 - [x] 支持导出到IE、Firefox(社区：[TeAmo](https://fly.layui.com/u/2297904/))
-- [ ] 梳理数据函数支持列合并(社区：[SoloAsural](https://fly.layui.com/u/10405920/))
+- [x] 梳理数据函数支持列合并(社区：[SoloAsural](https://fly.layui.com/u/10405920/))
 - [ ] 可以读取Excel内容(个人)
 
 
@@ -32,31 +32,31 @@
 
 ## 函数列表
 
-| 函数名                                | 描述                                       |
-| ------------------------------------- | ------------------------------------------ |
-| **exportExcel(data, filename, type)** | 导出数据，并弹出指定文件名的下载框         |
-| **filterExportData(data, fields)**    | 梳理导出的数据，包括字段排序和多余数据过滤 |
+| 函数名                                  | 描述                                       |
+| --------------------------------------- | ------------------------------------------ |
+| **downloadExcel(data, filename, type)** | 导出数据，并弹出指定文件名的下载框         |
+| **filterExportData(data, fields)**      | 梳理导出的数据，包括字段排序和多余数据过滤 |
 
 ## 重要函数参数配置
 
-##### exportExcel参数配置
+##### downloadExcel参数配置
 
 > 核心方法，用于将 data 数据依次导出，如果需要调整导出后的文件字段顺序或者过滤多余数据，请查看 filterExportData 方法
 
 | 参数名称 | 描述                                             | 默认值 |
 | -------- | ------------------------------------------------ | ------ |
 | data     | 数据列表                                         | 必填   |
-| filename | 文件名称（不要带后缀）                           | 必填   |
+| filename | 文件名称（带后缀）                               | 必填   |
 | type     | 导出类型，支持 xlsx、csv、ods、xlsb、fods、biff2 | xlsx   |
 
 ##### filterExportData参数配置
 
 > 辅助方法，梳理导出的数据，包括字段排序和多余数据过滤
 
-| 参数名称 | 描述                                   | 默认值 |
-| -------- | -------------------------------------- | ------ |
-| data     | 需要梳理的数据                         | 必填   |
-| fields   | 支持数组和对象，用于映射关系和字段排序 | 必填   |
+| 参数名称 | 描述                                             | 默认值 |
+| -------- | ------------------------------------------------ | ------ |
+| data     | 需要梳理的数据                                   | 必填   |
+| fields   | 支持数组、对象和回调函数，用于映射关系和字段排序 | 必填   |
 
 > fields参数设计
 
@@ -99,7 +99,7 @@ fields 用于表示对象中的属性顺序和映射关系，支持『数组』�
 ```javascript
 var data = [];// 假设的后台的数据
 excel.filterExportData(data, ['id', 'sex', 'username', 'city']);
-excel.exportExcel(data, '导出测试.xlsx', 'xlsx');
+excel.downloadExcel(data, '导出测试', 'xlsx');
 ```
 
 **对象方式：**
@@ -115,29 +115,7 @@ excel.filterExportData(data, {
     sex:'sex',
     city: 'city'
 });
-excel.exportExcel(data, '导出测试.xlsx', 'xlsx');
-```
-
-##### 回调模式：
-
-可用于对每一列进行处理，程序会对每个单元格进行遍历，并将当前键名、当前行对象、当前数据整体以参数的形式传入回调函数
-
-比如，我希望新增字段 `timeRange`，此字段由 `start`、`end` 字段合并而成，中间以 `~` 分割；还希望将所有 `score` 字段乘以10；并且 `username` 字段重命名为 `name`，保留 `sex` 和 `city` 字段
-
-那么，我可以这样写：
-
-```javascript
-var data = [];// 假设的后台数据
-excel.filterExportData(data, {
-    username: 'name',
-    sex:'sex',
-    city: 'city',
-    timeRange: function(key, line, data) {
-        if (key == 'timeRange') {
-            
-        }
-    }
-});
+excel.downloadExcel(data, '导出测试', 'xlsx');
 ```
 
 ##### 调用样例
@@ -263,9 +241,11 @@ layui/				官网下载的layui
 
 ## 更新预告：
 
-v1.1 重写内部下载逻辑，支持IE、Firefox、chrome等主流浏览器，梳理数据函数支持合并列
+v1.2 支持前端读取 Excel 数据
 
 ## 更新记录：
+
+2018-12-29 v1.1 重写内部下载逻辑，支持IE、Firefox、chrome等主流浏览器，梳理数据函数支持合并列
 
 2018-12-14 v1.0 最初版本
 
