@@ -32,14 +32,14 @@
 
 ## 函数列表
 
-| 函数名                                  | 描述                                       |
-| --------------------------------------- | ------------------------------------------ |
-| **downloadExcel(data, filename, type)** | 导出数据，并弹出指定文件名的下载框         |
-| **filterExportData(data, fields)**      | 梳理导出的数据，包括字段排序和多余数据过滤 |
+| 函数名                                | 描述                                       |
+| ------------------------------------- | ------------------------------------------ |
+| **exportExcel(data, filename, type)** | 导出数据，并弹出指定文件名的下载框         |
+| **filterExportData(data, fields)**    | 梳理导出的数据，包括字段排序和多余数据过滤 |
 
 ## 重要函数参数配置
 
-##### downloadExcel参数配置
+##### exportExcel参数配置
 
 > 核心方法，用于将 data 数据依次导出，如果需要调整导出后的文件字段顺序或者过滤多余数据，请查看 filterExportData 方法
 
@@ -99,7 +99,7 @@ fields 用于表示对象中的属性顺序和映射关系，支持『数组』�
 ```javascript
 var data = [];// 假设的后台的数据
 excel.filterExportData(data, ['id', 'sex', 'username', 'city']);
-excel.downloadExcel(data, '导出测试', 'xlsx');
+excel.exportExcel(data, '导出测试', 'xlsx');
 ```
 
 **对象方式：**
@@ -115,7 +115,7 @@ excel.filterExportData(data, {
     sex:'sex',
     city: 'city'
 });
-excel.downloadExcel(data, '导出测试', 'xlsx');
+excel.exportExcel(data, '导出测试', 'xlsx');
 ```
 
 ##### 调用样例
@@ -166,7 +166,7 @@ layui.use(['jquery', 'excel', 'layer'], function() {
 				data.unshift({ id: "ID", username: "用户名", experience: '积分', sex: '性别', score: '评分', city: '城市', classify: '职业', wealth: '财富', sign: '签名' });
 
 				var timestart = Date.now();
-				excel.downloadExcel(data, '导出接口数据', 'xlsx');
+				excel.exportExcel(data, '导出接口数据', 'xlsx');
 				var timeend = Date.now();
 
 				var spent = (timeend - timestart) / 1000;
