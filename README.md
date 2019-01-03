@@ -4,7 +4,10 @@
 
 > 环境提示：预览环境需要部署在服务器下，不然无法异步获取需要导出的数据
 
+> 版本更新提示：如果使用 v1.2 以前的版本，filterExportData 的映射关系有所调整，请注意
+
 > 浏览器兼容性：支持IE10+、Firefox、chrome
+
 
 ## 功能演示：
 
@@ -20,7 +23,7 @@
 - [x] 支持导出到IE、Firefox(社区：[TeAmo](https://fly.layui.com/u/2297904/))
 - [x] 梳理数据函数支持列合并(社区：[SoloAsural](https://fly.layui.com/u/10405920/))
 - [ ] 支持Excel内列合并(社区：[SoloAsural](https://fly.layui.com/u/10405920/))
-- [ ] 优化大量数据导出，比如100W(社区：[Th_omas](https://fly.layui.com/u/28037520/))
+- [x] 优化大量数据导出，比如~~100W~~45W(社区：[Th_omas](https://fly.layui.com/u/28037520/))
 - [ ] 可以读取Excel内容(个人)
 - [ ] 支持一个Excel导出多个sheet（个人）
 
@@ -149,10 +152,18 @@ excel.exportExcel(data, '导出测试.xlsx', 'xlsx');
 
 请见下方『使用方法』
 
+## 提效建议：
+
+> 数据规模：前端导出**纯数据 9列10w** 的数据量需要 **7秒左右**的时间，**30W数据占用1.8G，耗时24秒**，普通电脑**最多能导出50w数据，耗时45秒**，文件大小173M，提示内存超限
+
+- 如果数据量比较大，最好直接转换为纯数组的导出，可以省去 filterExportData 和 转换为AOA数组的时间和内存（PS：消耗不算太大，资源主要消耗在调用 XLSX.js之后）
+- 一般 exportExcel 会放在 $.ajax() 等异步调用中，如果有需要在点击后纯前端生成Excel，可以使用 async、setTimeout等方式实现异步导出，否则会阻塞主进程。
+
 ## 功能概览：
 
 - 支持梳理导出的数据并导出多种格式数据
 - 支持IE、火狐、chrome等主流浏览器
+- 普通工作电脑最多支持9列45W行数据规模的导出
 
 ## 使用方法：
 
@@ -263,13 +274,13 @@ index.html			页面文件+JS处理文件
 
 list.json				模拟导出的数据
 
-extends/excel.js	权限树扩展
+extends/excel.js		权限树扩展
 
 layui/				官网下载的layui
 
 ## 更新预告：
 
-v1.2 支持前端读取 Excel 数据
+v1.2 支持前端读取 Excel 数据，大量数据导出效率优化
 
 ## 更新记录：
 

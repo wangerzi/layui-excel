@@ -1,12 +1,13 @@
 /*
 * @Author: Jeffrey Wang
 * @Desc:  整理强大的 SheetJS 功能，依赖 XLSX.js 和 FileSaver
-* @Version: v1.1
+* @Version: v1.2
 * @Date:   2018-03-24 09:54:17
-* @Last Modified by:   94468
-* @Last Modified time: 2018-12-29 15:45:32
+* @Last Modified by:   Jeffrey Wang
+* @Last Modified time: 2019-01-03 13:44:48
 */
 layui.define(['jquery', 'xlsx', 'FileSaver'], function(exports){
+	var $ = layui.jquery;
 	exports('excel', {
 		/**
 		 * 导出Excel并弹出下载框，具体使用方法和范围请参考文档
@@ -35,7 +36,11 @@ layui.define(['jquery', 'xlsx', 'FileSaver'], function(exports){
 			var sheet_name = 'sheet1';
 			wb.SheetNames.push(sheet_name);
 			// 3. 分配工作表对象到 sheet
-			var ws = XLSX.utils.aoa_to_sheet(this.filterDataToAoaData(data));
+			var is_aoa = false;
+			if (data.length && data[0] && $.isArray(data[0])) {
+				is_aoa = true;
+			}
+			var ws = XLSX.utils.aoa_to_sheet(is_aoa ? data : this.filterDataToAoaData(data));
 			wb.Sheets[sheet_name] = ws;
 
 			// 4. 输出工作表
@@ -62,6 +67,7 @@ layui.define(['jquery', 'xlsx', 'FileSaver'], function(exports){
 		 * @return {[type]} [description]
 		 */
 		filterDataToAoaData: function(filterData){
+			console.log(filterData.length);
 			var aoaData = [];
 			layui.each(filterData, function(index, item) {
 				var itemData = [];
@@ -94,11 +100,11 @@ layui.define(['jquery', 'xlsx', 'FileSaver'], function(exports){
 				var item = data[i];
 				exportData[i] = {};
 				for (key in true_fields) {
-					var old_field_name = key;
-					var new_field_name = true_fields[key];
+					var new_field_name = key;
+					var old_field_name = true_fields[key];
 					// 如果传入的是回调，则回调的值则为新值
-					if (typeof new_field_name == 'function' && new_field_name.apply) {
-						exportData[i][old_field_name] = new_field_name.apply(window, [item[old_field_name], item, data]);
+					if (typeof old_field_name == 'function' && old_field_name.apply) {
+						exportData[i][new_field_name] = old_field_name.apply(window, [item[new_field_name], item, data]);
 					} else {
 						if (typeof item[old_field_name] != 'undefined') {
 							exportData[i][new_field_name] = item[old_field_name];
