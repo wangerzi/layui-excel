@@ -28,6 +28,12 @@ layui.define(['jquery', 'xlsx', 'FileSaver'], function(exports){
 				Title: filename,
 				Subject: 'Export From web browser',
 				Author: "excel.wj2015.com",
+				Manager: '',
+				Company: '',
+				Category: '',
+				Keywords: '',
+				Comments: '',
+				LastAuthor: '',
 				CreatedData: new Date(),
 			};
 			opt && $.extend(Props, opt.Props);
@@ -40,7 +46,16 @@ layui.define(['jquery', 'xlsx', 'FileSaver'], function(exports){
 			if (data.length && data[0] && $.isArray(data[0])) {
 				is_aoa = true;
 			}
-			var ws = XLSX.utils.aoa_to_sheet(is_aoa ? data : this.filterDataToAoaData(data));
+			if (is_aoa) {
+				var ws = XLSX.utils.aoa_to_sheet(data);
+			} else {
+				var opt = {};
+				if (data.length) {
+					opt.headers = data.unshift();
+					opt.skipHeader = true;
+				}
+				var ws = XLSX.utils.json_to_sheet(data, opt);
+			}
 			wb.Sheets[sheet_name] = ws;
 
 			// 4. 输出工作表
@@ -115,6 +130,97 @@ layui.define(['jquery', 'xlsx', 'FileSaver'], function(exports){
 				}
 			}
 			return exportData;
+		},
+		/**
+		 * 梳理导入的数据，参数意义可参考 filterExportData
+		 * @param  {[type]} data   [description]
+		 * @param  {[type]} fields [description]
+		 * @return {[type]}        [description]
+		 */
+		filterImportData: function(data, fields) {
+			var that = this;
+			layui.each(data, function(fileindex, xlsx) {
+				layui.each(xlsx, function(sheetname, content) {
+					xlsx[sheetname] = that.filterExportData(content, fields);
+				});
+			});
+			return data;
+		},
+		/**
+		 * 读取Excel，支持多文件多表格读取
+		 * @param  {[type]}   files    [description]
+		 * @param  {[type]}   opt      [description]
+		 * @param  {Function} callback [description]
+		 * @return {[type]}            [description]
+		 */
+		importExcel: function(files, opt, callback) {
+			var option = {
+				header: 'A',
+				range: null,
+				fields: null,
+			};
+			$.extend(option, opt);
+			var that = this;
+
+			if (files.length < 1) {
+				throw {code: 999, 'message': '传入文件为空'};
+			}
+			var supportReadMime = [
+				'application/vnd.ms-excel',
+				'application/msexcel',
+				'application/x-msexcel',
+				'application/x-ms-excel',
+				'application/x-excel',
+				'application/x-dos_ms_excel',
+				'application/xls',
+				'application/x-xls',
+				'application/vnd-xls',
+				'application/csv',
+				'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+			];
+			layui.each(files, function(index, item) {
+				if (supportReadMime.indexOf(item.type) == -1) {
+					throw {code: 999, message: item.name+'（'+item.type+'）为不支持的文件类型'};
+				}
+			});
+
+			// 按照二进制读取
+			var data = {};
+			layui.each(files, function(index, item) {
+				var reader = new FileReader();
+				if (!reader) {
+					throw {code: 999, message: '不支持FileReader，请更换更新的浏览器'};
+				}
+				// 读取excel表格对象
+				reader.onload = function(ev) {
+					var wb = XLSX.read(ev.target.result, {
+						type: 'binary',
+					});
+					var excelData = {};
+					layui.each(wb.Sheets, function(sheet, sheetObj) {
+						// 全为空的去掉
+						if (wb.Sheets.hasOwnProperty(sheet)) {
+							var opt = {
+								header: option.header,
+							}
+							if (!option.range) {
+								opt.range = option.range;
+							}
+							excelData[sheet] = XLSX.utils.sheet_to_json(sheetObj, opt);
+							// 支持梳理数据
+							if (option.fields) {
+								excelData[sheet] = that.filterExportData(excelData[sheet], option.fields);
+							}
+						}
+					});
+					data[index] = excelData;
+					// 全部读取完毕才执行
+					if (index == files.length - 1) {
+						callback && callback.apply && callback.apply(window, [data]);
+					}
+				}
+				reader.readAsBinaryString(item);
+			});
 		}
 	});
 });

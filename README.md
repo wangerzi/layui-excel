@@ -1,6 +1,6 @@
 # 扩展 layui 的导出插件 layui.excel
 
-之前在工作过程中还有社区交流过程中，发现对导出 Excel 文件有需求，所以就萌发了封装插件的想法。导出excel功能基于 XLSX.js，下载功能基于 FileSaver。
+之前在工作过程中还有社区交流过程中，发现对导出 Excel 文件有需求，所以就萌发了封装插件的想法。导出excel功能基于 XLSX.js，下载功能基于 FileSaver，读取文件基于 H5的 FileReader。
 
 > 环境提示：预览环境需要部署在服务器下，不然无法异步获取需要导出的数据
 
@@ -24,8 +24,9 @@
 - [x] 梳理数据函数支持列合并(社区：[SoloAsural](https://fly.layui.com/u/10405920/))
 - [ ] 支持Excel内列合并(社区：[SoloAsural](https://fly.layui.com/u/10405920/))
 - [x] 优化大量数据导出，比如~~100W~~45W(社区：[Th_omas](https://fly.layui.com/u/28037520/))
-- [ ] 可以读取Excel内容(个人)
-- [ ] 支持一个Excel导出多个sheet（个人）
+- [ ] 支持Excel样式设置(社区：[锁哥](https://fly.layui.com/u/17116008/))
+- [x] 可以读取Excel内容(个人)
+- [ ] 支持一个Excel导出多个sheet（个人、社区：[玛琳菲森 ](https://fly.layui.com/u/29272992/)）
 
 
 ## BUG收集
@@ -38,14 +39,18 @@
 
 ## 函数列表
 
-| 函数名                                | 描述                                       |
-| ------------------------------------- | ------------------------------------------ |
-| **exportExcel(data, filename, type)** | 导出数据，并弹出指定文件名的下载框         |
-| **filterExportData(data, fields)**    | 梳理导出的数据，包括字段排序和多余数据过滤 |
+> 仅做函数用途介绍，具体使用方法请见 『重要函数参数配置』
+
+| 函数名                                     | 描述                                             |
+| ------------------------------------------ | ------------------------------------------------ |
+| **exportExcel(data, filename, type, opt)** | 导出数据，并弹出指定文件名的下载框               |
+| **filterExportData(data, fields)**         | 梳理导出的数据，包括字段排序和多余数据过滤       |
+| **importExcel(files, opt, callback)**      | 读取Excel，支持多文件多表格读取                  |
+| filterImportData(data, fields)             | 梳理导入的数据，字段含义与 filterExportData 类似 |
 
 ## 重要函数参数配置
 
-##### exportExcel参数配置
+#### exportExcel参数配置
 
 > 核心方法，用于将 data 数据依次导出，如果需要调整导出后的文件字段顺序或者过滤多余数据，请查看 filterExportData 方法
 
@@ -54,8 +59,15 @@
 | data     | 数据列表                                         | 必填   |
 | filename | 文件名称（带后缀）                               | 必填   |
 | type     | 导出类型，支持 xlsx、csv、ods、xlsb、fods、biff2 | xlsx   |
+| opt      | 其他可选配置                                     | null   |
 
-##### filterExportData参数配置
+##### opt支持的配置项
+
+| 参数名称  | 描述                                                         | 默认值 |
+| --------- | ------------------------------------------------------------ | ------ |
+| opt.Props | 配置文档基础属性，支持Title、Subject、Author、Manager、Company、Category、Keywords、Comments、LastAuthor、CreatedData |        |
+
+#### filterExportData参数配置
 
 > 辅助方法，梳理导出的数据，包括字段排序和多余数据过滤
 
@@ -152,6 +164,80 @@ excel.exportExcel(data, '导出测试.xlsx', 'xlsx');
 
 请见下方『使用方法』
 
+#### importExcel参数配置
+
+> 核心方法，用于读取用户选择的Excel信息，文件读取基于 FileReader，所以对浏览器版本要求较高
+
+| 参数名称 | 描述                                                         | 默认值    |
+| -------- | ------------------------------------------------------------ | --------- |
+| files    | 上传文件DOM对象的 files 属性                                 | undefined |
+| opt      | 导出参数配置，详见下方描述                                   | undefined |
+| callback | 完全读取完毕的回调函数，传入一个参数「data」表示所有数据的集合 | undefined |
+
+##### opt参数配置
+
+| 参数名称 | 描述                                                         | 默认值 |
+| -------- | ------------------------------------------------------------ | ------ |
+| header   | 导入参数的headers，支持"A"、1等，[详见XLSX官方文档](https://github.com/SheetJS/js-xlsx#json) | A      |
+| range    | 读取的范围，支持数字、字符等，[详见XLSX官方文档](https://github.com/SheetJS/js-xlsx#json) | null   |
+| fields   | 可以在读取的过程中进行数据梳理，参数意义请参见「filterExportData参数配置」 | null   |
+
+> 由于处理过程中会抛出一些异常，所以请使用 try{}catch(e){}接收并提示用户！
+>
+> 如果对导出数据格式的键不满意，可以有两种方式梳理：
+>
+>  	1. 调用 filterImportData(data, fields)
+>  	2. 直接在 importExcel() 的 opt 配置中进行数据梳理
+
+##### 调用样例
+
+```javascript
+$(function(){
+    // 监听上传文件的事件
+    $('#LAY-excel-import-excel').change(function(e) {
+        var files = e.target.files;
+        try {
+            // 方式一：先读取数据，后梳理数据
+            excel.importExcel(files, {}, function(data) {
+                console.log(data);
+                data = excel.filterImportData(data, {
+                    'id': 'A'
+                    ,'username': 'B'
+                    ,'experience': 'C'
+                    ,'sex': 'D'
+                    ,'score': 'E'
+                    ,'city': 'F'
+                    ,'classify': 'G'
+                    ,'wealth': 'H'
+                    ,'sign': 'I'
+                })
+                console.log(data);
+            });
+            // 方式二：可以在读取过程中梳理数据
+            excel.importExcel(files, {
+                fields: {
+                    'id': 'A'
+                    ,'username': 'B'
+                    ,'experience': 'C'
+                    ,'sex': 'D'
+                    ,'score': 'E'
+                    ,'city': 'F'
+                    ,'classify': 'G'
+                    ,'wealth': 'H'
+                    ,'sign': 'I'
+                }
+            }, function(data) {
+                console.log(data);
+            });
+        } catch (e) {
+            layer.alert(e.message);
+        }
+    });
+});
+```
+
+
+
 ## 提效建议：
 
 > 数据规模：前端导出**纯数据 9列10w** 的数据量需要 **7秒左右**的时间，**30W数据占用1.8G，耗时24秒**，普通电脑**最多能导出50w数据，耗时45秒**，文件大小173M，提示内存超限
@@ -164,6 +250,7 @@ excel.exportExcel(data, '导出测试.xlsx', 'xlsx');
 - 支持梳理导出的数据并导出多种格式数据
 - 支持IE、火狐、chrome等主流浏览器
 - 普通工作电脑最多支持9列45W行数据规模的导出
+- 支持 xlx、xlsx、csv格式的前端数据读取以及数据梳理
 
 ## 使用方法：
 
@@ -280,9 +367,11 @@ layui/				官网下载的layui
 
 ## 更新预告：
 
-v1.2 支持前端读取 Excel 数据，大量数据导出效率优化
+支持导出多个sheet，合并导出的列，设置单元格样式
 
 ## 更新记录：
+
+2019-01-04 v1.2 支持前端多文件多Sheet读取 Excel 数据并梳理数据格式，大量数据导出效率优化
 
 2018-12-29 v1.1 重写内部下载逻辑，支持IE、Firefox、chrome等主流浏览器，梳理数据函数支持回调
 

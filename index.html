@@ -15,8 +15,12 @@
 	<!-- IE需要把JS放在上边，否则onclick失效 -->
 	<script type="text/javascript">
 	// 使用样例
-	layui.use(['excel'], function(){
+	layui.use(['jquery', 'layer', 'excel', 'laytpl', 'element', 'code'], function(){
+		var $ = layui.jquery;
+		var layer = layui.layer;
 		var excel = layui.excel;
+		var laytpl = layui.laytpl;
+		var element = layui.element;
 		var data = [
 			{ username: '123',sex: '男', city: '上海', 'score': 100, 'start': '2018-12-29', 'end': '2018-12-30' }
 		];// 假设的后台的数据
@@ -31,7 +35,67 @@
 		        return value * 10;
 		    }
 		});
-		console.log(data);
+		$(function(){
+			// 处理读取文件
+			var uploadExcel = function(files) {
+				try {
+					excel.importExcel(files, {
+						// 读取数据的同时梳理数据
+						fields: {
+							'id': 'A'
+							,'username': 'B'
+							,'experience': 'C'
+							,'sex': 'D'
+							,'score': 'E'
+							,'city': 'F'
+							,'classify': 'G'
+							,'wealth': 'H'
+							,'sign': 'I'
+						}
+					}, function(data) {
+						// 还可以再进行数据梳理
+/*						data = excel.filterImportData(data, {
+							'id': 'A'
+							,'username': 'B'
+							,'experience': 'C'
+							,'sex': 'D'
+							,'score': 'E'
+							,'city': 'F'
+							,'classify': 'G'
+							,'wealth': 'H'
+							,'sign': 'I'
+						});
+*/						layer.open({
+							title: '文件转换结果'
+							,area: ['800px', '400px']
+							,tipsMore: true
+							,content: laytpl($('#LAY-excel-export-ans').html()).render({data: data, files: files})
+							,success: function() {
+								element.render('tab');
+								layui.code({
+								});
+							}
+						});
+					});
+				} catch (e) {
+					layer.alert(e.message);
+				}
+			};
+			// 监听上传文件的事件
+			$('#LAY-excel-import-excel').change(function(e) {
+				var files = e.target.files;
+				uploadExcel(files);
+			});
+			// 文件拖拽
+			$('body').ondragover = function(e) {
+				e.preventDefault();
+			}
+			$('body').ondrop = function(e) {
+				e.preventDefault();
+				var files = ev.dataTransfer.files;
+				uploadExcel(files);
+			}
+		});
 	});
 	/**
 	 * 导出数据的测试
@@ -154,10 +218,16 @@
 			</blockquote>
 			<div class="layui-form">
 				<div class="layui-form-item">
-					<div class="layui-form-label">普通操作</div>
+					<div class="layui-form-label">导出操作</div>
 					<div class="layui-form-block">
 						<button type="button" class="layui-btn layui-btn-primary" onclick="exportDataByUser()">导出数据测试</button>
 						<button type="button" class="layui-btn layui-btn-primary" onclick="exportApiDemo('./list.json')">导出接口数据</button>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<div class="layui-form-label">导入操作</div>
+					<div class="layui-form-block">
+						<input type="file" class="layui-btn layui-btn-primary" id="LAY-excel-import-excel" multiple="multiple">
 					</div>
 				</div>
 				<div class="layui-form-item">
@@ -173,3 +243,21 @@
 	</div>
 </div>
 </body>
+<script type="text/html" id="LAY-excel-export-ans">
+	{{# layui.each(d.data, function(index, item){ }}
+		<blockquote class="layui-elem-quote">{{d.files[index].name}}</blockquote>
+		<div class="layui-tab">
+		  <ul class="layui-tab-title">
+		  	{{# layui.each(item, function(sheetname, content) { }}
+			    <li>{{sheetname}}</li>
+		  	{{# }); }}
+		  </ul>
+		  <div class="layui-tab-content">
+		  	{{# layui.each(item, function(sheetname, content) { }}
+			    <div class="layui-tab-item"><pre class="layui-code">{{JSON.stringify(content, null, 2)}}</pre></div>
+		  	{{# }); }}
+		  </div>
+		</div>
+	{{# }) }}
+</script>
+</html>
