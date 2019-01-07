@@ -4,7 +4,7 @@
 * @Version: v1.2
 * @Date:   2018-03-24 09:54:17
 * @Last Modified by:   Jeffrey Wang
-* @Last Modified time: 2019-01-03 13:44:48
+* @Last Modified time: 2019-01-07 21:34:29
 */
 layui.define(['jquery', 'xlsx', 'FileSaver'], function(exports){
 	var $ = layui.jquery;
@@ -36,33 +36,84 @@ layui.define(['jquery', 'xlsx', 'FileSaver'], function(exports){
 				LastAuthor: '',
 				CreatedData: new Date(),
 			};
-			opt && $.extend(Props, opt.Props);
+			opt && opt.Props && (Props = $.extend(Props, opt.Props));
 			wb.Props = Props;
-			// 2. 设置sheet名称
-			var sheet_name = 'sheet1';
-			wb.SheetNames.push(sheet_name);
-			// 3. 分配工作表对象到 sheet
-			var is_aoa = false;
-			if (data.length && data[0] && $.isArray(data[0])) {
-				is_aoa = true;
-			}
-			if (is_aoa) {
-				var ws = XLSX.utils.aoa_to_sheet(data);
-			} else {
-				var opt = {};
-				if (data.length) {
-					opt.headers = data.unshift();
-					opt.skipHeader = true;
+			// 特殊属性实现，比如合并单元格
+			var wbExtend = {
+				'!merges': null
+			};
+			opt && opt.extend && (wbExtend = $.extend(wbExtend, opt.extend));
+
+			for(sheet_name in data) {
+				var content = data[sheet_name];
+				// 2. 设置sheet名称
+				wb.SheetNames.push(sheet_name);
+				// 3. 分配工作表对象到 sheet
+				var is_aoa = false;
+				if (content.length && content[0] && $.isArray(content[0])) {
+					is_aoa = true;
 				}
-				var ws = XLSX.utils.json_to_sheet(data, opt);
-			}
-			wb.Sheets[sheet_name] = ws;
+				if (is_aoa) {
+					var ws = XLSX.utils.aoa_to_sheet(content);
+				} else {
+					var option = {};
+					if (content.length) {
+						option.headers = content.unshift();
+						option.skipHeader = true;
+						// 分离并重组样式
+						this.splitContent(content);
+					}
+					var ws = XLSX.utils.json_to_sheet(content, option);
+				}
+				wb.Sheets[sheet_name] = ws;
+			};
 
 			// 4. 输出工作表
-			var wbout = XLSX.write(wb, {bookType: type, type: 'binary'});
+			var wbout = XLSX.write(wb, {bookType: type, type: 'binary', cellStyles: true});
 
 			// 5. 跨浏览器支持，采用 FileSaver 三方库
 			saveAs(new Blob([this.s2ab(wbout)], {type: "application/octet-stream"}), filename);
+		},
+		/**
+		 * 分离内容和样式
+		 * @param  {[type]} content [description]
+		 * @return {[type]}         [description]
+		 */
+		splitContent(content) {
+			// 扫描每个单元格，如果是对象则将 value 和样式分离
+			for (line in content) {
+				var lineData = content[line];
+				for (row in lineData) {
+					var rowData = lineData[row];
+					var t = typeof rowData;
+					if (typeof rowData == 'object') {
+						lineData[row] = rowData.value;
+						delete rowData.value;
+						content[this.numToTitle(row)+line] = {s: rowData};
+					}
+				}
+			}
+			return content;
+		},
+		// numsToTitle备忘录提效
+		numsTitleCache: {},
+		/**
+		 * 将数字(从零开始)转换为 A、B、C...AA、AB
+		 * @param  {[type]} num [description]
+		 * @return {[type]}     [description]
+		 */
+		numToTitle(num) {
+			if (this.numsTitleCache[num]) {
+				return this.numsTitleCache[num];
+			}
+			if (num > 25) {
+				// 要注意小心 25 的倍数导致的无线递归问题
+				var dec = num % 25;
+				return this.numToTitle(num - dec?dec:25) + this.numToTitle(dec);
+			} else {
+				// A 的 ascii 为 0，顺位相加
+				return String.fromCharCode(65 + num);
+			}
 		},
 		/**
 		 * 将二进制数据转为8位字节

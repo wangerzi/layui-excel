@@ -27,7 +27,14 @@
 		data = excel.filterExportData(data, {
 		    name: 'username',
 		    sex:'sex',
-		    city: 'city',
+		    city: function(value){
+				return {
+					value: value,
+					font: { sz: 14, bold: true, color: { rgb: "FFFFAA00" } },
+					fill: { bgColor: { indexed: 64 }, 
+					fgColor: { rgb: "FFFF00" } }
+				}
+		    },
 		    range: function(value, line, data) {
 		        return line['start'] + '~' + line['end'];
 		    },
@@ -141,22 +148,30 @@
 				,success: function(res) {
 					var data = res.data;
 					// 重点！！！如果后端给的数据顺序和映射关系不对，请执行梳理函数后导出
-					data = excel.filterExportData(data, [
-						'id'
-						,'username'
-						,'experience'
-						,'sex'
-						,'score'
-						,'city'
-						,'classify'
-						,'wealth'
-						,'sign'
-					]);
+					data = excel.filterExportData(data, {
+						id: 'id'
+						,username: 'username'
+						,experience: 'experience'
+						,sex: 'sex'
+						,score: 'score'
+						,city: function(value) {
+							return {
+								value: value,
+								font: { sz: 14, bold: true, color: { rgb: "FFFFAA00" } },
+								fill: { bgColor: { indexed: 64 }, fgColor: { rgb: "FFFF00" } }
+							};
+						}
+						,classify: 'classify'
+						,wealth: 'wealth'
+						,sign: 'sign'
+					});
 					// 重点2！！！一般都需要加一个表头，表头的键名顺序需要与最终导出的数据一致
 					data.unshift({ id: "ID", username: "用户名", experience: '积分', sex: '性别', score: '评分', city: '城市', classify: '职业', wealth: '财富', sign: '签名' });
 
 					var timestart = Date.now();
-					excel.exportExcel(data, '导出接口数据.xlsx', 'xlsx');
+					excel.exportExcel({
+						sheet1: data
+					}, '导出接口数据.xlsx', 'xlsx');
 					var timeend = Date.now();
 
 					var spent = (timeend - timestart) / 1000;
@@ -198,7 +213,9 @@
 				}
 			}
 
-			excel.exportExcel(data, '测试导出'+total+'条数据.xlsx', 'xlsx');
+			excel.exportExcel({
+				sheet1: data
+			}, '测试导出'+total+'条数据.xlsx', 'xlsx');
 		});
 	}
 	</script>

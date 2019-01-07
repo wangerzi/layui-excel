@@ -26,7 +26,7 @@
 - [x] 优化大量数据导出，比如~~100W~~45W(社区：[Th_omas](https://fly.layui.com/u/28037520/))
 - [ ] 支持Excel样式设置(社区：[锁哥](https://fly.layui.com/u/17116008/))
 - [x] 可以读取Excel内容(个人)
-- [ ] 支持一个Excel导出多个sheet（个人、社区：[玛琳菲森 ](https://fly.layui.com/u/29272992/)）
+- [x] 支持一个Excel导出多个sheet（个人、社区：[玛琳菲森 ](https://fly.layui.com/u/29272992/)）
 
 
 ## BUG收集
@@ -47,6 +47,7 @@
 | **filterExportData(data, fields)**         | 梳理导出的数据，包括字段排序和多余数据过滤       |
 | **importExcel(files, opt, callback)**      | 读取Excel，支持多文件多表格读取                  |
 | filterImportData(data, fields)             | 梳理导入的数据，字段含义与 filterExportData 类似 |
+| numToTitle(num)                            | 将0/1/2...转换为A/B/C/D.../AA/AB/.../ZZ/AAA形式  |
 
 ## 重要函数参数配置
 
@@ -56,10 +57,21 @@
 
 | 参数名称 | 描述                                             | 默认值 |
 | -------- | ------------------------------------------------ | ------ |
-| data     | 数据列表                                         | 必填   |
+| data     | 数据列表（需要指定表名）                         | 必填   |
 | filename | 文件名称（带后缀）                               | 必填   |
 | type     | 导出类型，支持 xlsx、csv、ods、xlsb、fods、biff2 | xlsx   |
 | opt      | 其他可选配置                                     | null   |
+
+##### data样例：
+
+```javascript
+{
+    "sheet1": [
+        {name: '111', sex: 'male'},
+        {name: '222', sex: 'female'},
+    ]
+}
+```
 
 ##### opt支持的配置项
 
