@@ -22,9 +22,9 @@
 
 - [x] 支持导出到IE、Firefox(社区：[TeAmo](https://fly.layui.com/u/2297904/))
 - [x] 梳理数据函数支持列合并(社区：[SoloAsural](https://fly.layui.com/u/10405920/))
-- [ ] 支持Excel内列合并(社区：[SoloAsural](https://fly.layui.com/u/10405920/))
+- [x] 支持Excel内列合并(社区：[SoloAsural](https://fly.layui.com/u/10405920/))
 - [x] 优化大量数据导出，比如~~100W~~45W(社区：[Th_omas](https://fly.layui.com/u/28037520/))
-- [ ] 支持Excel样式设置(社区：[锁哥](https://fly.layui.com/u/17116008/))
+- [x] ~~支持Excel样式设置~~（由于JS-XLSX在普通版本不提供样式设置功能故放弃）(社区：[锁哥](https://fly.layui.com/u/17116008/))
 - [x] 可以读取Excel内容(个人)
 - [x] 支持一个Excel导出多个sheet（个人、社区：[玛琳菲森 ](https://fly.layui.com/u/29272992/)）
 

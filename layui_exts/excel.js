@@ -4,7 +4,7 @@
 * @Version: v1.2
 * @Date:   2018-03-24 09:54:17
 * @Last Modified by:   Jeffrey Wang
-* @Last Modified time: 2019-01-07 21:34:29
+* @Last Modified time: 2019-01-08 21:31:04
 */
 layui.define(['jquery', 'xlsx', 'FileSaver'], function(exports){
 	var $ = layui.jquery;
@@ -41,8 +41,18 @@ layui.define(['jquery', 'xlsx', 'FileSaver'], function(exports){
 			// 特殊属性实现，比如合并单元格
 			var wbExtend = {
 				'!merges': null
+				,'!cols': null
+				,'!rows': null
+				,'!protect': null
+				,'!autofilter': null
 			};
 			opt && opt.extend && (wbExtend = $.extend(wbExtend, opt.extend));
+			// 清理空配置
+			for (key in wbExtend) {
+				if (!wbExtend[key]) {
+					delete wbExtend[key];
+				}
+			}
 
 			for(sheet_name in data) {
 				var content = data[sheet_name];
@@ -61,9 +71,15 @@ layui.define(['jquery', 'xlsx', 'FileSaver'], function(exports){
 						option.headers = content.unshift();
 						option.skipHeader = true;
 						// 分离并重组样式
-						this.splitContent(content);
+						var splitRes = this.splitContent(content);
 					}
 					var ws = XLSX.utils.json_to_sheet(content, option);
+					// 特殊属性
+					$.extend(ws, wbExtend);
+					// 合并样式 - js-xlsx 不支持设置样式，故移除
+					// if (typeof splitRes != 'undefined') {
+					// 	this.mergeContentStyle(ws, splitRes.style);
+					// }
 				}
 				wb.Sheets[sheet_name] = ws;
 			};
@@ -79,21 +95,41 @@ layui.define(['jquery', 'xlsx', 'FileSaver'], function(exports){
 		 * @param  {[type]} content [description]
 		 * @return {[type]}         [description]
 		 */
-		splitContent(content) {
+		splitContent: function(content) {
+			var styleContent = {};
 			// 扫描每个单元格，如果是对象则将 value 和样式分离
 			for (line in content) {
 				var lineData = content[line];
+				var rowIndex = 0;
 				for (row in lineData) {
 					var rowData = lineData[row];
 					var t = typeof rowData;
 					if (typeof rowData == 'object') {
 						lineData[row] = rowData.value;
 						delete rowData.value;
-						content[this.numToTitle(row)+line] = {s: rowData};
+						styleContent[this.numToTitle(rowIndex)+line] = {s: rowData};
 					}
+					rowIndex++;
 				}
 			}
-			return content;
+			return {
+				content: content,
+				style: styleContent,
+			};
+		},
+		/**
+		 * 合并内容和样式
+		 * @param  {[type]} ws    [description]
+		 * @param  {[type]} style [description]
+		 * @return {[type]}       [description]
+		 */
+		mergeContentStyle: function(ws, style) {
+			for (row in style) {
+				var rowStyle = style[row];
+				if (ws[row]) {
+					ws[row].s = rowStyle.s;
+				}
+			}
 		},
 		// numsToTitle备忘录提效
 		numsTitleCache: {},
@@ -109,10 +145,14 @@ layui.define(['jquery', 'xlsx', 'FileSaver'], function(exports){
 			if (num > 25) {
 				// 要注意小心 25 的倍数导致的无线递归问题
 				var dec = num % 25;
-				return this.numToTitle(num - dec?dec:25) + this.numToTitle(dec);
+				var ans = this.numToTitle(num - dec?dec:25) + this.numToTitle(dec);
+				this.numsTitleCache[num] = ans;
+				return ans;
 			} else {
 				// A 的 ascii 为 0，顺位相加
-				return String.fromCharCode(65 + num);
+				var ans = String.fromCharCode(65 + num);
+				this.numsTitleCache[num] = ans;
+				return ans;
 			}
 		},
 		/**

@@ -27,14 +27,7 @@
 		data = excel.filterExportData(data, {
 		    name: 'username',
 		    sex:'sex',
-		    city: function(value){
-				return {
-					value: value,
-					font: { sz: 14, bold: true, color: { rgb: "FFFFAA00" } },
-					fill: { bgColor: { indexed: 64 }, 
-					fgColor: { rgb: "FFFF00" } }
-				}
-		    },
+		    city: 'city',
 		    range: function(value, line, data) {
 		        return line['start'] + '~' + line['end'];
 		    },
@@ -154,13 +147,7 @@
 						,experience: 'experience'
 						,sex: 'sex'
 						,score: 'score'
-						,city: function(value) {
-							return {
-								value: value,
-								font: { sz: 14, bold: true, color: { rgb: "FFFFAA00" } },
-								fill: { bgColor: { indexed: 64 }, fgColor: { rgb: "FFFF00" } }
-							};
-						}
+						,city: 'city'
 						,classify: 'classify'
 						,wealth: 'wealth'
 						,sign: 'sign'
@@ -218,6 +205,53 @@
 			}, '测试导出'+total+'条数据.xlsx', 'xlsx');
 		});
 	}
+	/**
+	 * 导出复杂表头数据问题
+	 * @return {[type]} [description]
+	 */
+	function exportExtendDemo() {
+		layui.use(['excel'], function() {
+			var excel = layui.excel;
+			var data = [
+				{ id: 'ID', username: '基础信息', age: '', sex: '', score: '其他数据', classify: '' },// 被合并的列数据也需要填充上
+				{ id: 'id', username: '用户名', age: '年龄', sex: '性别', score: '积分', classify: '职业' },
+				{ id: 1, username: 'wang', age: 10, sex: '男', score: 100, classify: '程序猿' },
+				{ id: 1, username: 'wang', age: 10, sex: '男', score: 100, classify: '程序猿' },
+				{ id: 1, username: 'wang', age: 10, sex: '男', score: 100, classify: '程序猿' },
+				{ id: 1, username: 'wang', age: 10, sex: '男', score: 100, classify: '程序猿' },
+				{ id: 1, username: 'wang', age: 10, sex: '男', score: 100, classify: '程序猿' },
+				{ id: 1, username: 'wang', age: 10, sex: '男', score: 100, classify: '程序猿' },
+				{ id: 1, username: 'wang', age: 10, sex: '男', score: 100, classify: '程序猿' },
+			];
+			excel.exportExcel({
+				sheet1: data
+			}, '测试导出复杂表头.xlsx', 'xlsx', {
+				extend: {
+					// 复杂表头合并[B1,C1,D1][E1,F1]
+					'!merges': [
+						{
+							// s表示开始，c表示列的数字，r表示行的数字
+							s: {
+								c: 1, r: 0,
+							},
+							e: {
+								c: 3, r: 0
+							}
+						},
+						{
+							// s表示开始，c表示列的数字，r表示行的数字
+							s: {
+								c: 4, r: 0,
+							},
+							e: {
+								c: 5, r: 0
+							}
+						}
+					]
+				}
+			});
+		});
+	}
 	</script>
 </head>
 <body>
@@ -239,6 +273,7 @@
 					<div class="layui-form-block">
 						<button type="button" class="layui-btn layui-btn-primary" onclick="exportDataByUser()">导出数据测试</button>
 						<button type="button" class="layui-btn layui-btn-primary" onclick="exportApiDemo('./list.json')">导出接口数据</button>
+						<button type="button" class="layui-btn layui-btn-primary" onclick="exportExtendDemo()">导出复杂表头</button>
 					</div>
 				</div>
 				<div class="layui-form-item">
