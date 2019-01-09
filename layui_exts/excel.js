@@ -4,7 +4,7 @@
 * @Version: v1.2
 * @Date:   2018-03-24 09:54:17
 * @Last Modified by:   Jeffrey Wang
-* @Last Modified time: 2019-01-09 17:33:36
+* @Last Modified time: 2019-01-09 18:43:22
 */
 layui.define(['jquery', 'xlsx', 'FileSaver'], function(exports){
 	var $ = layui.jquery;
@@ -182,11 +182,35 @@ layui.define(['jquery', 'xlsx', 'FileSaver'], function(exports){
 			return total;
 		},
 		/**
+		 * 合并单元格快速生成配置的函数
+		 * @param  {[type]} origin [description]
+		 * @return {[type]}        [description]
+		 */
+		makeMergeConfig: function(origin) {
+			var merge = [];
+			for (var index in origin) {
+				merge.push({
+					s: this.splitPosition(origin[index][0]),
+					e: this.splitPosition(origin[index][1]),
+				});
+			}
+			return merge;
+		},
+		/**
 		 * 将A1分离成 {c: 0, r: 1} 格式的数据
 		 * @param  {[type]} pos [description]
 		 * @return {[type]}     [description]
 		 */
 		splitPosition: function(pos) {
+			var res = pos.match('^([A-Z]+)([1-9]+)$');
+			if (!res) {
+				return false;
+			}
+			// 转换结果相比需要的结果需要减一转换
+			return {
+				c: this.titleToNum(res[1]) - 1,
+				r: parseInt(res[2]) - 1
+			}
 		},
 		/**
 		 * 将二进制数据转为8位字节

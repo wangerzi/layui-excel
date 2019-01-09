@@ -46,6 +46,7 @@
 | **exportExcel(data, filename, type, opt)** | 导出数据，并弹出指定文件名的下载框               |
 | **filterExportData(data, fields)**         | 梳理导出的数据，包括字段排序和多余数据过滤       |
 | **importExcel(files, opt, callback)**      | 读取Excel，支持多文件多表格读取                  |
+| **makeMergeConfig(origin)**                | 生成合并的配置参数                               |
 | filterImportData(data, fields)             | 梳理导入的数据，字段含义与 filterExportData 类似 |
 | numToTitle(num)                            | 将1/2/3...转换为A/B/C/D.../AA/AB/.../ZZ/AAA形式  |
 | titleToNum(title)                          | 将A、B、AA、ABC转换为 1、2、3形式的数字          |
@@ -76,9 +77,10 @@
 
 ##### opt支持的配置项
 
-| 参数名称  | 描述                                                         | 默认值 |
-| --------- | ------------------------------------------------------------ | ------ |
-| opt.Props | 配置文档基础属性，支持Title、Subject、Author、Manager、Company、Category、Keywords、Comments、LastAuthor、CreatedData |        |
+| 参数名称   | 描述                                                         | 默认值 |
+| ---------- | ------------------------------------------------------------ | ------ |
+| opt.Props  | 配置文档基础属性，支持Title、Subject、Author、Manager、Company、Category、Keywords、Comments、LastAuthor、CreatedData | null   |
+| opt.extend | 表格配置参数，支持 `!merge` (合并单元格信息)、`!cols`(行数)、`!protect`(写保护)等，[原生配置请参考](https://github.com/SheetJS/js-xlsx#worksheet-object)，其中 `!merge` 配置支持辅助方法生成，详见 `makeMergeConfig(origin)`！ | null   |
 
 #### filterExportData参数配置
 
@@ -173,6 +175,33 @@ data = excel.filterExportData(data, {
 excel.exportExcel(data, '导出测试.xlsx', 'xlsx');
 ```
 
+#### makeMergeConfig参数配置
+
+> 辅助方法：用于生成合并表格的配置项，注意需要传入到 exportExcel 的 opt.extend['!merge'] 中
+
+| 参数名称 | 描述     | 默认值 |
+| -------- | -------- | ------ |
+| origin   | 二维数组 | null   |
+
+##### origin数据样例
+
+> 表示合并 A1~E1 行，并且合并 A2~D4行
+
+```javascript
+var mergeConf = excel.makeMergeConfig([
+    ['A1', 'E1'],
+    ['A2', 'D4']
+]);
+excel.exportExcel({
+    sheet1: data
+}, '测试导出复杂表头.xlsx', 'xlsx', {
+    extend: {
+        // 复杂表头合并[A1,E1][A2, D4]
+        '!merges': mergeConf
+    }
+});
+```
+
 ##### 调用样例
 
 请见下方『使用方法』
@@ -264,6 +293,8 @@ $(function(){
 - 支持IE、火狐、chrome等主流浏览器
 - 普通工作电脑最多支持9列45W行数据规模的导出
 - 支持 xlx、xlsx、csv格式的前端数据读取以及数据梳理
+- 支持多个 sheet 的导出
+- 提供方便的列合并辅助方法
 
 ## 使用方法：
 
@@ -374,15 +405,17 @@ index.html			页面文件+JS处理文件
 
 list.json				模拟导出的数据
 
-extends/excel.js		权限树扩展
+layui_exts/excel.js	权限树扩展
 
 layui/				官网下载的layui
 
 ## 更新预告：
 
-支持导出多个sheet，合并导出的列，设置单元格样式
+暂无
 
 ## 更新记录：
+
+2018-01-09 v1.3 支持导出多个sheet，合并导出的列，~~设置单元格样式~~（插件限制，暂未解决）
 
 2019-01-04 v1.2 支持前端多文件多Sheet读取 Excel 数据并梳理数据格式，大量数据导出效率优化
 
