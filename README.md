@@ -47,7 +47,8 @@
 | **filterExportData(data, fields)**         | 梳理导出的数据，包括字段排序和多余数据过滤       |
 | **importExcel(files, opt, callback)**      | 读取Excel，支持多文件多表格读取                  |
 | filterImportData(data, fields)             | 梳理导入的数据，字段含义与 filterExportData 类似 |
-| numToTitle(num)                            | 将0/1/2...转换为A/B/C/D.../AA/AB/.../ZZ/AAA形式  |
+| numToTitle(num)                            | 将1/2/3...转换为A/B/C/D.../AA/AB/.../ZZ/AAA形式  |
+| titleToNum(title)                          | 将A、B、AA、ABC转换为 1、2、3形式的数字          |
 
 ## 重要函数参数配置
 

@@ -4,7 +4,7 @@
 * @Version: v1.2
 * @Date:   2018-03-24 09:54:17
 * @Last Modified by:   Jeffrey Wang
-* @Last Modified time: 2019-01-08 21:31:04
+* @Last Modified time: 2019-01-09 17:33:36
 */
 layui.define(['jquery', 'xlsx', 'FileSaver'], function(exports){
 	var $ = layui.jquery;
@@ -107,7 +107,7 @@ layui.define(['jquery', 'xlsx', 'FileSaver'], function(exports){
 					if (typeof rowData == 'object') {
 						lineData[row] = rowData.value;
 						delete rowData.value;
-						styleContent[this.numToTitle(rowIndex)+line] = {s: rowData};
+						styleContent[this.numToTitle(rowIndex+1)+line] = {s: rowData};
 					}
 					rowIndex++;
 				}
@@ -131,29 +131,62 @@ layui.define(['jquery', 'xlsx', 'FileSaver'], function(exports){
 				}
 			}
 		},
+		// 测试代码：
+		// 		for(i=1;i<100;i++){var change = layui.excel.numToTitle(i);console.log(i, change, layui.excel.titleToNum(change));}
 		// numsToTitle备忘录提效
 		numsTitleCache: {},
+		// titleToTitle 备忘录提效
+		titleNumsCache: {},
 		/**
-		 * 将数字(从零开始)转换为 A、B、C...AA、AB
+		 * 将数字(从一开始)转换为 A、B、C...AA、AB
 		 * @param  {[type]} num [description]
 		 * @return {[type]}     [description]
 		 */
-		numToTitle(num) {
+		numToTitle: function(num) {
 			if (this.numsTitleCache[num]) {
 				return this.numsTitleCache[num];
 			}
-			if (num > 25) {
-				// 要注意小心 25 的倍数导致的无线递归问题
-				var dec = num % 25;
-				var ans = this.numToTitle(num - dec?dec:25) + this.numToTitle(dec);
+			if (num > 26) {
+				// 要注意小心 26 的倍数导致的无线递归问题
+				var dec = num % 26;
+				var ans = this.numToTitle((num - dec)/26) + this.numToTitle(dec?dec:26);
 				this.numsTitleCache[num] = ans;
+				this.titleNumsCache[ans] = num;
 				return ans;
 			} else {
 				// A 的 ascii 为 0，顺位相加
-				var ans = String.fromCharCode(65 + num);
+				var ans = String.fromCharCode(64 + num);
 				this.numsTitleCache[num] = ans;
+				this.titleNumsCache[ans] = num;
 				return ans;
 			}
+		},
+		/**
+		 * 将A、B、AA、ABC转换为 1、2、3形式的数字
+		 * @param  {[type]} title [description]
+		 * @return {[type]}       [description]
+		 */
+		titleToNum: function(title) {
+			if (this.titleNumsCache[title]) {
+				return this.titleNumsCache[title];
+			}
+			var len = title.length;
+			var total = 0;
+			for (var index in title) {
+				var char = title[index];
+				var code = char.charCodeAt() - 64;
+				total += code * Math.pow(26, len - index - 1);
+			}
+			this.numsTitleCache[total] = title;
+			this.titleNumsCache[title] = total;
+			return total;
+		},
+		/**
+		 * 将A1分离成 {c: 0, r: 1} 格式的数据
+		 * @param  {[type]} pos [description]
+		 * @return {[type]}     [description]
+		 */
+		splitPosition: function(pos) {
 		},
 		/**
 		 * 将二进制数据转为8位字节
