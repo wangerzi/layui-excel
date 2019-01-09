@@ -17,6 +17,12 @@
 
 ![功能演示](https://raw.githubusercontent.com/wangerzi/layui-excel/master/screenGIF.gif)
 
+##### 沟通交流群：
+
+**QQ群号：** 555056599
+
+![QQ交流群](https://raw.githubusercontent.com/wangerzi/layui-excel/master/qq_group_qrcode.png)
+
 ## 期望收集
 
 
@@ -293,7 +299,7 @@ $(function(){
 - 支持IE、火狐、chrome等主流浏览器
 - 普通工作电脑最多支持9列45W行数据规模的导出
 - 支持 xlx、xlsx、csv格式的前端数据读取以及数据梳理
-- 支持多个 sheet 的导出
+- 支持单个文件多个 sheet 的导出
 - 提供方便的列合并辅助方法
 
 ## 使用方法：
