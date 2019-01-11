@@ -27,7 +27,12 @@
 		data = excel.filterExportData(data, {
 		    name: 'username',
 		    sex:'sex',
-		    city: 'city',
+		    city: function(value) {
+		    	return {
+		    		v: value,
+		    		s: { font: { sz: 14, bold: true, color: { rgb: "FFFFAA00" } }, fill: { bgColor: { indexed: 64 }, fgColor: { rgb: "FFFF00" } } }
+		    	}
+		    },
 		    range: function(value, line, data) {
 		        return line['start'] + '~' + line['end'];
 		    },
@@ -35,6 +40,8 @@
 		        return value * 10;
 		    }
 		});
+		console.log(data);
+		excel.exportExcel({sheet1: data}, '导出文件.xlsx', 'xlsx');
 		$(function(){
 			// 处理读取文件
 			var uploadExcel = function(files) {
@@ -147,7 +154,12 @@
 						,experience: 'experience'
 						,sex: 'sex'
 						,score: 'score'
-						,city: 'city'
+						,city: function(value, line, data) {
+							return {
+								v: value,
+								s: { font: { sz: 14, bold: true, color: { rgb: "FFFFAA00" } }, fill: { bgColor: { indexed: 64 }, fgColor: { rgb: "FFFF00" } } }
+							};
+						}
 						,classify: 'classify'
 						,wealth: 'wealth'
 						,sign: 'sign'

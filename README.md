@@ -23,6 +23,8 @@
 
 ![QQ交流群](https://raw.githubusercontent.com/wangerzi/layui-excel/master/qq_group_qrcode.png)
 
+## 依赖的开源项目
+
 ## 期望收集
 
 
@@ -144,6 +146,8 @@ excel.exportExcel(data, '导出测试.xlsx', 'xlsx');
 ```
 
 **对象方式：**
+
+> 巧记：对象左侧是新名称，右侧是老名称或者回调函数（左新右旧）
 
 可以用于排序、重命名字段、字段过滤，比如我希望 `username` 字段重命名为 `name`，保留 `sex` 和 `city` 字段
 
@@ -417,7 +421,7 @@ layui/				官网下载的layui
 
 ## 更新预告：
 
-尝试魔改 xlsx-style.js 的代码以支持样式的设置，支持excel的公式、单元格属性等
+暂无
 
 ## 更新记录：
 

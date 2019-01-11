@@ -4,7 +4,7 @@
 * @Version: v1.2
 * @Date:   2018-03-24 09:54:17
 * @Last Modified by:   Jeffrey Wang
-* @Last Modified time: 2019-01-09 18:43:22
+* @Last Modified time: 2019-01-11 21:21:50
 */
 layui.define(['jquery', 'xlsx', 'FileSaver'], function(exports){
 	var $ = layui.jquery;
@@ -76,10 +76,10 @@ layui.define(['jquery', 'xlsx', 'FileSaver'], function(exports){
 					var ws = XLSX.utils.json_to_sheet(content, option);
 					// 特殊属性
 					$.extend(ws, wbExtend);
-					// 合并样式 - js-xlsx 不支持设置样式，故移除
-					// if (typeof splitRes != 'undefined') {
-					// 	this.mergeContentStyle(ws, splitRes.style);
-					// }
+					// 合并样式
+					if (typeof splitRes != 'undefined') {
+						this.mergeCellOpt(ws, splitRes.style);
+					}
 				}
 				wb.Sheets[sheet_name] = ws;
 			};
@@ -97,7 +97,7 @@ layui.define(['jquery', 'xlsx', 'FileSaver'], function(exports){
 		 */
 		splitContent: function(content) {
 			var styleContent = {};
-			// 扫描每个单元格，如果是对象则将 value 和样式分离
+			// 扫描每个单元格，如果是对象则等表格转换完毕后分离出来重新赋值
 			for (line in content) {
 				var lineData = content[line];
 				var rowIndex = 0;
@@ -106,8 +106,7 @@ layui.define(['jquery', 'xlsx', 'FileSaver'], function(exports){
 					var t = typeof rowData;
 					if (typeof rowData == 'object') {
 						lineData[row] = rowData.value;
-						delete rowData.value;
-						styleContent[this.numToTitle(rowIndex+1)+line] = {s: rowData};
+						styleContent[this.numToTitle(rowIndex+1)+(parseInt(line)+1)] = rowData;
 					}
 					rowIndex++;
 				}
@@ -123,11 +122,11 @@ layui.define(['jquery', 'xlsx', 'FileSaver'], function(exports){
 		 * @param  {[type]} style [description]
 		 * @return {[type]}       [description]
 		 */
-		mergeContentStyle: function(ws, style) {
+		mergeCellOpt: function(ws, style) {
 			for (row in style) {
-				var rowStyle = style[row];
+				var rowOpt = style[row];
 				if (ws[row]) {
-					ws[row].s = rowStyle.s;
+					$.extend(ws[row], rowOpt);
 				}
 			}
 		},
