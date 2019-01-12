@@ -225,7 +225,15 @@
 		layui.use(['excel'], function() {
 			var excel = layui.excel;
 			var data = [
-				{ id: '标志位', username: '用户信息', age: '', sex: '', score: '', classify: '' },// 被合并的列数据也需要填充上
+				{ id: '标志位', username: {
+					v: '用户信息', s: {
+						alignment: {
+							horizontal: 'center',
+							vertical: 'center',
+						},
+						fill: { bgColor: { indexed: 64 }, fgColor: { rgb: "FF0000" }}
+					}
+				}, age: '', sex: '', score: '', classify: '' },// 被合并的列数据也需要填充上
 				{ id: 'ID', username: '基础信息', age: '', sex: '', score: '扩展数据', classify: '' },
 				{ id: 'id', username: '用户名', age: '年龄', sex: '性别', score: '积分', classify: '职业' },
 				{ id: 1, username: 'wang', age: 10, sex: '男', score: 100, classify: '程序猿' },
@@ -236,25 +244,34 @@
 				{ id: 1, username: 'wang', age: 10, sex: '男', score: 100, classify: '程序猿' },
 				{ id: 1, username: 'wang', age: 10, sex: '男', score: 100, classify: '程序猿' },
 			];
-			// 作为扩展功能的配置参数传入即可
+			// 生成配置的辅助函数，返回结果作为扩展功能的配置参数传入即可
+			// 1. 复杂表头合并[B1,C1,D1][E1,F1]
 			var mergeConf = excel.makeMergeConfig([
 				['B1', 'F1'],
 				['B2', 'D2'],
 				['E2', 'F2'],
 			]);
+			// 2. B列宽 150，F列宽200，默认80
+			var colConf = excel.makeColConfig({
+				'B': 150,
+				'F': 200,
+			}, 80);
+			// 3. 第1行行高40，第二行行高30，默认20
+			var rowConf = excel.makeRowConfig({
+				1: 40,
+				3: 30
+			}, 20);
 			excel.exportExcel({
-				sheet1: data
+				sheet1: data,
+				sheet2: data
 			}, '测试导出复杂表头.xlsx', 'xlsx', {
 				extend: {
-					// 复杂表头合并[B1,C1,D1][E1,F1]
-					'!merges': mergeConf
-					,'!cols': [
-						{wpx: 300},
-						{wpx: 100},
-					]
-					,'!rows': [
-						{hpx: 40},
-					]
+					// extend 中可以指定某个 sheet 的属性，如果不指定 sheet 则所有 sheet 套用同一套属性
+					sheet1: {
+						'!merges': mergeConf
+						,'!cols': colConf
+						,'!rows': rowConf
+					}
 				}
 			});
 		});
@@ -274,7 +291,7 @@
 						CPU(占用24%)：Intel(R) Core(TM) i5-6300U CPU @ 2.40GHz <br>
 						内存(占用73%)： 8.0 GB DDR3,Speed:	1600 MHz <br>
 
-					<p style="color: #f00;margin-top: 20px;">注：由于xlsx基础版不支持设置单元格样式（字体、背景色、居中等），所以目前只能在插件代码上支持样式设置，但是设置了没有效果就是了o(︶︿︶)o</p>
+					<p style="color: #f00;margin-top: 20px;">xlsx.js 有两个版本，xlsx.js是支持样式的老版本，xlsx.old.js是更稳定的新版本但是不支持样式，使用时请自行选择</p>
 			</blockquote>
 			<div class="layui-form">
 				<div class="layui-form-item">

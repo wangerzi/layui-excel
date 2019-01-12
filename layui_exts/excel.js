@@ -4,7 +4,7 @@
 * @Version: v1.2
 * @Date:   2018-03-24 09:54:17
 * @Last Modified by:   94468
-* @Last Modified time: 2019-01-12 19:10:36
+* @Last Modified time: 2019-01-12 20:29:37
 */
 layui.define(['jquery', 'xlsx', 'FileSaver'], function(exports){
 	var $ = layui.jquery;
@@ -186,7 +186,7 @@ layui.define(['jquery', 'xlsx', 'FileSaver'], function(exports){
 			return total;
 		},
 		/**
-		 * 合并单元格快速生成配置的函数
+		 * 合并单元格快速生成配置的函数 传入 [ ['开始坐标 A1', '结束坐标 D2'], ['开始坐标 B2', '结束坐标 E3'] ]
 		 * @param  {[type]} origin [description]
 		 * @return {[type]}        [description]
 		 */
@@ -199,6 +199,58 @@ layui.define(['jquery', 'xlsx', 'FileSaver'], function(exports){
 				});
 			}
 			return merge;
+		},
+		/**
+		 * 自动生成列宽配置
+		 * @param  {[type]} data    [description]
+		 * @param  {[type]} defaultNum [description]
+		 * @return {[type]}         [description]
+		 */
+		makeColConfig: function(data, defaultNum) {
+			defaultNum = defaultNum > 0 ? defaultNum : 50;
+			// 将列的 ABC 转换为 index
+			var change = [];
+			var startIndex = 0;
+			for (index in data) {
+				var item = data[index];
+				if (index.match && index.match(/[A-Z]*/)) {
+					var currentIndex = this.titleToNum(index) - 1;
+					// 填充未配置的单元格
+					while (startIndex < currentIndex) {
+						change.push({wpx: defaultNum});
+						startIndex++;
+					}
+					startIndex = currentIndex+1;
+					change.push({wpx: item > 0 ? item : defaultNum});
+				}
+			};
+			return change;
+		},
+		/**
+		 * 自动生成列高配置
+		 * @param  {[type]} data    [description]
+		 * @param  {[type]} defaultNum [description]
+		 * @return {[type]}         [description]
+		 */
+		makeRowConfig: function(data, defaultNum) {
+			defaultNum = defaultNum > 0 ? defaultNum : 10;
+			// 将列的 ABC 转换为 index
+			var change = [];
+			var startIndex = 0;
+			for (index in data) {
+				var item = data[index];
+				if (index.match && index.match(/[0-9]*/)) {
+					var currentIndex = parseInt(index) - 1;
+					// 填充未配置的行
+					while (startIndex < currentIndex) {
+						change.push({hpx: defaultNum});
+						startIndex++;
+					}
+					startIndex = currentIndex+1;
+					change.push({hpx: item > 0 ? item : defaultNum});
+				}
+			};
+			return change;
 		},
 		/**
 		 * 将A1分离成 {c: 0, r: 1} 格式的数据
