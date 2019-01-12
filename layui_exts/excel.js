@@ -3,8 +3,8 @@
 * @Desc:  整理强大的 SheetJS 功能，依赖 XLSX.js 和 FileSaver
 * @Version: v1.2
 * @Date:   2018-03-24 09:54:17
-* @Last Modified by:   Jeffrey Wang
-* @Last Modified time: 2019-01-11 21:21:50
+* @Last Modified by:   94468
+* @Last Modified time: 2019-01-12 19:10:36
 */
 layui.define(['jquery', 'xlsx', 'FileSaver'], function(exports){
 	var $ = layui.jquery;
@@ -41,6 +41,7 @@ layui.define(['jquery', 'xlsx', 'FileSaver'], function(exports){
 			// 特殊属性实现，比如合并单元格
 			var wbExtend = {
 				'!merges': null
+				,'!margins': null
 				,'!cols': null
 				,'!rows': null
 				,'!protect': null
@@ -74,8 +75,12 @@ layui.define(['jquery', 'xlsx', 'FileSaver'], function(exports){
 						var splitRes = this.splitContent(content);
 					}
 					var ws = XLSX.utils.json_to_sheet(content, option);
-					// 特殊属性
-					$.extend(ws, wbExtend);
+					// 特殊属性，支持单独设置某个sheet的属性
+					if (wbExtend[sheet_name]) {
+						$.extend(ws, wbExtend[sheet_name]);
+					} else {
+						$.extend(ws, wbExtend);
+					}
 					// 合并样式
 					if (typeof splitRes != 'undefined') {
 						this.mergeCellOpt(ws, splitRes.style);

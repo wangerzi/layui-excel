@@ -75,6 +75,49 @@ function json_to_sheet(js, opts) { return sheet_add_json(null, js, opts); }
 function book_new() {
 	return { SheetNames: [], Sheets: {} };
 };
+var DEF_PPI = 96, PPI = DEF_PPI;
+function px2pt(px) { return px * 96 / PPI; }
+function pt2px(pt) { return pt * PPI / 96; }
+function write_ws_xml_data(ws, opts, idx, wb) {
+    var o = [], r = [], range = safe_decode_range(ws['!ref']), cell, ref, rr = "", cols = [], R, C,rows = ws['!rows'];
+    for(C = range.s.c; C <= range.e.c; ++C) cols[C] = encode_col(C);
+    for(R = range.s.r; R <= range.e.r; ++R) {
+        r = [];
+        rr = encode_row(R);
+        for(C = range.s.c; C <= range.e.c; ++C) {
+            ref = cols[C] + rr;
+            if(ws[ref] === undefined) continue;
+            if((cell = write_ws_xml_cell(ws[ref], ref, ws, opts, idx, wb)) != null) r.push(cell);
+        }
+        if(r.length > 0){
+      params = ({r:rr});
+      if(rows && rows[R]) {
+        row = rows[R];
+        if(row.hidden) params.hidden = 1;
+        height = -1;
+        if (row.hpx) height = px2pt(row.hpx);
+        else if (row.hpt) height = row.hpt;
+        if (height > -1) { params.ht = height; params.customHeight = 1; }
+        if (row.level) { params.outlineLevel = row.level; }
+      }
+      o[o.length] = (writextag('row', r.join(""), params));
+    }
+    }
+  if(rows) for(; R < rows.length; ++R) {
+    if(rows && rows[R]) {
+      params = ({r:R+1});
+      row = rows[R];
+      if(row.hidden) params.hidden = 1;
+      height = -1;
+      if (row.hpx) height = px2pt(row.hpx);
+      else if (row.hpt) height = row.hpt;
+      if (height > -1) { params.ht = height; params.customHeight = 1; }
+      if (row.level) { params.outlineLevel = row.level; }
+      o[o.length] = (writextag('row', "", params));
+    }
+  }
+    return o.join("");
+}
 XLSX.utils.book_new = book_new;
 XLSX.utils.sheet_add_json = sheet_add_json;
 XLSX.utils.json_to_sheet = json_to_sheet;
