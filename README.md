@@ -32,7 +32,7 @@
 - [x] 梳理数据函数支持列合并(社区：[SoloAsural](https://fly.layui.com/u/10405920/))
 - [x] 支持Excel内列合并(社区：[SoloAsural](https://fly.layui.com/u/10405920/))
 - [x] 优化大量数据导出，比如~~100W~~45W(社区：[Th_omas](https://fly.layui.com/u/28037520/))
-- [x] ~~支持Excel样式设置~~（由于JS-XLSX在普通版本不提供样式设置功能故放弃）(社区：[锁哥](https://fly.layui.com/u/17116008/))
+- [x] ~~支持Excel样式设置~~（魔改xlsx-style后支持设置列宽行高和单元格样式）(社区：[锁哥](https://fly.layui.com/u/17116008/))
 - [x] 可以读取Excel内容(个人)
 - [x] 支持一个Excel导出多个sheet（个人、社区：[玛琳菲森 ](https://fly.layui.com/u/29272992/)）
 
@@ -40,6 +40,72 @@
 ## BUG收集
 
 空
+
+## 快速上手
+
+> 由于插件规模扩大和功能的增加，导致插件上手难度有一定的增加。但如果只使用核心功能，其实没有必要去研究插件的所有方法，故在此把此插件解决核心需求的方法展示出来。
+
+#### 第一步：从后台获取需要导出的数据
+
+> 一般的导出场景是后端给出获取数据的接口，前端请求后端接口后，根据接口返回参数导出，所以需要 $.ajax() 异步请求接口数据
+
+```javascript
+$.ajax({
+    url: '/path/to/get/data',
+    dataType: 'json',
+    success: function(res) {
+        // 假如返回的 res.data 是需要导出的列表数据
+        console.log(res.data);// [{name: 'wang', age: 18}, {name: 'layui', age: 3}]
+    }
+});
+```
+
+#### 第二步：下载源码并引入插件
+
+如果使用 `layuiadmin`,则只需要将插件(`layui_exts/excel.js`、`layui_exts/FileSaver.js`、`layui_exts/xlsx.js`)放到 `controller/`下,然后 `layui.use` 即可,或者可以放在 `lib/extend` 中,只不过需要改 `config.js`
+
+非 `layuiadmin` 初始化如下：
+
+```javascript
+layui.config({
+	base: 'layui_exts/',
+}).extend({
+	excel: 'excel',
+    FileSaver: 'FileSaver',// 如果所有扩展放一起可忽略此行配置
+    xlsx: 'xlsx',// 如果所有扩展放一起可忽略此行配置
+});
+```
+
+#### 第三步：手工添加一个表头，并调用导出excel的内部函数
+
+```javascript
+layui.use(['jquery', 'excel', 'layer'], function() {
+    var $ = layui.jquery;
+    var excel = layui.excel;
+    $.ajax({
+        url: '/path/to/get/data',
+        dataType: 'json',
+        success: function(res) {
+            // 假如返回的 res.data 是需要导出的列表数据
+            console.log(res.data);// [{name: 'wang', age: 18, sex: '男'}, {name: 'layui', age: 3, sex: '女'}]
+            // 1. 数组头部新增表头
+            res.data.unshift({name: '用户名',sex: '男', age: '年龄'});
+            // 2. 如果需要调整顺序，请执行梳理函数
+            var data = excel.filterExportData(data, [
+                'name',
+                'sex',
+                'age',
+            ]);
+            // 3. 执行导出函数，系统会弹出弹框
+            excel.exportExcel({
+                sheet1: data
+            }, '导出接口数据.xlsx', 'xlsx');
+        }
+    });
+});
+```
+
+
 
 ## 接口设计和后台程序参考
 
@@ -49,15 +115,19 @@
 
 > 仅做函数用途介绍，具体使用方法请见 『重要函数参数配置』
 
-| 函数名                                     | 描述                                             |
-| ------------------------------------------ | ------------------------------------------------ |
-| **exportExcel(data, filename, type, opt)** | 导出数据，并弹出指定文件名的下载框               |
-| **filterExportData(data, fields)**         | 梳理导出的数据，包括字段排序和多余数据过滤       |
-| **importExcel(files, opt, callback)**      | 读取Excel，支持多文件多表格读取                  |
-| **makeMergeConfig(origin)**                | 生成合并的配置参数                               |
-| filterImportData(data, fields)             | 梳理导入的数据，字段含义与 filterExportData 类似 |
-| numToTitle(num)                            | 将1/2/3...转换为A/B/C/D.../AA/AB/.../ZZ/AAA形式  |
-| titleToNum(title)                          | 将A、B、AA、ABC转换为 1、2、3形式的数字          |
+| 函数名                                     | 描述                                                        |
+| ------------------------------------------ | ----------------------------------------------------------- |
+| **exportExcel(data, filename, type, opt)** | 导出数据，并弹出指定文件名的下载框                          |
+| **filterExportData(data, fields)**         | 梳理导出的数据，包括字段排序和多余数据过滤                  |
+| **importExcel(files, opt, callback)**      | 读取Excel，支持多文件多表格读取                             |
+| **makeMergeConfig(origin)**                | 生成合并的配置参数，返回结果需放置于opt.extend['!merges']中 |
+| makeColConfig(data, defaultNum)            | 生成列宽配置，返回结果需放置于opt.extend['!cols']中         |
+| makeRowConfig(data, defaultNum)            | 生成行高配置，返回结果需放置于opt.extend['!rows']中         |
+| filterDataToAoaData(sheet_data)            | 将单个sheet的映射数组数据转换为加速导出效率的aoa数据        |
+| filterImportData(data, fields)             | 梳理导入的数据，字段含义与 filterExportData 类似            |
+| numToTitle(num)                            | 将1/2/3...转换为A/B/C/D.../AA/AB/.../ZZ/AAA形式             |
+| titleToNum(title)                          | 将A、B、AA、ABC转换为 1、2、3形式的数字                     |
+| splitPosition(pos)                         | 将A1分离成 {c: 0, r: 1} 格式的数据                          |
 
 ## 重要函数参数配置
 
@@ -165,7 +235,9 @@ excel.exportExcel(data, '导出测试.xlsx', 'xlsx');
 
 ##### 回调方式：
 
-可以用于排序、重命名字段、字段过滤、自定义列，比如我希望 `range` 由 `start` `end` 聚合并以 `~` 分割；修改 `score` 为原有值的 10倍，并且 `username` 字段重命名为 `name`，保留 `sex` 和 `city`  字段。
+> 口诀：左新右旧
+
+可以用于排序、重命名字段、字段过滤、自定义列、批量渲染样式，比如我希望 `range` 由 `start` `end` 聚合并以 `~` 分割；修改 `score` 为原有值的 10倍，并且 `username` 字段重命名为 `name`，保留 `sex` 和 `city`  字段，`city` 所有单元格变为**加粗+居中+红底白字**（样式请参见『样式设置专区』）。
 
 那么，我可以这样写：
 
@@ -174,7 +246,19 @@ var data = [];// 假设的后台的数据
 data = excel.filterExportData(data, {
     name: 'username',
     sex:'sex',
-    city: 'city',
+    city: function(value, line, data) {
+        return {
+            v: value,// v 代表单元格的值
+            s:{// s 代表样式
+                alignment: {
+                    horizontal: 'center',
+                    vertical: 'center',
+                },
+                font: { sz: 14, bold: true, color: { rgb: "FFFFFF" } },
+                fill: { bgColor: { indexed: 64 }, fgColor: { rgb: "FF0000" }}
+            }
+        };
+    },
     range: function(value, line, data) {
         return line['start'] + '~' + line['end'];
     },
@@ -288,13 +372,82 @@ $(function(){
 });
 ```
 
+## 样式设置专区：
 
+#### s属性支持的单元格样式
+
+| 样式属性 | 子属性 | 取值 |
+| :-------------- | :------------- | :------------- |
+| fill            | patternType    |  `"solid"` or `"none"`|
+|                 | fgColor        |  `COLOR_SPEC` |
+|                 | bgColor        |  `COLOR_SPEC`|
+| font            | name           |  `"Calibri"` // default|
+|                 | sz             |  `"11"` // font size in points||
+|                 | color          |  `COLOR_SPEC`|
+|                 | bold           |  `true` or `false`|
+|                 | underline      |  `true` or `false`|
+|                 | italic         |  `true` or `false`|
+|                 | strike         |  `true` or `false`|
+|                 | outline        |  `true` or `false`|
+|                 | shadow         |  `true` or `false`|
+|                 | vertAlign      |  `true` or `false`|
+| numFmt          |                |  `"0"`  // integer index to built in formats, see StyleBuilder.SSF property|
+|                 |                |  `"0.00%"` // string matching a built-in format, see StyleBuilder.SSF|
+|                 |                |  `"0.0%"`  // string specifying a custom format|
+|                 |                |  `"0.00%;\\(0.00%\\);\\-;@"` // string specifying a custom format, escaping special characters|
+|                 |                |  `"m/dd/yy"` // string a date format using Excel's format notation|
+| alignment       | vertical       | `"bottom"` or `"center"` or `"top"`|
+|                 | horizontal     | `"bottom"` or `"center"` or `"top"`|
+|                 | wrapText       |  `true ` or ` false`|
+|                 | readingOrder   |  `2` // for right-to-left|
+|                 | textRotation   | Number from `0` to `180` or `255` (default is `0`)|
+|                 |                |  `90` is rotated up 90 degrees|
+|                 |                |  `45` is rotated up 45 degrees|
+|                 |                | `135` is rotated down 45 degrees|
+|                 |                | `180` is rotated down 180 degrees|
+|                 |                | `255` is special,  aligned vertically|
+| border          | top            | `{ style: BORDER_STYLE, color: COLOR_SPEC }`|
+|                 | bottom         | `{ style: BORDER_STYLE, color: COLOR_SPEC }`|
+|                 | left           | `{ style: BORDER_STYLE, color: COLOR_SPEC }`|
+|                 | right          | `{ style: BORDER_STYLE, color: COLOR_SPEC }`|
+|                 | diagonal       | `{ style: BORDER_STYLE, color: COLOR_SPEC }`|
+|                 | diagonalUp     | `true` or `false`|
+|                 | diagonalDown   | `true` or `false`|
+
+**COLOR_SPEC**: 可以设置在 `fill`, `font`, 和 `border` 属性中，是一个对象:
+
+* `{ auto: 1}` 指定自动值（楼主认为，应该是默认为白色的意思）
+* `{ rgb: "FFFFAA00" }` 指定16进制 ARGB 的值
+* `{ theme: "1", tint: "-0.25"}` 指定主题颜色和色调值的整数索引（默认值为0）（PS：楼主也明白嘛意思）
+* `{ indexed: 64}` 是 `fill.bgColor`属性的默认值，看着应该像索引之类的
+
+**BORDER_STYLE**: 边框支持以下几种样式:
+
+ * `thin`(细边框)
+ * `medium`(中等)
+ * `thick`(厚)
+ * `dotted`(点线)
+ * `hair`(毛)
+ * `dashed`(虚线)
+ * `mediumDashed`(中等宽度虚线)
+ * `dashDot`( 点)
+ * `mediumDashDot`(中等宽度点)
+ * `dashDotDot`(虚线带点)
+ * `mediumDashDotDot`(中等虚线带点)
+ * `slantDashDot`(倾斜虚线点--楼主没明白意思╮(╯▽╰)╭)
+
+
+合并区域的边界是为合并区域内的每个单元格指定的。因此，要将框边框应用于3x3单元格的合并区域，需要为八个不同的单元格指定边框样式：
+* 左边三个单元格的左边框,
+* 右侧三个单元格的右边框
+* 顶部单元格的顶部边框
+* 左侧单元格的底部边框
 
 ## 提效建议：
 
 > 数据规模：前端导出**纯数据 9列10w** 的数据量需要 **7秒左右**的时间，**30W数据占用1.8G，耗时24秒**，普通电脑**最多能导出50w数据，耗时45秒**，文件大小173M，提示内存超限
 
-- 如果数据量比较大，最好直接转换为纯数组的导出，可以省去 filterExportData 和 转换为AOA数组的时间和内存（PS：效率提升不算太大，30W数据能提速2s左右，资源主要消耗在调用 XLSX.js之后）
+- 如果数据量比较大，**并且不涉及样式**，最好直接转换为纯数组的导出，可以省去 filterExportData 和 组装样式的时间和内存（PS：效率提升不算太大，30W数据能提速2s左右，资源主要消耗在调用 XLSX.js之后）
 - 一般 exportExcel 会放在 $.ajax() 等异步调用中，如果有需要在点击后纯前端生成Excel，可以使用 async、setTimeout等方式实现异步导出，否则会阻塞主进程。
 
 ## 功能概览：

@@ -4,7 +4,7 @@
 * @Version: v1.2
 * @Date:   2018-03-24 09:54:17
 * @Last Modified by:   94468
-* @Last Modified time: 2019-01-12 20:29:37
+* @Last Modified time: 2019-01-13 11:54:36
 */
 layui.define(['jquery', 'xlsx', 'FileSaver'], function(exports){
 	var $ = layui.jquery;
@@ -286,7 +286,6 @@ layui.define(['jquery', 'xlsx', 'FileSaver'], function(exports){
 		 * @return {[type]} [description]
 		 */
 		filterDataToAoaData: function(filterData){
-			console.log(filterData.length);
 			var aoaData = [];
 			layui.each(filterData, function(index, item) {
 				var itemData = [];
