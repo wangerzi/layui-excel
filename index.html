@@ -268,7 +268,10 @@
 				age: {t: 'n', f: 'SUM(C4:C10)'},
 				sex: '总分',
 				score: {t: 'n', f: 'SUM(E4:E10)'},
-				classify: ''
+				classify: {
+					v: '注意：保护模式中公式无效，请「启用编辑」',
+					s: { font: {color: {rgb: 'FF0000'}} }
+				}
 			});
 			excel.exportExcel({
 				sheet1: data,
@@ -300,7 +303,7 @@
 						CPU(占用24%)：Intel(R) Core(TM) i5-6300U CPU @ 2.40GHz <br>
 						内存(占用73%)： 8.0 GB DDR3,Speed:	1600 MHz <br>
 
-					<p style="color: #f00;margin-top: 20px;">xlsx.js 有两个版本，xlsx.js是支持样式的老版本，xlsx.old.js是更稳定的新版本但是不支持样式，使用时请自行选择</p>
+					<p style="color: #f00;margin-top: 20px;">注：xlsx.js 有两个版本，xlsx.js是支持样式的老版本，xlsx.old.js是更稳定的新版本但是不支持样式，使用时请自行选择</p>
 			</blockquote>
 			<div class="layui-form">
 				<div class="layui-form-item">

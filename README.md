@@ -493,8 +493,8 @@ $(function(){
 | fill            | patternType    |  `"solid"` or `"none"`|
 |                 | fgColor        |  `COLOR_SPEC` |
 |                 | bgColor        |  `COLOR_SPEC`|
-| font            | name           |  `"Calibri"` // default|
-|                 | sz             |  `"11"` // font size in points||
+| font            | name           | `"Calibri"` // 默认字体 |
+|                 | sz             | `"11"` // 字体大小 |
 |                 | color          |  `COLOR_SPEC`|
 |                 | bold           |  `true` or `false`|
 |                 | underline      |  `true` or `false`|
@@ -503,21 +503,21 @@ $(function(){
 |                 | outline        |  `true` or `false`|
 |                 | shadow         |  `true` or `false`|
 |                 | vertAlign      |  `true` or `false`|
-| numFmt          |                |  `"0"`  // integer index to built in formats, see StyleBuilder.SSF property|
-|                 |                |  `"0.00%"` // string matching a built-in format, see StyleBuilder.SSF|
-|                 |                |  `"0.0%"`  // string specifying a custom format|
-|                 |                |  `"0.00%;\\(0.00%\\);\\-;@"` // string specifying a custom format, escaping special characters|
-|                 |                |  `"m/dd/yy"` // string a date format using Excel's format notation|
+| numFmt          |                | `"0"`  // 内置格式的整数索引，请参见StyleBuilder.SSF属性 |
+|                 |                | `"0.00%"` // 匹配内置格式的字符串，请参阅StyleBuilder.SSF |
+|                 |                | `"0.0%"`  // 指定自定义格式的字符串 |
+|                 |                | `"0.00%;\\(0.00%\\);\\-;@"` // 指定自定义格式的字符串，转义特殊字符 |
+|                 |                | `"m/dd/yy"` // 使用Excel的格式表示法字符串日期格式 |
 | alignment       | vertical       | `"bottom"` or `"center"` or `"top"`|
 |                 | horizontal     | `"bottom"` or `"center"` or `"top"`|
 |                 | wrapText       |  `true ` or ` false`|
-|                 | readingOrder   |  `2` // for right-to-left|
-|                 | textRotation   | Number from `0` to `180` or `255` (default is `0`)|
-|                 |                |  `90` is rotated up 90 degrees|
-|                 |                |  `45` is rotated up 45 degrees|
-|                 |                | `135` is rotated down 45 degrees|
-|                 |                | `180` is rotated down 180 degrees|
-|                 |                | `255` is special,  aligned vertically|
+|                 | readingOrder   | `2` // 从右到左 |
+|                 | textRotation   | 从 `0` 到 `180` 或者 `255` (默认为 `0`) |
+|                 |                | `90` 旋转90度 |
+|                 |                | `45` 旋转45度 |
+|                 |                | `135` 反向旋转45度 |
+|                 |                | `180` 旋转180度 |
+|                 |                | `255` 特殊：垂直对齐 |
 | border          | top            | `{ style: BORDER_STYLE, color: COLOR_SPEC }`|
 |                 | bottom         | `{ style: BORDER_STYLE, color: COLOR_SPEC }`|
 |                 | left           | `{ style: BORDER_STYLE, color: COLOR_SPEC }`|
@@ -548,8 +548,10 @@ $(function(){
  * `mediumDashDotDot`(中等虚线带点)
  * `slantDashDot`(倾斜虚线点--楼主也没明白啥意思╮(╯▽╰)╭)
 
+##### 合并区域边框
 
-合并区域的边界是为合并区域内的每个单元格指定的。因此，要将框边框应用于3x3单元格的合并区域，需要为八个不同的单元格指定边框样式：
+合并区域的边框是为合并区域内的每个单元格指定的。因此，要将框边框应用于3x3单元格的合并区域，需要为八个不同的单元格指定边框样式：
+
 * 左边三个单元格的左边框,
 * 右侧三个单元格的右边框
 * 顶部单元格的顶部边框
@@ -570,6 +572,9 @@ $(function(){
 - 支持 xlx、xlsx、csv格式的前端数据读取以及数据梳理
 - 支持单个文件多个 sheet 的导出
 - 提供方便的列合并辅助方法
+- 支持单元格样式设置
+- 支持设置单元格宽度和高度并提供辅助方法方便使用
+- 支持公式、链接等单元格属性设置
 
 ## 使用方法：
 
