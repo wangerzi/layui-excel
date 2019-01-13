@@ -15,7 +15,11 @@
 
 [http://excel.wj2015.com/](http://excel.wj2015.com/)
 
-![功能演示](https://raw.githubusercontent.com/wangerzi/layui-excel/master/screenGIF.gif)
+![功能演示](https://raw.githubusercontent.com/wangerzi/layui-excel/master/ScreenToGif.gif)
+
+![功能演示](https://raw.githubusercontent.com/wangerzi/layui-excel/master/ScreenToGif-2.gif)
+
+![功能演示](https://raw.githubusercontent.com/wangerzi/layui-excel/master/ScreenToGif-3.gif)
 
 ##### 沟通交流群：
 
