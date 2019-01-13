@@ -75,6 +75,66 @@ function json_to_sheet(js, opts) { return sheet_add_json(null, js, opts); }
 function book_new() {
 	return { SheetNames: [], Sheets: {} };
 };
+// 改造公式支持的部分
+function write_ws_xml_cell(cell, ref, ws, opts, idx, wb) {
+  if ( ! (cell.v || cell.s ||  cell.f ) ) return "";
+  var vv = "";
+  var oldt = cell.t, oldv = cell.v;
+  switch (cell.t) {
+    case 'b':
+      vv = cell.v ? "1" : "0";
+      break;
+    case 'n':
+      vv = '' + cell.v;
+      break;
+    case 'e':
+      vv = BErr[cell.v];
+      break;
+    case 'd':
+      if (opts.cellDates) vv = new Date(cell.v).toISOString();
+      else {
+        cell.t = 'n';
+        vv = '' + (cell.v = datenum(cell.v));
+        if (typeof cell.z === 'undefined') cell.z = SSF._table[14];
+      }
+      break;
+    default:
+      vv = cell.v;
+      break;
+  }
+  var o = { r: ref };
+  var v = cell.f ? writetag('f', escapexml(cell.f)) : writetag('v', escapexml(vv));
+  /* TODO: cell style */
+  var os = get_cell_style(opts.cellXfs, cell, opts);
+  if (os !== 0) o.s = os;
+  switch (cell.t) {
+    case 'n':
+      break;
+    case 'd':
+      o.t = "d";
+      break;
+    case 'b':
+      o.t = "b";
+      break;
+    case 'e':
+      o.t = "e";
+      break;
+    default:
+      if (opts.bookSST) {
+        v = writetag('v', '' + get_sst_id(opts.Strings, cell.v));
+        o.t = "s";
+        break;
+      }
+      o.t = "str";
+      break;
+  }
+  if (cell.t != oldt) {
+    cell.t = oldt;
+    cell.v = oldv;
+  }
+  return writextag('c', v, o);
+}
+// 改造row支持的部分
 var DEF_PPI = 96, PPI = DEF_PPI;
 function px2pt(px) { return px * 96 / PPI; }
 function pt2px(pt) { return pt * PPI / 96; }

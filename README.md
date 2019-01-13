@@ -305,11 +305,25 @@ excel.exportExcel(data, '导出测试.xlsx', 'xlsx');
 | `l`  | 单元格超链接对象（目标链接，.tooltip是提示）                 |
 | `s`  | 单元格的样式/主题（如果适用）                                |
 
-##### 公式设置详见：
+##### 公式设置样例：
 
-PS：公式设置有点蒙圈，待完善吧！
+> 注意：网页导出的xlsx，在 Microsoft Excel 呈保护模式打开，导致公式的值不显示，此时将受保护模式关掉即可！
 
-[https://github.com/SheetJS/js-xlsx#formulae](https://github.com/SheetJS/js-xlsx#formulae)
+对于复杂的公式，楼主也不甚了解，以普通公式 `=SUM(A1, A10)`  为例，在插件中只需要将单元格的属性设置为：`{t: 'n', f: 'SUM(A1:A10)'}`，比如我想加一个总览行就可以这样追加数据：
+
+```javascript
+// 4. 公式的用法
+data.push({
+    id: '',
+    username: '总年龄',
+    age: {t: 'n', f: 'SUM(C4:C10)'},
+    sex: '总分',
+    score: {t: 'n', f: 'SUM(E4:E10)'},
+    classify: ''
+});
+```
+
+官方公式相关文档：[https://github.com/SheetJS/js-xlsx#formulae](https://github.com/SheetJS/js-xlsx#formulae)
 
 #### makeMergeConfig参数配置
 
