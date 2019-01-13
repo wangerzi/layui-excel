@@ -4,7 +4,7 @@
 * @Version: v1.2
 * @Date:   2018-03-24 09:54:17
 * @Last Modified by:   94468
-* @Last Modified time: 2019-01-13 11:54:36
+* @Last Modified time: 2019-01-13 19:30:28
 */
 layui.define(['jquery', 'xlsx', 'FileSaver'], function(exports){
 	var $ = layui.jquery;
@@ -128,9 +128,14 @@ layui.define(['jquery', 'xlsx', 'FileSaver'], function(exports){
 		 * @return {[type]}       [description]
 		 */
 		mergeCellOpt: function(ws, style) {
-			for (row in style) {
+			for (var row in style) {
 				var rowOpt = style[row];
 				if (ws[row]) {
+					// 其他属性做一个初始化
+					var otherOpt = ['t', 'w', 'f', 'r', 'h', 'c', 'z', 'l', 's'];
+					for (var i in otherOpt) {
+						ws[row][otherOpt[i]] = ws[row][otherOpt[i]];
+					}
 					$.extend(ws[row], rowOpt);
 				}
 			}

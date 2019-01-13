@@ -32,7 +32,7 @@
 - [x] 梳理数据函数支持列合并(社区：[SoloAsural](https://fly.layui.com/u/10405920/))
 - [x] 支持Excel内列合并(社区：[SoloAsural](https://fly.layui.com/u/10405920/))
 - [x] 优化大量数据导出，比如~~100W~~45W(社区：[Th_omas](https://fly.layui.com/u/28037520/))
-- [x] ~~支持Excel样式设置~~（魔改xlsx-style后支持设置列宽行高和单元格样式）(社区：[锁哥](https://fly.layui.com/u/17116008/))
+- [x] 支持Excel样式设置（魔改xlsx-style后支持设置列宽行高和单元格样式）(社区：[锁哥](https://fly.layui.com/u/17116008/))
 - [x] 可以读取Excel内容(个人)
 - [x] 支持一个Excel导出多个sheet（个人、社区：[玛琳菲森 ](https://fly.layui.com/u/29272992/)）
 
@@ -160,6 +160,27 @@ layui.use(['jquery', 'excel', 'layer'], function() {
 | opt.Props  | 配置文档基础属性，支持Title、Subject、Author、Manager、Company、Category、Keywords、Comments、LastAuthor、CreatedData | null   |
 | opt.extend | 表格配置参数，支持 `!merge` (合并单元格信息)、`!cols`(行数)、`!protect`(写保护)等，[原生配置请参考](https://github.com/SheetJS/js-xlsx#worksheet-object)，其中 `!merge` 配置支持辅助方法生成，详见 `makeMergeConfig(origin)`！ | null   |
 
+> 如果想指定某个 sheet 的opt.extend，请按照 'sheet名称' => {单独配置}，如：
+
+```javascript
+excel.exportExcel({
+    sheet1: data,
+    sheet2: data
+}, '测试导出复杂表头.xlsx', 'xlsx', {
+    extend: {
+        // extend 中可以指定某个 sheet 的属性，如果不指定 sheet 则所有 sheet 套用同一套属性
+        sheet1: {
+            // 以下配置仅 sheet1 有效
+            '!merges': mergeConf
+            ,'!cols': colConf
+            ,'!rows': rowConf
+        }
+    }
+});
+```
+
+
+
 #### filterExportData参数配置
 
 > 辅助方法，梳理导出的数据，包括字段排序和多余数据过滤
@@ -237,7 +258,7 @@ excel.exportExcel(data, '导出测试.xlsx', 'xlsx');
 
 > 口诀：左新右旧
 
-可以用于排序、重命名字段、字段过滤、自定义列、批量渲染样式，比如我希望 `range` 由 `start` `end` 聚合并以 `~` 分割；修改 `score` 为原有值的 10倍，并且 `username` 字段重命名为 `name`，保留 `sex` 和 `city`  字段，`city` 所有单元格变为**加粗+居中+红底白字**（样式请参见『样式设置专区』）。
+可以用于排序、重命名字段、字段过滤、自定义列、批量渲染样式，比如我希望 `range` 由 `start` `end` 聚合并以 `~` 分割；修改 `score` 为原有值的 10倍，并且 `username` 字段重命名为 `name`，保留 `sex` 和 `city`  字段，`city` 所有单元格变为**加粗+居中+红底白字**（可用样式请参见『样式设置专区』）。
 
 那么，我可以这样写：
 
@@ -256,7 +277,7 @@ data = excel.filterExportData(data, {
                 },
                 font: { sz: 14, bold: true, color: { rgb: "FFFFFF" } },
                 fill: { bgColor: { indexed: 64 }, fgColor: { rgb: "FF0000" }}
-            }
+            },
         };
     },
     range: function(value, line, data) {
@@ -268,6 +289,27 @@ data = excel.filterExportData(data, {
 });
 excel.exportExcel(data, '导出测试.xlsx', 'xlsx');
 ```
+
+##### 单元格属性含义
+
+| Key  | Description                                                  |
+| ---- | ------------------------------------------------------------ |
+| `v`  | 单元格的值                                                   |
+| `w`  | 格式化文本（如果适用）                                       |
+| `t`  | 单元格类型: `b` 布尔值, `n` 数字, `e` 错误, `s` 字符, `d` 日期 |
+| `f`  | 单元格公式（如果适用）                                       |
+| `r`  | 富文本编码（如果适用）                                       |
+| `h`  | 富文本的HTML呈现（如果适用）                                 |
+| `c`  | 与单元格相关的注释                                           |
+| `z`  | 与单元格关联的数字格式字符串（如果需要）                     |
+| `l`  | 单元格超链接对象（目标链接，.tooltip是提示）                 |
+| `s`  | 单元格的样式/主题（如果适用）                                |
+
+##### 公式设置详见：
+
+PS：公式设置有点蒙圈，待完善吧！
+
+[https://github.com/SheetJS/js-xlsx#formulae](https://github.com/SheetJS/js-xlsx#formulae)
 
 #### makeMergeConfig参数配置
 
@@ -299,6 +341,62 @@ excel.exportExcel({
 ##### 调用样例
 
 请见下方『使用方法』
+
+#### makeColConfig参数配置
+
+> 辅助方法：生成列宽配置，返回结果需放置于opt.extend['!cols']中
+
+| 参数名称   | 描述                                                  | 默认值 |
+| ---------- | ----------------------------------------------------- | ------ |
+| data       | 一个对象，对象的key代表列（如：ABCDE），value代表宽度 | null   |
+| defaultNum | 渲染过程中未指定单元格的默认宽度                      | 60     |
+
+##### data数据样例
+
+> key表示列，value表示宽，剩余宽度取默认值，特别注意要放在 opt.extend['!cols'] 中
+
+```javascript
+// 意思是：A列40px，B列80px(默认)，C列120px，D、E、F等均未定义
+var colConf = excel.makeColConfig({
+    'A': 40,
+    'C': 120
+}, 80);
+excel.exportExcel({
+    sheet1: data
+}, '测试导出复杂表头.xlsx', 'xlsx', {
+    extend: {
+        '!cols': colConf
+    }
+});
+```
+
+#### makeRowConfig参数配置
+
+> 辅助方法：生成列宽配置，返回结果需放置于opt.extend['!rows']中
+
+| 参数名称   | 描述                                                         | 默认值 |
+| ---------- | ------------------------------------------------------------ | ------ |
+| data       | 一个对象，对象的key代表从1开始的行（如：1234），value代表高度 | null   |
+| defaultNum | 渲染过程中未指定单元格的默认宽度                             | 60     |
+
+##### data数据样例
+
+> key表示行，value表示高度，剩余高度取默认值，特别注意要放在 opt.extend['!rows'] 中
+
+```javascript
+// 意思是：1行40px，2行80px(默认)，3行120px，4/5/6/7等行均未定义
+var colConf = excel.makeColConfig({
+    1: 40,
+    3: 120
+}, 80);
+excel.exportExcel({
+    sheet1: data
+}, '测试导出复杂表头.xlsx', 'xlsx', {
+    extend: {
+        '!rows': colConf
+    }
+});
+```
 
 #### importExcel参数配置
 
@@ -434,7 +532,7 @@ $(function(){
  * `mediumDashDot`(中等宽度点)
  * `dashDotDot`(虚线带点)
  * `mediumDashDotDot`(中等虚线带点)
- * `slantDashDot`(倾斜虚线点--楼主没明白意思╮(╯▽╰)╭)
+ * `slantDashDot`(倾斜虚线点--楼主也没明白啥意思╮(╯▽╰)╭)
 
 
 合并区域的边界是为合并区域内的每个单元格指定的。因此，要将框边框应用于3x3单元格的合并区域，需要为八个不同的单元格指定边框样式：
@@ -568,7 +666,11 @@ index.html			页面文件+JS处理文件
 
 list.json				模拟导出的数据
 
-layui_exts/excel.js	权限树扩展
+layui_exts/excel.js	excel扩展
+
+layui_exts/xlsx.js		xlsx-style三方扩展（已魔改支持部分新方法和行高）
+
+layui_exts/FileSaver.js	下载文件FileSaver的三方扩展
 
 layui/				官网下载的layui
 
@@ -578,7 +680,9 @@ layui/				官网下载的layui
 
 ## 更新记录：
 
-2018-01-09 v1.3 支持导出多个sheet，合并导出的列，~~设置单元格样式~~（插件限制，暂未解决）
+2018-01-13 v1.4 魔改xlsx-style以支持设置样式、列宽、行高、公式等，并提供相应的辅助方法生成需要的配置信息
+
+2018-01-09 v1.3 支持导出多个sheet，合并导出的列
 
 2019-01-04 v1.2 支持前端多文件多Sheet读取 Excel 数据并梳理数据格式，大量数据导出效率优化
 
