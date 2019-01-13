@@ -1,10 +1,10 @@
 /*
 * @Author: Jeffrey Wang
 * @Desc:  整理强大的 SheetJS 功能，依赖 XLSX.js 和 FileSaver
-* @Version: v1.2
+* @Version: v1.4
 * @Date:   2018-03-24 09:54:17
 * @Last Modified by:   94468
-* @Last Modified time: 2019-01-13 19:30:28
+* @Last Modified time: 2019-01-13 21:45:07
 */
 layui.define(['jquery', 'xlsx', 'FileSaver'], function(exports){
 	var $ = layui.jquery;

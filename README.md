@@ -25,6 +25,12 @@
 
 ## 依赖的开源项目
 
+| 开源项目名称                                             | 地址                                                         | 用于                                                |
+| -------------------------------------------------------- | ------------------------------------------------------------ | --------------------------------------------------- |
+| [SheetJS / js-xlsx](https://github.com/SheetJS/js-xlsx)  | [https://github.com/SheetJS/js-xlsx](https://github.com/SheetJS/js-xlsx) | 部分xlsx-style不支持的代码参考                      |
+| [protobi / js-xlsx](https://github.com/protobi/js-xlsx)  | [https://github.com/protobi/js-xlsx](https://github.com/protobi/js-xlsx) | 导出excel的主题，不支持设置行高、公式等功能有些问题 |
+| [FileSaver.js](https://github.com/eligrey/FileSaver.js/) | [https://github.com/eligrey/FileSaver.js/](https://github.com/eligrey/FileSaver.js/) | 前端用于保存文件的JS功能组件                        |
+
 ## 期望收集
 
 
@@ -33,6 +39,7 @@
 - [x] 支持Excel内列合并(社区：[SoloAsural](https://fly.layui.com/u/10405920/))
 - [x] 优化大量数据导出，比如~~100W~~45W(社区：[Th_omas](https://fly.layui.com/u/28037520/))
 - [x] 支持Excel样式设置（魔改xlsx-style后支持设置列宽行高和单元格样式）(社区：[锁哥](https://fly.layui.com/u/17116008/))
+- [x] 支持公式、链接等特殊属性（个人、社区：[快乐浪子哥](https://fly.layui.com/u/46872/)）
 - [x] 可以读取Excel内容(个人)
 - [x] 支持一个Excel导出多个sheet（个人、社区：[玛琳菲森 ](https://fly.layui.com/u/29272992/)）
 
