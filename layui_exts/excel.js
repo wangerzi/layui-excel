@@ -3,8 +3,8 @@
 * @Desc:  整理强大的 SheetJS 功能，依赖 XLSX.js 和 FileSaver
 * @Version: v1.4
 * @Date:   2018-03-24 09:54:17
-* @Last Modified by:   94468
-* @Last Modified time: 2019-01-13 21:45:07
+* @Last Modified by:   Jeffrey Wang
+* @Last Modified time: 2019-01-15 11:49:09
 */
 layui.define(['jquery', 'xlsx', 'FileSaver'], function(exports){
 	var $ = layui.jquery;
@@ -110,8 +110,12 @@ layui.define(['jquery', 'xlsx', 'FileSaver'], function(exports){
 					var rowData = lineData[row];
 					var t = typeof rowData;
 					if (typeof rowData == 'object') {
-						lineData[row] = rowData.value;
-						styleContent[this.numToTitle(rowIndex+1)+(parseInt(line)+1)] = rowData;
+						// typeof null == object
+						if (rowData !== null) {
+							styleContent[this.numToTitle(rowIndex+1)+(parseInt(line)+1)] = rowData;
+						} else {
+							lineData[row] = '';
+						}
 					}
 					rowIndex++;
 				}
