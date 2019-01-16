@@ -267,7 +267,7 @@ layui.define(['jquery', 'xlsx', 'FileSaver'], function(exports){
 		 * @return {[type]}     [description]
 		 */
 		splitPosition: function(pos) {
-			var res = pos.match('^([A-Z]+)([1-9]+)$');
+			var res = pos.match('^([A-Z]+)([0-9]+)$');
 			if (!res) {
 				return false;
 			}
