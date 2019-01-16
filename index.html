@@ -288,6 +288,24 @@
 			});
 		});
 	}
+	/**
+	 * 加群交流弹窗
+	 * @return {[type]} [description]
+	 */
+	function groupAdd() {
+		layui.use(['laytpl', 'layer', 'jquery'], function(){
+			var laytpl = layui.laytpl;
+			var layer = layui.layer;
+			var $ = layui.jquery;
+
+			var content = laytpl($('#LAY-auth-tree-group-add').html()).render({});
+			layer.open({
+				title: "加群交流"
+				,area: ['300px', '450px']
+				,content: content
+			});
+		});
+	}
 	</script>
 </head>
 <body>
@@ -326,6 +344,7 @@
 						<a class="layui-btn layui-btn-primary" target="_blank" href="https://fly.layui.com/jie/46036/">社区原帖</a>
 						<a class="layui-btn layui-btn-primary" target="_blank" href="https://github.com/wangerzi/layui-excel">最新源码+文档</a>
 						<a class="layui-btn layui-btn-primary" target="_blank" href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=zfT5_fv19fn1-428vOOuoqA">邮件反馈</a>
+						<button type="button" class="layui-btn layui-btn-primary" onclick="groupAdd()">加群交流</button>
 					</div>
 				</div>
 			</div>
@@ -349,5 +368,13 @@
 		  </div>
 		</div>
 	{{# }) }}
+</script>
+<!-- 加群交流layer模板 -->
+<script type="text/html" id="LAY-auth-tree-group-add">
+<!-- <fieldset class="layui-elem-field layui-field-title">
+	<legend>加群交流</legend>
+</fieldset>
+--><p style="text-align: center;"><b>群号：</b>555056599，<a href="https://jq.qq.com/?_wv=1027&k=5uMuyRD" target="_blank">点我加群</a></p>
+<img src="https://raw.githubusercontent.com/wangerzi/layui-excel/master/qq_group_qrcode.png" style="max-width: 100%;display:block;margin: 0 auto;">
 </script>
 </html>
