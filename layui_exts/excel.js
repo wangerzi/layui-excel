@@ -10,6 +10,17 @@ layui.define(['jquery', 'xlsx', 'FileSaver'], function(exports){
 	var $ = layui.jquery;
 	exports('excel', {
 		/**
+		 * 兼容老版本的导出函数
+		 * @param  {[type]} data     [description]
+		 * @param  {[type]} filename [description]
+		 * @param  {[type]} type     [description]
+		 * @return {[type]}          [description]
+		 */
+		downloadExl: function(data, filename, type) {
+			type = type ? type : 'xlsx';
+			this.exportExcel({sheet1: data}, filename+'.'+type, type);
+		},
+		/**
 		 * 导出Excel并弹出下载框，具体使用方法和范围请参考文档
 		 * @param  {[type]} data     [description]
 		 * @param  {[type]} filename [description]
