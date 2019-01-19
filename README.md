@@ -376,12 +376,12 @@ excel.exportExcel({
 | data       | 一个对象，对象的key代表列（如：ABCDE），value代表宽度 | null   |
 | defaultNum | 渲染过程中未指定单元格的默认宽度                      | 60     |
 
-##### data数据样例
+##### 使用样例
 
 > key表示列，value表示宽，剩余宽度取默认值，特别注意要放在 opt.extend['!cols'] 中
 
 ```javascript
-// 意思是：A列40px，B列80px(默认)，C列120px，D、E、F等均未定义
+// 意思是：A列40px，B列60px(默认)，C列120px，D、E、F等均未定义
 var colConf = excel.makeColConfig({
     'A': 40,
     'C': 120
@@ -404,13 +404,13 @@ excel.exportExcel({
 | data       | 一个对象，对象的key代表从1开始的行（如：1234），value代表高度 | null   |
 | defaultNum | 渲染过程中未指定单元格的默认宽度                             | 60     |
 
-##### data数据样例
+##### 使用样例
 
 > key表示行，value表示高度，剩余高度取默认值，特别注意要放在 opt.extend['!rows'] 中
 
 ```javascript
-// 意思是：1行40px，2行80px(默认)，3行120px，4/5/6/7等行均未定义
-var colConf = excel.makeColConfig({
+// 意思是：1行40px，2行60px(默认)，3行120px，4/5/6/7等行均未定义
+var rowConf = excel.makeRowConfig({
     1: 40,
     3: 120
 }, 80);
@@ -418,7 +418,7 @@ excel.exportExcel({
     sheet1: data
 }, '测试导出复杂表头.xlsx', 'xlsx', {
     extend: {
-        '!rows': colConf
+        '!rows': rowConf
     }
 });
 ```
