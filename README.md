@@ -29,6 +29,14 @@
 
 ![QQ交流群](https://raw.githubusercontent.com/wangerzi/layui-excel/master/qq_group_qrcode.png)
 
+
+
+#### 赞赏二维码
+
+赞赏时可以备注寄语，我会不时更新到『[赞赏列表](https://github.com/wangerzi/layui-excel/blob/master/reward.md)』中
+
+![功能演示](https://raw.githubusercontent.com/wangerzi/layui-excel/master/reward_qrcode.png)
+
 ## 依赖的开源项目
 
 | 开源项目名称                                             | 地址                                                         | 用于                                                |
