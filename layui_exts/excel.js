@@ -312,7 +312,7 @@ layui.define(['jquery', 'xlsx', 'FileSaver'], function(exports){
 				for (var i in item) {
 					itemData.push(item[i]);
 				}
-				aoaData.push(itemData);	
+				aoaData.push(itemData);
 			});
 			return aoaData;
 		},
@@ -399,7 +399,8 @@ layui.define(['jquery', 'xlsx', 'FileSaver'], function(exports){
 				'application/x-xls',
 				'application/vnd-xls',
 				'application/csv',
-				'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+				'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+				''
 			];
 			layui.each(files, function(index, item) {
 				if (supportReadMime.indexOf(item.type) == -1) {
