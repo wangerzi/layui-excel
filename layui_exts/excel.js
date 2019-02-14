@@ -428,6 +428,9 @@ layui.define(['jquery', 'xlsx', 'FileSaver'], function(exports){
 								header: option.header,
 							}
 							if (!option.range) {
+								opt.range = null;
+							}
+							else {
 								opt.range = option.range;
 							}
 							excelData[sheet] = XLSX.utils.sheet_to_json(sheetObj, opt);
