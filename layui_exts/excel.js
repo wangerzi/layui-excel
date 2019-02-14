@@ -426,9 +426,7 @@ layui.define(['jquery', 'xlsx', 'FileSaver'], function(exports){
 						if (wb.Sheets.hasOwnProperty(sheet)) {
 							var opt = {
 								header: option.header,
-							}
-							if (!option.range) {
-								opt.range = option.range;
+								range: option.range
 							}
 							excelData[sheet] = XLSX.utils.sheet_to_json(sheetObj, opt);
 							// 支持梳理数据
