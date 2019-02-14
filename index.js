@@ -17,7 +17,8 @@ layui.use(['jquery', 'layer', 'upload', 'excel', 'laytpl', 'element', 'code'], f
 
   // 一个简单的数据梳理样例
   var data = [
-    { username: '123',sex: '男', city: '上海', 'score': 100, 'start': '2018-12-29', 'end': '2018-12-30' }
+    { username: '123',sex: '男', city: '上海', 'score': 100, 'start': '2018-12-29', 'end': '2018-12-30' },
+    { username: '123',sex: '男', city: '上海', 'score': 100, 'start': '2018-12-29', 'end': '2018-12-30' },
   ];// 假设的后台的数据
   data = excel.filterExportData(data, {
       name: 'username',
@@ -362,6 +363,15 @@ function exportExtendDemo() {
       }
     });
   });
+}
+function exportStyleDemo() {
+  var data = [
+    { username: '123',sex: '男', city: '上海', 'score': 100, 'start': '2018-12-29', 'end': '2018-12-30' },
+    { username: '123',sex: '男', city: '上海', 'score': 100, 'start': '2018-12-29', 'end': '2018-12-30' },
+    { username: '123',sex: '男', city: '上海', 'score': 100, 'start': '2018-12-29', 'end': '2018-12-30' },
+    { username: '123',sex: '男', city: '上海', 'score': 100, 'start': '2018-12-29', 'end': '2018-12-30' },
+    { username: '123',sex: '男', city: '上海', 'score': 100, 'start': '2018-12-29', 'end': '2018-12-30' },
+  ];// 假设的后台的数据
 }
 /**
  * 加群交流弹窗

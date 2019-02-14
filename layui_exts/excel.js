@@ -6,7 +6,7 @@
 * @Last Modified by:   Jeffrey Wang
 * @Last Modified time: 2019-01-15 11:49:09
 */
-layui.define(['jquery', 'xlsx', 'FileSaver'], function(exports){
+layui.define(['jquery', 'xlsx', 'FileSaver', 'Blob', 'shim'], function(exports){
 	var $ = layui.jquery;
 	exports('excel', {
 		/**
@@ -206,6 +206,42 @@ layui.define(['jquery', 'xlsx', 'FileSaver'], function(exports){
 			return total;
 		},
 		/**
+		 * 批量设置单元格属性
+		 * @param  {[type]} data     [sheet级别的数据]
+		 * @param  {[type]} range		 [范围字符串，比如 A1:C12，开始位置默认 A1，结束位置默认整个表格右下角]
+		 * @param  {[type]} config   [批量设置的单元格属性，v无效]
+		 * @param  {[type]} filter   [过滤规则，传递函数生效，返回 true 则设置，否则不设置]
+		 * @return {[type]}          [重新渲染后的 sheet 数据]
+		 */
+		filterExportCell: function(data, range, config, filter) {
+			if (typeof data !== 'object' || !data.length || !data[0] || !Object.keys(data[0]).length) {
+				return [];
+			}
+			var maxCol = data.length -1;
+			var maxRow = Object.keys(data[0]).length - 1;
+			// 默认 A1 ~ 右下角
+			var startPos = {c: 0, r: 0};
+			var endPos = {c: maxCol, r: maxRow};
+
+			if (range && typeof range == 'string') {
+				var rangeArr = range.split(':');
+				if (rangeArr[0].length) {
+					startPos = this.splitPosition(rangeArr[0]);
+				}
+				if (typeof rangeArr[1] !== 'undefined' && rangeArr[1] !== '') {
+					endPos = this.splitPosition(rangeArr[1]);
+				}
+			} else {
+				// pass
+			}
+			// position范围限制
+			startPos.c = startPos.c < maxCol ? startPos.c : maxCol;
+			endPos.c = endPos.c < maxCol ? endPos.c : maxCol;
+			startPos.r = startPos.r < maxRow ? startPos.r : maxRow;
+			endPos.r = endPos.r < maxRow ? endPos.r : maxRow;
+			console.log(startPos, endPos);
+		},
+		/**
 		 * 合并单元格快速生成配置的函数 传入 [ ['开始坐标 A1', '结束坐标 D2'], ['开始坐标 B2', '结束坐标 E3'] ]
 		 * @param  {[type]} origin [description]
 		 * @return {[type]}        [description]
@@ -273,14 +309,14 @@ layui.define(['jquery', 'xlsx', 'FileSaver'], function(exports){
 			return change;
 		},
 		/**
-		 * 将A1分离成 {c: 0, r: 1} 格式的数据
+		 * 将A1分离成 {c: 0, r: 0} 格式的数据
 		 * @param  {[type]} pos [description]
 		 * @return {[type]}     [description]
 		 */
 		splitPosition: function(pos) {
 			var res = pos.match('^([A-Z]+)([0-9]+)$');
 			if (!res) {
-				return false;
+				return {c: 0, r: 0};
 			}
 			// 转换结果相比需要的结果需要减一转换
 			return {
