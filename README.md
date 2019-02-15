@@ -8,7 +8,7 @@
 
 > 浏览器兼容性：支持IE10+、Firefox、chrome
 
-> 特别注意：**不能直接在IFRAME里边直接调用导出方法，因为浏览器会限制这种做法，如有遇到此类情况，可使用 parent.layui.excel.exportExcel() 的方式调用父级页面函数以避免这个问题（父页面需要先加载插件）**
+> 特别注意：**不能直接在IFRAME里边直接调用导出方法，因为浏览器会限制这种导出行为，如有遇到此类情况，可使用 parent.layui.excel.exportExcel() 的方式调用父级页面函数以避免这个问题（父页面需要先加载插件）**
 
 
 ## 功能演示：
@@ -65,8 +65,10 @@
 ## BUG收集
 
 - [x] QQ浏览器MIME-TYPE 无法读取(交流群：三小)
+- [ ] 导出xls实际类型不一致问题（交流群：背后的故事†）
 - [ ] 导入日期处理(交流群：雨桐)
 - [ ] 导出;导致区分cell的问题
+- [ ] 导入的range参数传递问题
 
 ## 快速上手
 
@@ -145,6 +147,7 @@ layui.use(['jquery', 'excel', 'layer'], function() {
 | 函数名                                     | 描述                                                        |
 | ------------------------------------------ | ----------------------------------------------------------- |
 | **exportExcel(data, filename, type, opt)** | 导出数据，并弹出指定文件名的下载框                          |
+| downloadExl(data, filename, type)          | 快速导出excel，无需指定 sheet_name 和文件后缀               |
 | **filterExportData(data, fields)**         | 梳理导出的数据，包括字段排序和多余数据过滤                  |
 | **importExcel(files, opt, callback)**      | 读取Excel，支持多文件多表格读取                             |
 | **makeMergeConfig(origin)**                | 生成合并的配置参数，返回结果需放置于opt.extend['!merges']中 |
@@ -206,7 +209,15 @@ excel.exportExcel({
 });
 ```
 
+#### downloadExl参数配置
 
+> 兼容旧用法，用于快速导出数据，无需指定 sheet_name，无需指定后缀名，其余跟 `exportExcel` 用法相同。
+
+| 参数名称 | 描述                             | 默认值 |
+| -------- | -------------------------------- | ------ |
+| data     | 导出的数据                       |        |
+| filename | 不带后缀名的文件名               |        |
+| type     | 导出类型（自动拼接在filename后） |        |
 
 #### filterExportData参数配置
 
