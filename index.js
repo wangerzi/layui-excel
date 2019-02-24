@@ -36,8 +36,16 @@ layui.use(['jquery', 'layer', 'upload', 'excel', 'laytpl', 'element', 'code'], f
           return value * 10;
       }
   });
+  excel.setExportCellStyle(data, 'A1:C2', {
+    s: {
+      fill: { bgColor: { indexed: 64 }, fgColor: { rgb: "FF0000" } }
+    }
+  }, function(cell, newCell, row, config, rowIndex, fieldKey){
+    return newCell;
+  } );
+  console.log(data);
   // console.log(data);
-  // excel.exportExcel({sheet1: data}, '导出文件.xlsx', 'xlsx');
+  // excel.exportExcel(data, '导出文件.xlsx', 'xlsx');
 
  /**
   * 上传excel的处理函数，传入文件对象数组

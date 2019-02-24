@@ -454,7 +454,3 @@
   }
 
 })();
-
-layui.define(function(exports){
-	exports('Blob', {});
-});

@@ -327,7 +327,3 @@ XLSX.utils.sheet_add_json = sheet_add_json;
 XLSX.utils.json_to_sheet = json_to_sheet;
 XLSX.utils.aoa_to_sheet = aoa_to_sheet;
 })(typeof exports!=="undefined"?exports:XLSX);var XLS=XLSX;
-
-layui.define(function(exports){
-	exports('xlsx', {});
-});
