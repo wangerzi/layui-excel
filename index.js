@@ -17,7 +17,8 @@ layui.use(['jquery', 'layer', 'upload', 'excel', 'laytpl', 'element', 'code'], f
 
   // 一个简单的数据梳理样例
   var data = [
-    { username: '123',sex: '男', city: '上海', 'score': 100, 'start': '2018-12-29', 'end': '2018-12-30' }
+    { username: '123',sex: '男', city: '上海', 'score': 100, 'start': '2018-12-29', 'end': '2018-12-30' },
+    { username: '123',sex: '男', city: '上海', 'score': 100, 'start': '2018-12-29', 'end': '2018-12-30' },
   ];// 假设的后台的数据
   data = excel.filterExportData(data, {
       name: 'username',
@@ -35,8 +36,16 @@ layui.use(['jquery', 'layer', 'upload', 'excel', 'laytpl', 'element', 'code'], f
           return value * 10;
       }
   });
+  excel.setExportCellStyle(data, 'A1:C2', {
+    s: {
+      fill: { bgColor: { indexed: 64 }, fgColor: { rgb: "FF0000" } }
+    }
+  }, function(cell, newCell, row, config, rowIndex, fieldKey){
+    return newCell;
+  } );
+  console.log(data);
   // console.log(data);
-  // excel.exportExcel({sheet1: data}, '导出文件.xlsx', 'xlsx');
+  // excel.exportExcel(data, '导出文件.xlsx', 'xlsx');
 
  /**
   * 上传excel的处理函数，传入文件对象数组
@@ -362,6 +371,15 @@ function exportExtendDemo() {
       }
     });
   });
+}
+function exportStyleDemo() {
+  var data = [
+    { username: '123',sex: '男', city: '上海', 'score': 100, 'start': '2018-12-29', 'end': '2018-12-30' },
+    { username: '123',sex: '男', city: '上海', 'score': 100, 'start': '2018-12-29', 'end': '2018-12-30' },
+    { username: '123',sex: '男', city: '上海', 'score': 100, 'start': '2018-12-29', 'end': '2018-12-30' },
+    { username: '123',sex: '男', city: '上海', 'score': 100, 'start': '2018-12-29', 'end': '2018-12-30' },
+    { username: '123',sex: '男', city: '上海', 'score': 100, 'start': '2018-12-29', 'end': '2018-12-30' },
+  ];// 假设的后台的数据
 }
 /**
  * 加群交流弹窗
