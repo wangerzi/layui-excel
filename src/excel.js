@@ -515,7 +515,7 @@ layui.define(['jquery'], function(exports){
 							var opt = {
 								header: option.header
 							};
-							if (!option.range) {
+							if (option.range) {
 								opt.range = option.range;
 							}
 							excelData[sheet] = XLSX.utils.sheet_to_json(sheetObj, opt);
