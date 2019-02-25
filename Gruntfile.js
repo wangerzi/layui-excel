@@ -19,7 +19,7 @@ module.exports=function(grunt){
 					"src/xlsx.js",
 				],
 				//被合成的文件路径
-				dest: "layui_exts/excel.js"
+				dest: "layui_exts/excel.full.js"
 			}
 		},
         uglify:{
@@ -47,5 +47,5 @@ module.exports=function(grunt){
 	grunt.loadNpmTasks("grunt-contrib-concat");
     grunt.loadNpmTasks("grunt-contrib-uglify");
 	//执行任务
-	grunt.registerTask("default",["uglify"]);
+	grunt.registerTask("default",["concat", "uglify"]);
 }
