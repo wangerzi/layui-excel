@@ -19,7 +19,7 @@ module.exports=function(grunt){
 					"src/xlsx.js",
 				],
 				//被合成的文件路径
-				dest: "layui_exts/excel.full.js"
+				dest: "layui_exts/excel.js"
 			}
 		},
         uglify:{
@@ -38,11 +38,11 @@ module.exports=function(grunt){
                     "src/polyfill.js",
 				],
                 //被压缩的文件路径
-                dest: "layui_exts/excel.js"
+                dest: "layui_exts/excel.min.js"
             }
         }
 	});
-	
+
 	//加载合并插件
 	grunt.loadNpmTasks("grunt-contrib-concat");
     grunt.loadNpmTasks("grunt-contrib-uglify");
