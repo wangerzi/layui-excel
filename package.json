@@ -6,11 +6,7 @@
     "grunt-contrib-jshint": "~0.10.0",
     "grunt-contrib-nodeunit": "~0.4.1",
     "grunt-contrib-uglify": "~0.5.0",
-    "grunt-legacy-util": "*",
-    "grunt-legacy-log": "*",
-    "grunt-contrib-concat": "*",
-    "dateformat": "*",
-    "coffee-script": "~1.6.3"
+    "grunt-contrib-concat": "*"
   },
   "description": "封装XLSX，基于LAYUI的excel导出插件",
   "main": "index.js",
