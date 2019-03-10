@@ -71,7 +71,7 @@ layui.define(['jquery'], function(exports){
 				data = {sheet1: data};
 			}
 
-			for(sheet_name in data) {
+			for(var sheet_name in data) {
 				var content = data[sheet_name];
 				// 2. 设置sheet名称
 				wb.SheetNames.push(sheet_name);
@@ -119,12 +119,11 @@ layui.define(['jquery'], function(exports){
 		splitContent: function(content) {
 			var styleContent = {};
 			// 扫描每个单元格，如果是对象则等表格转换完毕后分离出来重新赋值
-			for (line in content) {
+			for (var line in content) {
 				var lineData = content[line];
 				var rowIndex = 0;
 				for (var row in lineData) {
 					var rowData = lineData[row];
-					var t = typeof rowData;
 					if (typeof rowData === 'object') {
 						// typeof null == object
 						if (rowData !== null) {
@@ -132,13 +131,26 @@ layui.define(['jquery'], function(exports){
 						} else {
 							lineData[row] = '';
 						}
+					} else {
+						// JeffreyWang 2019-03-10针对 0 的hack处理
+						if (rowData === 0) {
+							rowData = {
+								v: '0',
+								s: {
+									alignment: {
+										horizontal: 'right'
+									}
+								}
+							}
+						}
+						styleContent[this.numToTitle(rowIndex+1)+(parseInt(line)+1)] = rowData;
 					}
 					rowIndex++;
 				}
 			}
 			return {
 				content: content,
-				style: styleContent,
+				style: styleContent
 			};
 		},
 		/**
@@ -194,7 +206,7 @@ layui.define(['jquery'], function(exports){
 		/**
 		 * 将A、B、AA、ABC转换为 1、2、3形式的数字
 		 * @param  {[type]} title [description]
-		 * @return {[type]}       [description]
+		 * @return {number}       [description]
 		 */
 		titleToNum: function(title) {
 			if (this.titleNumsCache[title]) {
@@ -213,11 +225,11 @@ layui.define(['jquery'], function(exports){
 		},
 		/**
 		 * 批量设置单元格属性
-		 * @param  {[array]} data     [sheet级别的数据]
-		 * @param  {[string]} range		 [范围字符串，比如 A1:C12，开始位置默认 A1，结束位置默认整个表格右下角]
-		 * @param  {[object]} config   [批量设置的单元格属性]
-		 * @param  {[callback]} filter   [回调函数，传递函数生效，返回值作为新的值（可用于过滤、规则替换样式等骚操作）]
-		 * @return {[array]}          [重新渲染后的 sheet 数据]
+		 * @param  {array} data     [sheet级别的数据]
+		 * @param  {string} range		 [范围字符串，比如 A1:C12，开始位置默认 A1，结束位置默认整个表格右下角]
+		 * @param  {object} config   [批量设置的单元格属性]
+		 * @param  {function} filter   [回调函数，传递函数生效，返回值作为新的值（可用于过滤、规则替换样式等骚操作）]
+		 * @return {array}          [重新渲染后的 sheet 数据]
 		 */
 		setExportCellStyle: function(data, range, config, filter) {
 			if (typeof data !== 'object' || !data.length || !data[0] || !Object.keys(data[0]).length) {
@@ -252,46 +264,46 @@ layui.define(['jquery'], function(exports){
 			if (startPos.c > endPos.c) {
 				console.error('开始列不得大于结束列');
 			}
-            if (startPos.r > endPos.r) {
-                console.error('开始行不得大于结束行');
-            }
+			if (startPos.r > endPos.r) {
+				console.error('开始行不得大于结束行');
+			}
 
 			// 遍历范围内的数据，进行样式设置，按从上到下从左到右按行遍历
-            for (var currentCol = startPos.c; currentCol <= endPos.c; currentCol++) {
-                for (var currentRow = startPos.r; currentRow <= endPos.r; currentRow++) {
-                    // 如果有回调则执行回调判断，否则全部更新，如果遇到超出数据范围的，自动置空
-					var row = data[currentCol];
+				for (var currentRow = startPos.r; currentRow <= endPos.r; currentRow++) {
+					for (var currentCol = startPos.c; currentCol <= endPos.c; currentCol++) {
+					// 如果有回调则执行回调判断，否则全部更新，如果遇到超出数据范围的，自动置空
+					var row = data[currentRow];
 					if (!row) {
 						row = {};
 						for (var key in fieldKeys) {
 							row[fieldKeys[key]] = '';
 						}
-						data[currentCol] = row;
+						data[currentRow] = row;
 					}
-					var cell = row[fieldKeys[currentRow]];
+					var cell = row[fieldKeys[currentCol]];
 					var newCell = null;
-                    if (cell === null || cell === undefined) {
-                        cell = '';
-                    }
+					if (cell === null || cell === undefined) {
+						cell = '';
+					}
 
-                    // 手工合并
-                    if (typeof cell === 'object') {
-                        newCell = $.extend(true, {}, cell, config);
-                    } else {
-                        newCell = $.extend(true, {}, {v: cell}, config);
-                    }
+					// 手工合并（相同的则以当前函数config为准）
+					if (typeof cell === 'object') {
+						newCell = $.extend(true, {}, cell, config);
+					} else {
+						newCell = $.extend(true, {}, {v: cell}, config);
+					}
 
 					if (
 						typeof filter === 'function'
 					) {
-						newCell = filter(cell, newCell, row, config, currentRow, currentCol, fieldKeys[currentRow]);
+						newCell = filter(cell, newCell, row, config, currentRow, currentCol, fieldKeys[currentCol]);
 					} else {
 					}
 					// 回写
-					data[currentCol][fieldKeys[currentRow]] = newCell;
-                }
-            }
-            return data;
+					data[currentRow][fieldKeys[currentCol]] = newCell;
+				}
+			}
+			return data;
 		},
 		/**
 		 * 合并单元格快速生成配置的函数 传入 [ ['开始坐标 A1', '结束坐标 D2'], ['开始坐标 B2', '结束坐标 E3'] ]
@@ -310,16 +322,16 @@ layui.define(['jquery'], function(exports){
 		},
 		/**
 		 * 自动生成列宽配置
-		 * @param  {[type]} data    [description]
-		 * @param  {[type]} defaultNum [description]
-		 * @return {[type]}         [description]
+		 * @param  {$ObjMap} data    [A、B、C的宽度映射]
+		 * @param  {number} defaultNum [description]
+		 * @return {$ObjMap}         [description]
 		 */
 		makeColConfig: function(data, defaultNum) {
 			defaultNum = defaultNum > 0 ? defaultNum : 50;
 			// 将列的 ABC 转换为 index
 			var change = [];
 			var startIndex = 0;
-			for (index in data) {
+			for (var index in data) {
 				var item = data[index];
 				if (index.match && index.match(/[A-Z]*/)) {
 					var currentIndex = this.titleToNum(index) - 1;
@@ -345,7 +357,7 @@ layui.define(['jquery'], function(exports){
 			// 将列的 ABC 转换为 index
 			var change = [];
 			var startIndex = 0;
-			for (index in data) {
+			for (var index in data) {
 				var item = data[index];
 				if (index.match && index.match(/[0-9]*/)) {
 					var currentIndex = parseInt(index) - 1;
@@ -362,8 +374,8 @@ layui.define(['jquery'], function(exports){
 		},
 		/**
 		 * 将A1分离成 {c: 0, r: 0} 格式的数据
-		 * @param  {[type]} pos [description]
-		 * @return {[type]}     [description]
+		 * @param  {string} pos [description]
+		 * @return {{r: number, c: number}}     [description]
 		 */
 		splitPosition: function(pos) {
 			var res = pos.match('^([A-Z]+)([0-9]+)$');

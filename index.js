@@ -3,6 +3,7 @@
  * 导出数据测试：搜索 「exportDataByUser」关键字，找到函数即可
  * 导出接口数据：搜索「exportApiDemo」关键字，找到函数即可
  * 导出复杂表头：搜索「exportExtendDemo」关键字，找到函数即可
+ * 批量设置样式：搜索「exportStyleDemo」关键字，找到函数即可
  * 简单文件导入：搜索「uploadExcel」可找到导入的处理逻辑，拖拽文件/选择文件回调获取files对象请搜索「#LAY-excel-import-excel」
  * upload模块：搜索「uploadInst」查看使用逻辑，导入相关逻辑同上
  */
@@ -15,37 +16,6 @@ layui.use(['jquery', 'layer', 'upload', 'excel', 'laytpl', 'element', 'code'], f
   var laytpl = layui.laytpl;
   var element = layui.element;
 
-  // 一个简单的数据梳理样例
-  var data = [
-    { username: '123',sex: '男', city: '上海', 'score': 100, 'start': '2018-12-29', 'end': '2018-12-30' },
-    { username: '123',sex: '男', city: '上海', 'score': 100, 'start': '2018-12-29', 'end': '2018-12-30' },
-  ];// 假设的后台的数据
-  data = excel.filterExportData(data, {
-      name: 'username',
-      sex:'sex',
-      city: function(value) {
-        return {
-          v: value,
-          s: { font: { sz: 14, bold: true, color: { rgb: "FFFFAA00" } }, fill: { bgColor: { indexed: 64 }, fgColor: { rgb: "FFFF00" } } }
-        }
-      },
-      range: function(value, line, data) {
-          return line['start'] + '~' + line['end'];
-      },
-      score: function(value, line, data) {
-          return value * 10;
-      }
-  });
-  excel.setExportCellStyle(data, 'A1:C2', {
-    s: {
-      fill: { bgColor: { indexed: 64 }, fgColor: { rgb: "FF0000" } }
-    }
-  }, function(cell, newCell, row, config, rowIndex, fieldKey){
-    return newCell;
-  } );
-  console.log(data);
-  // console.log(data);
-  // excel.exportExcel(data, '导出文件.xlsx', 'xlsx');
 
  /**
   * 上传excel的处理函数，传入文件对象数组
@@ -191,7 +161,7 @@ function exportDataByUser() {
   layui.use(['layer'], function() {
     layer.ready(function(){
       layer.prompt({
-        title: '请输入测试数据量'
+        title: '请输入测试数据量(9列)'
         ,value: 3000
       }, function(value, index, elem) {
         // 使用setTimeout、async、ajax等方式可以实现异步导出
@@ -313,7 +283,7 @@ function exportExtendDemo() {
         v: '用户信息', s: {
           alignment: {
             horizontal: 'center',
-            vertical: 'center',
+            vertical: 'center'
           },
           fill: { bgColor: { indexed: 64 }, fgColor: { rgb: "FF0000" }}
         }
@@ -372,14 +342,101 @@ function exportExtendDemo() {
     });
   });
 }
+
+/**
+ * 快速设置样式使用方法
+ */
 function exportStyleDemo() {
-  var data = [
-    { username: '123',sex: '男', city: '上海', 'score': 100, 'start': '2018-12-29', 'end': '2018-12-30' },
-    { username: '123',sex: '男', city: '上海', 'score': 100, 'start': '2018-12-29', 'end': '2018-12-30' },
-    { username: '123',sex: '男', city: '上海', 'score': 100, 'start': '2018-12-29', 'end': '2018-12-30' },
-    { username: '123',sex: '男', city: '上海', 'score': 100, 'start': '2018-12-29', 'end': '2018-12-30' },
-    { username: '123',sex: '男', city: '上海', 'score': 100, 'start': '2018-12-29', 'end': '2018-12-30' },
-  ];// 假设的后台的数据
+  layui.use(['excel'], function () {
+    var excel = layui.excel;
+    var data = [
+      { username: '520',sex: '男', city: 'J', 'score': 100, 'start': '2019-03-11' },
+      { username: '520',sex: '女', city: 'X', 'score': 100, 'start': '2019-03-11' },
+      { username: '520',sex: '男', city: '上海', 'score': 100, 'start': '2019-03-11' },
+      { username: '520',sex: '男', city: '上海', 'score': 100, 'start': '2019-03-11' },
+      { username: '520',sex: '男', city: '上海', 'score': 100, 'start': '2019-03-11' },
+      { username: '520',sex: '男', city: '上海', 'score': 100, 'start': '2019-03-11' },
+      { username: '520',sex: '男', city: '上海', 'score': 100, 'start': '2019-03-11' },
+      { username: '520',sex: '男', city: '上海', 'score': 100, 'start': '2019-03-11' },
+      { username: '520',sex: '男', city: '上海', 'score': 100, 'start': '2019-03-11' }
+    ];// 假设的后台的数据
+    // 1. 使用filter梳理一下
+    data = excel.filterExportData(data, {
+      name: 'username',
+      sex:'sex',
+      score:'score',
+      start:'start',
+      // 这里设置的样式会被合并
+      city: function(value) {
+        return {
+          v: value,
+          s: {
+            font: { sz: 14, bold: true, color: { rgb: "FFFFAA00" } },
+            alignment: {
+              horizontal: 'center',
+              vertical: 'center'
+            }
+          }
+        }
+      },
+      start2:'start',
+      score2:'score',
+      sex2:'sex',
+      name2: 'username'
+    });
+    // 笔芯彩蛋（JeffreyWang 2019-03-11）
+    var heart = [
+      [0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 1, 1, 0, 1, 1, 0, 0],
+      [0, 1, 1, 1, 1, 1, 1, 1, 0],
+      [1, 1, 1, 1, 1, 1, 1, 1, 1],
+      [1, 1, 1, 1, 1, 1, 1, 1, 1],
+      [0, 1, 1, 1, 1, 1, 1, 1, 0],
+      [0, 0, 1, 1, 1, 1, 1, 0, 0],
+      [0, 0, 0, 1, 1, 1, 1, 0, 0],
+      [0, 0, 0, 0, 1, 0, 0, 0, 0],
+    ];
+    // 2. 调用设置样式的函数，传入设置的范围，支持回调
+    excel.setExportCellStyle(data, 'A1:I9', {
+      s: {
+        fill: { bgColor: { indexed: 64 }, fgColor: { rgb: "FF0000" } },
+        alignment: {
+          horizontal: 'center',
+          vertical: 'center'
+        }
+      }
+    }, function(cell, newCell, row, config, currentRow, currentCol, fieldKey) {
+      // 回调参数，cell:原有数据，newCell:根据批量设置规则自动生成的样式，row:所在行数据，config:传入的配置,currentRow:当前行索引,currentCol:当前列索引，fieldKey:当前字段索引
+      // return ((currentRow + currentCol) % 2 === 0) ? newCell : cell;// 隔行隔列上色
+      return (heart[currentRow] && heart[currentRow][currentCol]) ? newCell : cell; // 根据阵列，给心形上色
+      // return newCell;
+    } );
+    // console.log(data);
+    // 3. 单元格样式优化为正方形
+    var colConfig = excel.makeColConfig({
+      'A': 80,
+      'I': 80
+    }, 80);
+    var rowConfig = excel.makeRowConfig({
+      1: 40,
+      9: 40
+    }, 40);
+    excel.exportExcel(data, '批量设置样式.xlsx', 'xlsx', {
+      extend: {
+        '!cols': colConfig,
+        '!rows': rowConfig
+      }
+    });
+  });
+}
+
+/**
+ * 快速设置边框辅助函数用法（待完善）
+ */
+function exportBorderDemo() {
+  layui.use(['layer'], function () {
+    layer.msg('完善中');
+  });
 }
 /**
  * 加群交流弹窗

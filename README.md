@@ -44,6 +44,9 @@
 | [SheetJS / js-xlsx](https://github.com/SheetJS/js-xlsx)  | [https://github.com/SheetJS/js-xlsx](https://github.com/SheetJS/js-xlsx) | 部分xlsx-style不支持的代码参考                      |
 | [protobi / js-xlsx](https://github.com/protobi/js-xlsx)  | [https://github.com/protobi/js-xlsx](https://github.com/protobi/js-xlsx) | 导出excel的主题，不支持设置行高、公式等功能有些问题 |
 | [FileSaver.js](https://github.com/eligrey/FileSaver.js/) | [https://github.com/eligrey/FileSaver.js/](https://github.com/eligrey/FileSaver.js/) | 前端用于保存文件的JS功能组件                        |
+| [Blob.js](https://github.com/eligrey/Blob.js/)           | [](https://github.com/eligrey/Blob.js/)                      | Blob在IE10中的hack实现                              |
+| [polyfill.js](https://github.com/philipwalton/polyfill/) | [](https://github.com/philipwalton/polyfill/)                | 有名的IE兼容插件                                    |
+| [shim.js](https://github.com/es-shims/es5-shim)          | [](https://github.com/es-shims/es5-shim)                     | xlsx.js内置的兼容组件，支持ES5                      |
 
 ## 期望收集
 
@@ -69,6 +72,7 @@
 - [ ] 导入日期处理(交流群：雨桐)
 - [ ] 导出;导致区分cell的问题
 - [x] 导入的range参数传递问题
+- [x] 单纯数组0导出空白问题
 
 ## 快速上手
 
@@ -91,7 +95,7 @@ $.ajax({
 
 #### 第二步：下载源码并引入插件
 
-如果使用 `layuiadmin`,则只需要将插件(`layui_exts/excel.js`、`layui_exts/FileSaver.js`、`layui_exts/xlsx.js`)放到 `controller/`下,然后 `layui.use` 即可,或者可以放在 `lib/extend` 中,只不过需要改 `config.js`
+如果使用 `layuiadmin`,则只需要将插件(`layui_exts/excel.js`)放到 `controller/`下,然后 `layui.use` 即可,或者可以放在 `lib/extend` 中,只不过需要改 `config.js`
 
 非 `layuiadmin` 初始化如下：
 
@@ -100,8 +104,6 @@ layui.config({
 	base: 'layui_exts/',
 }).extend({
     excel: 'excel',
-    FileSaver: 'FileSaver',// 如果所有扩展放一起可忽略此行配置
-    xlsx: 'xlsx',// 如果所有扩展放一起可忽略此行配置
 });
 ```
 
@@ -117,14 +119,14 @@ layui.use(['jquery', 'excel', 'layer'], function() {
         success: function(res) {
             // 假如返回的 res.data 是需要导出的列表数据
             console.log(res.data);// [{name: 'wang', age: 18, sex: '男'}, {name: 'layui', age: 3, sex: '女'}]
-            // 1. 数组头部新增表头
-            res.data.unshift({name: '用户名',sex: '男', age: '年龄'});
-            // 2. 如果需要调整顺序，请执行梳理函数
+            // 1. 需要调整顺序或者梳理数据，请执行梳理函数
             var data = excel.filterExportData(data, [
                 'name',
                 'sex',
                 'age',
             ]);
+            // 2. 数组头部新增表头
+            res.data.unshift({name: '用户名',sex: '男', age: '年龄'});
             // 3. 执行导出函数，系统会弹出弹框
             excel.exportExcel({
                 sheet1: data
@@ -144,20 +146,21 @@ layui.use(['jquery', 'excel', 'layer'], function() {
 
 > 仅做函数用途介绍，具体使用方法请见 『重要函数参数配置』
 
-| 函数名                                     | 描述                                                        |
-| ------------------------------------------ | ----------------------------------------------------------- |
-| **exportExcel(data, filename, type, opt)** | 导出数据，并弹出指定文件名的下载框                          |
-| downloadExl(data, filename, type)          | 快速导出excel，无需指定 sheet_name 和文件后缀               |
-| **filterExportData(data, fields)**         | 梳理导出的数据，包括字段排序和多余数据过滤                  |
-| **importExcel(files, opt, callback)**      | 读取Excel，支持多文件多表格读取                             |
-| **makeMergeConfig(origin)**                | 生成合并的配置参数，返回结果需放置于opt.extend['!merges']中 |
-| makeColConfig(data, defaultNum)            | 生成列宽配置，返回结果需放置于opt.extend['!cols']中         |
-| makeRowConfig(data, defaultNum)            | 生成行高配置，返回结果需放置于opt.extend['!rows']中         |
-| filterDataToAoaData(sheet_data)            | 将单个sheet的映射数组数据转换为加速导出效率的aoa数据        |
-| filterImportData(data, fields)             | 梳理导入的数据，字段含义与 filterExportData 类似            |
-| numToTitle(num)                            | 将1/2/3...转换为A/B/C/D.../AA/AB/.../ZZ/AAA形式             |
-| titleToNum(title)                          | 将A、B、AA、ABC转换为 1、2、3形式的数字                     |
-| splitPosition(pos)                         | 将A1分离成 {c: 0, r: 1} 格式的数据                          |
+| 函数名                                          | 描述                                                        | 索引                                                         |
+| ----------------------------------------------- | ----------------------------------------------------------- | ------------------------------------------------------------ |
+| **exportExcel(data, filename, type, opt)**      | 导出数据，并弹出指定文件名的下载框                          | [exportExcel参数配置](https://github.com/wangerzi/layui-excel#exportexcel%E5%8F%82%E6%95%B0%E9%85%8D%E7%BD%AE) |
+| downloadExl(data, filename, type)               | 快速导出excel，无需指定 sheet_name 和文件后缀               | [downloadExl参数配置](https://github.com/wangerzi/layui-excel#downloadexl%E5%8F%82%E6%95%B0%E9%85%8D%E7%BD%AE) |
+| **filterExportData(data, fields)**              | 梳理导出的数据，包括字段排序和多余数据                      | [filterExportData参数配置](https://github.com/wangerzi/layui-excel#filterexportdata%E5%8F%82%E6%95%B0%E9%85%8D%E7%BD%AE) |
+| **importExcel(files, opt, callback)**           | 读取Excel，支持多文件多表格读取                             | [importExcel参数配置](https://github.com/wangerzi/layui-excel#importexcel%E5%8F%82%E6%95%B0%E9%85%8D%E7%BD%AE) |
+| **makeMergeConfig(origin)**                     | 生成合并的配置参数，返回结果需放置于opt.extend['!merges']中 | [makeMergeConfig参数配置](https://github.com/wangerzi/layui-excel#makemergeconfig%E5%8F%82%E6%95%B0%E9%85%8D%E7%BD%AE) |
+| setExportCellStyle(data, range, config, filter) | 为sheet级别数据批量设置单元格属性                           | [setExportCellStyle参数配置](https://github.com/wangerzi/layui-excel#setExportCellStyle%E5%8F%82%E6%95%B0%E9%85%8D%E7%BD%AE) |
+| makeColConfig(data, defaultNum)                 | 生成列宽配置，返回结果需放置于opt.extend['!cols']中         | [makeColConfig参数配置](https://github.com/wangerzi/layui-excel#makecolconfig%E5%8F%82%E6%95%B0%E9%85%8D%E7%BD%AE) |
+| makeRowConfig(data, defaultNum)                 | 生成行高配置，返回结果需放置于opt.extend['!rows']           | [makeRowConfig参数配置](https://github.com/wangerzi/layui-excel#makerowconfig%E5%8F%82%E6%95%B0%E9%85%8D%E7%BD%AE) |
+| filterDataToAoaData(sheet_data)                 | 将单个sheet的映射数组数据转换为加速导出效率的aoa数据        | 无                                                           |
+| filterImportData(data, fields)                  | 梳理导入的数据，字段含义与 filterExportData 类似            | 无                                                           |
+| numToTitle(num)                                 | 将1/2/3...转换为A/B/C/D.../AA/AB/.../ZZ/AAA形式             | 无                                                           |
+| titleToNum(title)                               | 将A、B、AA、ABC转换为 1、2、3形式的数字                     | 无                                                           |
+| splitPosition(pos)                              | 将A1分离成 {c: 0, r: 1} 格式的数据                          | 无                                                           |
 
 ## 重要函数参数配置
 
@@ -362,6 +365,56 @@ data.push({
 ```
 
 官方公式相关文档：[https://github.com/SheetJS/js-xlsx#formulae](https://github.com/SheetJS/js-xlsx#formulae)
+
+#### setExportCellStyle参数配置
+
+> 辅助方法：为 sheet 级别的数据批量设置单元格属性
+
+| 参数名称 | 描述                                                         | 默认值                   |
+| -------- | ------------------------------------------------------------ | ------------------------ |
+| data     | sheet级别的数据                                              |                          |
+| range    | 范围字符串，比如`" A1:C12"`表示开始位置默认 A1，结束位置C12  | 数据范围内左上角到右下角 |
+| config   | 批量设置的单元格属性，会与之前的样式合并                     |                          |
+| filter   | 回调函数，传递函数生效，返回值作为新的值（可用于过滤、规则替换样式等骚操作）**『非必填参数』** |                          |
+
+##### filter入参列表
+
+> 此参数选填，如果不传入则直接按照规则覆盖
+
+| 参数名称   | 描述                                     |
+| ---------- | ---------------------------------------- |
+| cell       | 原有单元格数据                           |
+| newCell    | 根据批量设置规则自动生成样式的单元格数据 |
+| row        | 所在行数据                               |
+| config     | 传入的配置                               |
+| currentCol | 当前列索引                               |
+| fieldKey   | 当前字段key                              |
+
+##### 调用样例(更多用法可参考 index.js 中的样例)
+
+```javascript
+// 1. 假设的梳理后的后台的数据(省略filter函数梳理)
+var data = [
+    { username: '520',sex: '男', city: 'J', 'score': 100, 'start': '2019-03-11' },
+    { username: '520',sex: '女', city: 'X', 'score': 100, 'start': '2019-03-11' },
+    { username: '520',sex: '男', city: '上海', 'score': 100, 'start': '2019-03-11' }
+];
+// 2. 调用设置样式的函数，传入设置的范围，支持回调
+excel.setExportCellStyle(data, 'A1:C3', {
+    s: {
+        fill: { bgColor: { indexed: 64 }, fgColor: { rgb: "FF0000" } },
+        alignment: {
+            horizontal: 'center',
+            vertical: 'center'
+        }
+    }
+}, function(cell, newCell, row, config, currentRow, currentCol, fieldKey) {
+    // 回调参数，cell:原有数据，newCell:根据批量设置规则自动生成的样式，row:所在行数据，config:传入的配置,currentRow:当前行索引,currentCol:当前列索引，fieldKey:当前字段索引
+    return ((currentRow + currentCol) % 2 === 0) ? newCell : cell;// 隔行隔列上色
+} );
+// 3. 导出数据
+excel.exportExcel(data, '批量设置样式.xlsx', 'xlsx');
+```
 
 #### makeMergeConfig参数配置
 
@@ -723,23 +776,23 @@ index.html			页面文件+JS处理文件
 
 list.json				模拟导出的数据
 
-layui_exts/excel.js	excel扩展
+layui_exts/excel.js	excel扩展（未压缩 - 便于调试）
 
-layui_exts/xlsx.js		xlsx-style三方扩展（已魔改支持部分新方法和行高）
-
-layui_exts/FileSaver.js	下载文件FileSaver的三方扩展
+layui_exts/excel.min.js excel扩展（压缩后 - 减少体积）
 
 layui/				官网下载的layui
 
 ## 更新预告：
 
-暂无
+v1.6 支持快速设置边框，分段递归获取数据函数封装，新增常见问题总览
 
 ## 更新记录：
 
-2018-01-13 v1.4 魔改xlsx-style以支持设置样式、列宽、行高、公式等，并提供相应的辅助方法生成需要的配置信息
+2019-03-11 v1.5 打包依赖方便使用并增加兼容性，支持花式设置样式，正式支持导入，修复各种BUG
 
-2018-01-09 v1.3 支持导出多个sheet，合并导出的列
+2019-01-13 v1.4 魔改xlsx-style以支持设置样式、列宽、行高、公式等，并提供相应的辅助方法生成需要的配置信息
+
+2019-01-09 v1.3 支持导出多个sheet，合并导出的列
 
 2019-01-04 v1.2 支持前端多文件多Sheet读取 Excel 数据并梳理数据格式，大量数据导出效率优化
 
@@ -749,4 +802,4 @@ layui/				官网下载的layui
 
 ## 特别感谢
 
-暂无
+感谢layui社区的小伙伴们的回复，以及交流群中反馈各种问题和积极回复问题的群友们，还有github上提ISSUE、PR的小伙伴们~
