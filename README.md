@@ -63,6 +63,9 @@
 - [ ] 边框设置的样例(交流群：limin)
 - [x] layui上传文件的样例(交流群：睡不够先森)
 - [ ] 替换官方的导出功能（社区：[yutons](https://fly.layui.com/u/5932248/)）
+- [ ] 分段上传辅助函数
+- [ ] 获取一定范围的EXCEL数据导入辅助
+- [ ] 导入时间转换函数
 
 
 ## BUG收集
@@ -72,7 +75,7 @@
 - [ ] 导入日期处理(交流群：雨桐)
 - [ ] 导出;导致区分cell的问题
 - [x] 导入的range参数传递问题
-- [x] 单纯数组0导出空白问题
+- [x] 直接传入数字0，单元格不显示的问题
 
 ## 快速上手
 
@@ -119,14 +122,14 @@ layui.use(['jquery', 'excel', 'layer'], function() {
         success: function(res) {
             // 假如返回的 res.data 是需要导出的列表数据
             console.log(res.data);// [{name: 'wang', age: 18, sex: '男'}, {name: 'layui', age: 3, sex: '女'}]
-            // 1. 需要调整顺序或者梳理数据，请执行梳理函数
-            var data = excel.filterExportData(data, [
+            // 1. 数组头部新增表头
+            res.data.unshift({name: '用户名',sex: '男', age: '年龄'});
+            // 2. 如果需要调整顺序，请执行梳理函数
+            var data = excel.filterExportData(res.data, [
                 'name',
                 'sex',
                 'age',
             ]);
-            // 2. 数组头部新增表头
-            res.data.unshift({name: '用户名',sex: '男', age: '年龄'});
             // 3. 执行导出函数，系统会弹出弹框
             excel.exportExcel({
                 sheet1: data
