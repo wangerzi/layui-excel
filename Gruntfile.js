@@ -15,8 +15,9 @@ module.exports=function(grunt){
 					"src/excel.js",
 					"src/Blob.js",
 					"src/FileSaver.js",
-					"src/shim.js",
+					// "src/shim.js",
 					"src/xlsx.js",
+          "src/polyfill.js",
 				],
 				//被合成的文件路径
 				dest: "layui_exts/excel.js"
@@ -33,7 +34,7 @@ module.exports=function(grunt){
                     "src/excel.js",
                     "src/Blob.js",
                     "src/FileSaver.js",
-                    "src/shim.js",
+                    // "src/shim.js",
                     "src/xlsx.js",
                     "src/polyfill.js",
 				],

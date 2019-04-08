@@ -18,11 +18,11 @@ layui.define(['jquery'], function(exports){
 		 */
 		downloadExl: function(data, filename, type) {
 			type = type ? type : 'xlsx';
-			this.exportExcel({sheet1: data}, filename+'.'+type, type);
+			this.exportExcel({sheet1: data}, filename+'.'+type, type, null);
 		},
 		/**
 		 * 导出Excel并弹出下载框，具体使用方法和范围请参考文档
-		 * @param  {[type]} data     [description]
+		 * @param data object
 		 * @param  {[type]} filename [description]
 		 * @param  {[type]} type     [description]
 		 * @param  {[type]} opt      [description]
@@ -60,7 +60,7 @@ layui.define(['jquery'], function(exports){
 			};
 			opt && opt.extend && (wbExtend = $.extend(wbExtend, opt.extend));
 			// 清理空配置
-			for (key in wbExtend) {
+			for (var key in wbExtend) {
 				if (!wbExtend[key]) {
 					delete wbExtend[key];
 				}
@@ -71,7 +71,7 @@ layui.define(['jquery'], function(exports){
 				data = {sheet1: data};
 			}
 
-			for(sheet_name in data) {
+			for(var sheet_name in data) {
 				var content = data[sheet_name];
 				// 2. 设置sheet名称
 				wb.SheetNames.push(sheet_name);
@@ -119,7 +119,7 @@ layui.define(['jquery'], function(exports){
 		splitContent: function(content) {
 			var styleContent = {};
 			// 扫描每个单元格，如果是对象则等表格转换完毕后分离出来重新赋值
-			for (var line in content) {
+			for (var line = 0; line < content.length; line++) {
 				var lineData = content[line];
 				var rowIndex = 0;
 				for (var row in lineData) {
@@ -165,7 +165,7 @@ layui.define(['jquery'], function(exports){
 				if (ws[row]) {
 					// 其他属性做一个初始化
 					var otherOpt = ['t', 'w', 'f', 'r', 'h', 'c', 'z', 'l', 's'];
-					for (var i in otherOpt) {
+					for (var i = 0; i < otherOpt.length; i++) {
 						ws[row][otherOpt[i]] = ws[row][otherOpt[i]];
 					}
 					$.extend(ws[row], rowOpt);
@@ -275,7 +275,7 @@ layui.define(['jquery'], function(exports){
 					var row = data[currentRow];
 					if (!row) {
 						row = {};
-						for (var key in fieldKeys) {
+						for (var key = 0; key < fieldKeys.length; key++) {
 							row[fieldKeys[key]] = '';
 						}
 						data[currentRow] = row;
@@ -312,7 +312,7 @@ layui.define(['jquery'], function(exports){
 		 */
 		makeMergeConfig: function(origin) {
 			var merge = [];
-			for (var index in origin) {
+			for (var index = 0; index < origin.length; index++) {
 				merge.push({
 					s: this.splitPosition(origin[index][0]),
 					e: this.splitPosition(origin[index][1]),
@@ -428,16 +428,16 @@ layui.define(['jquery'], function(exports){
 			var true_fields = [];
 			// filed 支持两种模式，数组则单纯排序，对象则转换映射关系，为了统一处理，将数组转换为符合要求的映射关系对象
 			if (Array.isArray(fields)) {
-				for (var i in fields) {
+				for (var i = 0; i< fields.length; i++) {
 					true_fields[fields[i]] = fields[i];
 				}
 			} else {
 				true_fields = fields;
 			}
-			for (i in data) {
+			for (var i = 0; i < data.length; i++) {
 				var item = data[i];
 				exportData[i] = {};
-				for (key in true_fields) {
+				for (var key in true_fields) {
 					var new_field_name = key;
 					var old_field_name = true_fields[key];
 					// 如果传入的是回调，则回调的值则为新值
