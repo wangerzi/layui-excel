@@ -53,6 +53,7 @@
 			解决方案如下：</br>
 			1、点击左侧导出按钮导出，解析当前table可视范围内数据以字符串格式输出，默认调用excel.exportExcel方法</br>
             2、重写头部工具栏，避免修改table源码，触发导出</br>
+            3、支持根据筛选导出内容数据</br>
 			存在问题：1、暂时未对复杂表头进行测试；2、暂时未对自定义样式进行测试
 		</blockquote>
 		<table class="layui-hide" id="demo" lay-filter="test"></table>
@@ -101,7 +102,7 @@
 					title: '用户表',
 					page: true, //开启分页
 					toolbar: '#toolbarDemo', //操作1:启用自定义模板表格头部工具栏
-					defaultToolbar: [], //操作2:隐藏头部工具栏右侧的图标
+					defaultToolbar: [], 		//操作2:隐藏头部工具栏右侧的图标
 					cols: [
 						[ //表头
 							{
@@ -161,7 +162,7 @@
 						var hths = Array.from(htrs[j].querySelectorAll("th"));
 						for (var i = 0; i < hths.length; i++) {
 							var clazz = hths[i].getAttributeNode('class').value;
-							if (clazz != ' layui-table-col-special') {
+							if (clazz != ' layui-table-col-special' && clazz != 'layui-hide') {
 								//排除居左、具有、隐藏字段
 								titles[hths[i].getAttributeNode('data-field').value] = hths[i].innerText;
 							}
