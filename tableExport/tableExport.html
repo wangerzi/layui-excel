@@ -6,9 +6,41 @@
 		<title>layui在线调试</title>
 		<link rel="stylesheet" href="../layui/css/layui.css" media="all">
 		<style>
-			body{margin: 10px;}
-    .demo-carousel{height: 200px; line-height: 200px; text-align: center;}
-  </style>
+			body {
+            margin: 10px;
+        }
+
+        .layui-table-tool-temp {
+			padding-right: 0;
+			margin-right: 0;
+			/*text-align: right;*/
+		}
+
+		.yutons,
+		.layui-btn-sm {
+			margin-top: -2px;
+		}
+
+		/* 修改头部工具右侧筛选、导出、打印样式 */
+		.yutons-header-tool {
+			margin-top: -2px;
+			width: 30px !important;
+			height: 30px !important;
+			background-color: #ffffff;
+		}
+
+		/* 修改右侧筛选、导出、打印出发的ul标签定位 */
+		.layui-table-tool-panel {
+			left: auto;
+			right: -1px;
+		}
+
+		/* div 右侧10px */
+		.yutons-btn-margin-right {
+			margin-right: 10px;
+			line-height: 40px;
+		}
+    </style>
 	</head>
 	<body>
 		<blockquote class="layui-elem-quote">
@@ -19,15 +51,37 @@
 			问题4：如果在table渲染时您采用了模板引擎对数据进行了二次渲染，对不起，layui提供的excel导出无法获取到您渲染后的数据（此测试页面未对该问题进行还原，请自行测试）</br>
 			问题详情请参照当前页面layui自带导出工具导出查询</br>
 			解决方案如下：</br>
-			点击左侧导出按钮导出，解析当前table可视范围内数据以字符串格式输出，默认调用excel.exportExcel方法</br>
+			1、点击左侧导出按钮导出，解析当前table可视范围内数据以字符串格式输出，默认调用excel.exportExcel方法</br>
+            2、重写头部工具栏，避免修改table源码，触发导出</br>
 			存在问题：1、暂时未对复杂表头进行测试；2、暂时未对自定义样式进行测试
 		</blockquote>
 		<table class="layui-hide" id="demo" lay-filter="test"></table>
 		<script type="text/html" id="toolbarDemo">
-			<div class="layui-btn-container">
-			<button class="layui-btn layui-btn-sm" lay-event="table_export">导出</button>
-		  </div>
-		</script>
+			<div class="layui-row">
+        <div class="layui-col-md2 layui-col-sm3 layui-col-xs6" style="text-align: left;padding-left: 10px;">
+            <div class="layui-input-inline yutons-btn-margin-right">
+               <span class="layui-btn yutons layui-btn-sm yutons-color-detail" lay-event="table_export">导出</span>
+            </div>
+        </div>
+        <div class="layui-col-md10 layui-col-sm9 layui-col-xs6" style="text-align: right;">
+            <div class="layui-input-inline yutons-btn-margin-right">
+                <span class="layui-btn yutons layui-btn-sm yutons-color-detail" lay-event="YutonsCallCenterWorkOrderSearch"
+                      id="YutonsCallCenterWorkOrderSearch">查询</span>
+            </div>
+            <div class="layui-input-inline yutons-btn-margin-right" style="margin-right: 0px;">
+				<span class="layui-inline yutons-header-tool" title="筛选列" lay-event="LAYTABLE_COLS">
+							<i class="layui-icon layui-icon-cols"></i></span>
+                <span class="layui-inline yutons-header-tool" title="导出" lay-event="table_export">
+				                    <i class="layui-icon layui-icon-export"></i></span>
+				<span class="layui-inline yutons-header-tool" title="导出" lay-event="LAYTABLE_EXPORT">
+				                    <i class="layui-icon layui-icon-export"></i></span>
+				<span class="layui-inline yutons-header-tool" title="打印" lay-event="LAYTABLE_PRINT">
+							<i class="layui-icon layui-icon-print"></i>
+				</span>
+            </div>
+        </div>
+    </div>
+</script>
 		<script src="../layui/layui.js"></script>
 		<script>
 			layui.config({
@@ -39,18 +93,15 @@
 					excel = layui.excel;
 
 
-
 				//执行一个 table 实例
 				table.render({
 					elem: '#demo',
 					height: 420,
-					url: './data.json' //数据接口
-						,
+					url: './data.json', //数据接口
 					title: '用户表',
-					page: true //开启分页	
-						,
-					toolbar: '#toolbarDemo' //开启工具栏，此处显示默认图标，可以自定义模板，详见文档
-						,
+					page: true, //开启分页
+					toolbar: '#toolbarDemo', //操作1:启用自定义模板表格头部工具栏
+					defaultToolbar: [], //操作2:隐藏头部工具栏右侧的图标
 					cols: [
 						[ //表头
 							{
