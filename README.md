@@ -10,7 +10,8 @@
 
 > 特别注意：**不能直接在IFRAME里边直接调用导出方法，因为浏览器会限制这种导出行为，如有遇到此类情况，可使用 parent.layui.excel.exportExcel() 的方式调用父级页面函数以避免这个问题（父页面需要先加载插件）**
 
-国内可以**使用码云**，码云定期与github同步，[https://gitee.com/wangerzi/layui-excel](https://gitee.com/wangerzi/layui-excel)
+#### 备选下载
+国内可以**使用码云**，定期与github同步，[https://gitee.com/wangerzi/layui-excel](https://gitee.com/wangerzi/layui-excel)
 
 
 ## 功能演示：
