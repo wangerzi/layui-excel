@@ -44,9 +44,15 @@
 | [SheetJS / js-xlsx](https://github.com/SheetJS/js-xlsx)  | [https://github.com/SheetJS/js-xlsx](https://github.com/SheetJS/js-xlsx) | 部分xlsx-style不支持的代码参考                      |
 | [protobi / js-xlsx](https://github.com/protobi/js-xlsx)  | [https://github.com/protobi/js-xlsx](https://github.com/protobi/js-xlsx) | 导出excel的主题，不支持设置行高、公式等功能有些问题 |
 | [FileSaver.js](https://github.com/eligrey/FileSaver.js/) | [https://github.com/eligrey/FileSaver.js/](https://github.com/eligrey/FileSaver.js/) | 前端用于保存文件的JS功能组件                        |
-| [Blob.js](https://github.com/eligrey/Blob.js/)           | [](https://github.com/eligrey/Blob.js/)                      | Blob在IE10中的hack实现                              |
-| [polyfill.js](https://github.com/philipwalton/polyfill/) | [](https://github.com/philipwalton/polyfill/)                | 有名的IE兼容插件                                    |
-| [shim.js](https://github.com/es-shims/es5-shim)          | [](https://github.com/es-shims/es5-shim)                     | xlsx.js内置的兼容组件，支持ES5                      |
+| [Blob.js](https://github.com/eligrey/Blob.js/)           | [https://github.com/eligrey/Blob.js/](https://github.com/eligrey/Blob.js/) | Blob在IE10中的hack实现                              |
+| [polyfill.js](https://github.com/philipwalton/polyfill/) | [https://github.com/philipwalton/polyfill/](https://github.com/philipwalton/polyfill/) | 有名的IE兼容插件                                    |
+| [shim.js](https://github.com/es-shims/es5-shim)          | [https://github.com/es-shims/es5-shim](https://github.com/es-shims/es5-shim) | xlsx.js内置的兼容组件，支持ES5                      |
+
+## DEMO介绍
+
+| 路径                                                         | 描述               | 贡献人                 |
+| ------------------------------------------------------------ | ------------------ | ---------------------- |
+| [demos/tableExport/index.html](http://excel.wj2015.com/demos/tableExport/index.html) | 导出表格数据的DEMO | 雨桐(yuton.yao@qq.com) |
 
 ## 期望收集
 
@@ -68,6 +74,7 @@
 - [ ] 导入时间转换函数(交流群：你〃祗是莪命中的過客つ)
 - [ ] 通过改造xlsx.js彻底解决数字0不显示的问题([tanzx](https://github.com/tanzx))
 - [ ] 导出压缩功能引入(交流群：你〃祗是莪命中的過客つ)
+- [ ] 分段导出时候的自动打包ZIP（交流群：一直被遗忘▼）
 - [ ] 页边距调整(交流群：你〃祗是莪命中的過客つ)
 
 
@@ -80,6 +87,20 @@
 - [x] 导入的range参数传递问题
 - [x] 直接传入数字0，单元格不显示的问题
 - [x] 使用for in 带来的某些兼容问题
+
+## 路径说明
+
+| 路径                        | 描述                                                 |
+| --------------------------- | ---------------------------------------------------- |
+| index.html                  | 页面文件                                             |
+| list.json                   | 模拟导出的数据                                       |
+| layui_exts/excel.js         | excel扩展（未压缩 - 便于调试）                       |
+| layui_exts/excel.min.js     | excel扩展（压缩后 - 减少体积）                       |
+| layui_exts/excel.old.js     | excel扩展（不支持样式-未压缩 - 便于调试）PS：支持CSV |
+| layui_exts/excel.old.min.js | excel扩展（不支持样式-压缩后 - 减少体积）PS：支持CSV |
+| layui/                      | 官网下载的layui                                      |
+| demos/                      | 网友上传的使用的样例                                 |
+| src/                        | 打包前的依赖和源码                                   |
 
 ## 快速上手
 
@@ -776,18 +797,6 @@ layui.use(['jquery', 'excel', 'layer'], function() {
     ]
 }
 ```
-
-##### Demo说明：
-
-index.html			页面文件+JS处理文件
-
-list.json				模拟导出的数据
-
-layui_exts/excel.js	excel扩展（未压缩 - 便于调试）
-
-layui_exts/excel.min.js excel扩展（压缩后 - 减少体积）
-
-layui/				官网下载的layui
 
 ## 更新预告：
 

@@ -448,10 +448,30 @@ function groupAdd() {
     var layer = layui.layer;
     var $ = layui.jquery;
 
-    var content = laytpl($('#LAY-auth-tree-group-add').html()).render({});
+    var content = laytpl($('#LAY-excel-group-add').html()).render({});
     layer.open({
       title: "加群交流"
       ,area: ['300px', '450px']
+      ,content: content
+    });
+  });
+}
+
+function demoList() {
+  layui.use(['laytpl', 'layer', 'jquery'], function(){
+    var laytpl = layui.laytpl;
+    var layer = layui.layer;
+    var $ = layui.jquery;
+
+    var list = [
+      { href: 'http://excel.wj2015.com/demos/tableExport/index.html', path: 'demos/tableExport/index.html', person: '雨桐', email: 'yuton.yao@qq.com', desc: '导出表格数据的DEMO' }
+    ];
+    var content = laytpl($('#LAY-excel-demo-list').html()).render({
+      list: list
+    });
+    layer.open({
+      title: "实操样例"
+      ,area: ['800px', '250px']
       ,content: content
     });
   });
