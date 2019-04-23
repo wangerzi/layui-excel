@@ -7,7 +7,7 @@ module.exports = function (grunt) {
     concat: {
       //设置输出文件合并的字符
       options: {
-        separator: "// ---------split"
+        separator: "/*---------split--------*/"
       },
       dist: {
         //被合并的文件的路径
