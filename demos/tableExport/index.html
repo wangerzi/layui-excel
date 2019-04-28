@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-		<title>layui在线调试</title>
+		<title>导出表格数据的DEMO</title>
 		<link rel="stylesheet" href="../../layui/css/layui.css" media="all">
 		<style>
 			body {
@@ -55,6 +55,7 @@
 			2、重写头部工具栏，避免修改table源码，触发导出</br>
 			3、支持根据筛选导出内容数据</br>
 			4、修改因部分表格数据不存在data-field字段值的情况下无法正常导出的bug<br/>
+			5、修复IE不识别Array.from的问题，兼容IE<br/>
 			存在问题：1、暂时未对复杂表头进行测试；2、暂时未对自定义样式进行测试
 		</blockquote>
 		<table class="layui-hide" id="demo" lay-filter="test"></table>
@@ -151,7 +152,17 @@
 							break;
 					};
 				});
-
+	
+				/**
+				 * by yutons
+				 * Array.from() 非常方便的将一个类数组的集合 ==》 数组，直接使用数组身上的方法。例如：常用的map，foreach… 
+				 * 但是，问题来了，IE不识别Array.from这个方法。所以写了它兼容IE的写法。
+				 */
+				if (!Array.from) {
+					Array.from = function(el) {
+						return Array.apply(this, el);
+					}
+				}
 				//表格导出
 				function exportFile(id) {
 					//根据传入tableID获取表头
