@@ -20,11 +20,9 @@
 
 [http://excel.wj2015.com/](http://excel.wj2015.com/)
 
+![功能演示](https://raw.githubusercontent.com/wangerzi/layui-excel/master/ExcelHeart.png)
+
 ![功能演示](https://raw.githubusercontent.com/wangerzi/layui-excel/master/ScreenToGif.gif)
-
-![功能演示](https://raw.githubusercontent.com/wangerzi/layui-excel/master/ScreenToGif-2.gif)
-
-![功能演示](https://raw.githubusercontent.com/wangerzi/layui-excel/master/ScreenToGif-3.gif)
 
 ##### 沟通交流群：
 
@@ -51,7 +49,7 @@
 | [polyfill.js](https://github.com/philipwalton/polyfill/) | [https://github.com/philipwalton/polyfill/](https://github.com/philipwalton/polyfill/) | 有名的IE兼容插件                                    |
 | [shim.js](https://github.com/es-shims/es5-shim)          | [https://github.com/es-shims/es5-shim](https://github.com/es-shims/es5-shim) | xlsx.js内置的兼容组件，支持ES5                      |
 
-## DEMO介绍
+## 贡献DEMO介绍
 
 | 路径                                                         | 描述               | 贡献人                 |
 | ------------------------------------------------------------ | ------------------ | ---------------------- |
@@ -803,7 +801,7 @@ layui.use(['jquery', 'excel', 'layer'], function() {
 
 ## 更新预告：
 
-v1.6 支持快速设置边框，分段递归获取数据函数封装，新增常见问题总览
+v1.6 支持快速设置边框，DEMO贡献模块，替换官方的导出功能，分段递归获取数据函数封装，新增常见问题总览
 
 ## 更新记录：
 
