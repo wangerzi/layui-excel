@@ -49,7 +49,7 @@
 | [polyfill.js](https://github.com/philipwalton/polyfill/) | [https://github.com/philipwalton/polyfill/](https://github.com/philipwalton/polyfill/) | 有名的IE兼容插件               |
 | [shim.js](https://github.com/es-shims/es5-shim)          | [https://github.com/es-shims/es5-shim](https://github.com/es-shims/es5-shim) | xlsx.js内置的兼容组件，支持ES5 |
 
-> 注：魔改 js-xlsx 支持样式的具体请见博客：
+> 注：魔改 js-xlsx 支持样式的具体细节请见博客：[JeffreyWang的个人博客：令最新JS-XLSX支持样式的改造方法](https://blog.wj2015.com/2019/05/01/js-xlsx%E6%94%AF%E6%8C%81%E6%A0%B7%E5%BC%8F/)
 
 ## 贡献DEMO介绍
 
