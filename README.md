@@ -40,14 +40,16 @@
 
 ## 依赖的开源项目
 
-| 开源项目名称                                             | 地址                                                         | 用于                                                |
-| -------------------------------------------------------- | ------------------------------------------------------------ | --------------------------------------------------- |
-| [SheetJS / js-xlsx](https://github.com/SheetJS/js-xlsx)  | [https://github.com/SheetJS/js-xlsx](https://github.com/SheetJS/js-xlsx) | 部分xlsx-style不支持的代码参考                      |
-| [protobi / js-xlsx](https://github.com/protobi/js-xlsx)  | [https://github.com/protobi/js-xlsx](https://github.com/protobi/js-xlsx) | 导出excel的主题，不支持设置行高、公式等功能有些问题 |
-| [FileSaver.js](https://github.com/eligrey/FileSaver.js/) | [https://github.com/eligrey/FileSaver.js/](https://github.com/eligrey/FileSaver.js/) | 前端用于保存文件的JS功能组件                        |
-| [Blob.js](https://github.com/eligrey/Blob.js/)           | [https://github.com/eligrey/Blob.js/](https://github.com/eligrey/Blob.js/) | Blob在IE10中的hack实现                              |
-| [polyfill.js](https://github.com/philipwalton/polyfill/) | [https://github.com/philipwalton/polyfill/](https://github.com/philipwalton/polyfill/) | 有名的IE兼容插件                                    |
-| [shim.js](https://github.com/es-shims/es5-shim)          | [https://github.com/es-shims/es5-shim](https://github.com/es-shims/es5-shim) | xlsx.js内置的兼容组件，支持ES5                      |
+| 开源项目名称                                             | 地址                                                         | 用于                           |
+| -------------------------------------------------------- | ------------------------------------------------------------ | ------------------------------ |
+| [SheetJS / js-xlsx](https://github.com/SheetJS/js-xlsx)  | [https://github.com/SheetJS/js-xlsx](https://github.com/SheetJS/js-xlsx) | 导出的基础逻辑                 |
+| [protobi / js-xlsx](https://github.com/protobi/js-xlsx)  | [https://github.com/protobi/js-xlsx](https://github.com/protobi/js-xlsx) | 可以设置样式，用于补全样式功能 |
+| [FileSaver.js](https://github.com/eligrey/FileSaver.js/) | [https://github.com/eligrey/FileSaver.js/](https://github.com/eligrey/FileSaver.js/) | 前端用于保存文件的JS功能组件   |
+| [Blob.js](https://github.com/eligrey/Blob.js/)           | [https://github.com/eligrey/Blob.js/](https://github.com/eligrey/Blob.js/) | Blob在IE10中的hack实现         |
+| [polyfill.js](https://github.com/philipwalton/polyfill/) | [https://github.com/philipwalton/polyfill/](https://github.com/philipwalton/polyfill/) | 有名的IE兼容插件               |
+| [shim.js](https://github.com/es-shims/es5-shim)          | [https://github.com/es-shims/es5-shim](https://github.com/es-shims/es5-shim) | xlsx.js内置的兼容组件，支持ES5 |
+
+> 注：魔改 js-xlsx 支持样式的具体请见博客：
 
 ## 贡献DEMO介绍
 
@@ -73,10 +75,10 @@
 - [ ] 分段上传辅助函数(交流群：忘了名字）
 - [ ] 获取一定范围的EXCEL数据导入辅助(交流群：忘了名字)
 - [ ] 导入时间转换函数(交流群：你〃祗是莪命中的過客つ)
-- [ ] 通过改造xlsx.js彻底解决数字0不显示的问题([tanzx](https://github.com/tanzx))
-- [ ] 导出压缩功能引入(交流群：你〃祗是莪命中的過客つ)
+- [x] 通过改造xlsx.js彻底解决数字0不显示的问题([tanzx](https://github.com/tanzx))
+- [x] 导出压缩功能引入(交流群：你〃祗是莪命中的過客つ)
 - [ ] 分段导出时候的自动打包ZIP（交流群：一直被遗忘▼）
-- [ ] 页边距调整(交流群：你〃祗是莪命中的過客つ)
+- [x] 页边距调整(交流群：你〃祗是莪命中的過客つ)
 
 
 ## BUG收集
@@ -217,10 +219,11 @@ layui.use(['jquery', 'excel', 'layer'], function() {
 
 ##### opt支持的配置项
 
-| 参数名称   | 描述                                                         | 默认值 |
-| ---------- | ------------------------------------------------------------ | ------ |
-| opt.Props  | 配置文档基础属性，支持Title、Subject、Author、Manager、Company、Category、Keywords、Comments、LastAuthor、CreatedData | null   |
-| opt.extend | 表格配置参数，支持 `!merge` (合并单元格信息)、`!cols`(行数)、`!protect`(写保护)等，[原生配置请参考](https://github.com/SheetJS/js-xlsx#worksheet-object)，其中 `!merge` 配置支持辅助方法生成，详见 `makeMergeConfig(origin)`！ | null   |
+| 参数名称        | 描述                                                         | 默认值 |
+| --------------- | ------------------------------------------------------------ | ------ |
+| opt.Props       | 配置文档基础属性，支持Title、Subject、Author、Manager、Company、Category、Keywords、Comments、LastAuthor、CreatedData | null   |
+| opt.extend      | 表格配置参数，支持 `!merge` (合并单元格信息)、`!cols`(行数)、`!protect`(写保护)等，[原生配置请参考](https://github.com/SheetJS/js-xlsx#worksheet-object)，其中 `!merge` 配置支持辅助方法生成，详见 `makeMergeConfig(origin)`！ | null   |
+| opt.compression | 是否压缩，压缩效果比较明显，建议开启（9列9w行有较多重复的数据，从 30M 缩小到 3M） | true   |
 
 > 如果想指定某个 sheet 的opt.extend，请按照 'sheet名称' => {单独配置}，如：
 
@@ -695,6 +698,7 @@ $(function(){
 - 支持单元格样式设置
 - 支持设置单元格宽度和高度并提供辅助方法方便使用
 - 支持公式、链接等单元格属性设置
+- 支持压缩，支持设置边距
 
 ## 使用方法：
 
@@ -801,7 +805,7 @@ layui.use(['jquery', 'excel', 'layer'], function() {
 
 ## 更新预告：
 
-v1.6 支持快速设置边框，DEMO贡献模块，替换官方的导出功能，分段递归获取数据函数封装，新增常见问题总览
+v1.6 支持快速设置边框，支持压缩，支持边距设置，DEMO贡献模块，替换官方的导出功能，分段递归获取数据函数封装，新增常见问题总览
 
 ## 更新记录：
 

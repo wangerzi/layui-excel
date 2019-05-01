@@ -15,31 +15,18 @@ module.exports = function (grunt) {
           "src/excel.js",
           "src/Blob.js",
           "src/FileSaver.js",
-          // "src/shim.js",
+          "src/jszip.js",
           "src/xlsx.js",
-          "src/polyfill.js",
+          "src/polyfill.js"
         ],
         //被合成的文件路径
         dest: "layui_exts/excel.js"
-      },
-      dist_old: {
-        //被合并的文件的路径
-        src: [
-          "src/excel.js",
-          "src/Blob.js",
-          "src/FileSaver.js",
-          // "src/shim.js",
-          "src/xlsx.old.js",
-          "src/polyfill.js",
-        ],
-        //被合成的文件路径
-        dest: "layui_exts/excel.old.js"
       }
     },
     uglify: {
       //注释
       options: {
-        banner: "/* JeffreyWang压缩打包 <%= pkg.name %> <%= pkg.version %>*/ \n",
+        banner: "/* JeffreyWang压缩打包 <%= pkg.name %> <%= pkg.version %>*/ \n"
       },
       build: {
         //被压缩的文件的路径
@@ -47,25 +34,12 @@ module.exports = function (grunt) {
           "src/excel.js",
           "src/Blob.js",
           "src/FileSaver.js",
-          // "src/shim.js",
+          "src/jszip.js",
           "src/xlsx.js",
-          "src/polyfill.js",
+          "src/polyfill.js"
         ],
         //被压缩的文件路径
         dest: "layui_exts/excel.min.js"
-      },
-      build_old: {
-        //被压缩的文件的路径
-        src: [
-          "src/excel.js",
-          "src/Blob.js",
-          "src/FileSaver.js",
-          // "src/shim.js",
-          "src/xlsx.old.js",
-          "src/polyfill.js",
-        ],
-        //被压缩的文件路径
-        dest: "layui_exts/excel.old.min.js"
       }
     },
   })

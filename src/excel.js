@@ -48,6 +48,11 @@ layui.define(['jquery'], function(exports){
 				CreatedData: new Date(),
 			};
 			opt && opt.Props && (Props = $.extend(Props, opt.Props));
+			// 默认进行压缩
+			wb.compression = opt ? opt.compression : true
+			if(wb.compression !== false) {
+				wb.compression = true
+			}
 			wb.Props = Props;
 			// 特殊属性实现，比如合并单元格
 			var wbExtend = {
@@ -106,7 +111,7 @@ layui.define(['jquery'], function(exports){
 			};
 
 			// 4. 输出工作表
-			var wbout = XLSX.write(wb, {bookType: type, type: 'binary', cellStyles: true});
+			var wbout = XLSX.write(wb, {bookType: type, type: 'binary', cellStyles: true, compression: wb.compression});
 
 			// 5. 跨浏览器支持，采用 FileSaver 三方库
 			saveAs(new Blob([this.s2ab(wbout)], {type: "application/octet-stream"}), filename);
