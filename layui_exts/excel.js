@@ -66,6 +66,9 @@ layui.define(['jquery'], function(exports){
 			opt && opt.extend && (wbExtend = $.extend(wbExtend, opt.extend));
 			// 清理空配置
 			for (var key in wbExtend) {
+				if (!wbExtend.hasOwnProperty(key)) {
+					continue;
+				}
 				if (!wbExtend[key]) {
 					delete wbExtend[key];
 				}
@@ -77,6 +80,9 @@ layui.define(['jquery'], function(exports){
 			}
 
 			for(var sheet_name in data) {
+				if (!data.hasOwnProperty(sheet_name)) {
+					continue;
+				}
 				var content = data[sheet_name];
 				// 2. 设置sheet名称
 				wb.SheetNames.push(sheet_name);
@@ -86,7 +92,7 @@ layui.define(['jquery'], function(exports){
 					is_aoa = true;
 				}
 				if (is_aoa) {
-					var ws = XLSX.utils.aoa_to_sheet(content);
+					ws = XLSX.utils.aoa_to_sheet(content);
 				} else {
 					var option = {};
 					if (content.length) {
@@ -128,6 +134,9 @@ layui.define(['jquery'], function(exports){
 				var lineData = content[line];
 				var rowIndex = 0;
 				for (var row in lineData) {
+					if (!lineData.hasOwnProperty(row)) {
+						continue;
+					}
 					var rowData = lineData[row];
 					if (typeof rowData === 'object') {
 						// typeof null == object
@@ -166,6 +175,9 @@ layui.define(['jquery'], function(exports){
 		 */
 		mergeCellOpt: function(ws, style) {
 			for (var row in style) {
+				if (!style.hasOwnProperty(row)) {
+					continue;
+				}
 				var rowOpt = style[row];
 				if (ws[row]) {
 					// 其他属性做一个初始化
@@ -220,6 +232,9 @@ layui.define(['jquery'], function(exports){
 			var len = title.length;
 			var total = 0;
 			for (var index in title) {
+				if (!title.hasOwnProperty(index)) {
+					continue;
+				}
 				var char = title[index];
 				var code = char.charCodeAt() - 64;
 				total += code * Math.pow(26, len - index - 1);
@@ -337,6 +352,9 @@ layui.define(['jquery'], function(exports){
 			var change = [];
 			var startIndex = 0;
 			for (var index in data) {
+			  if (!data.hasOwnProperty(index)) {
+			  	continue;
+				}
 				var item = data[index];
 				if (index.match && index.match(/[A-Z]*/)) {
 					var currentIndex = this.titleToNum(index) - 1;
@@ -363,6 +381,9 @@ layui.define(['jquery'], function(exports){
 			var change = [];
 			var startIndex = 0;
 			for (var index in data) {
+				if (!data.hasOwnProperty(index)) {
+					continue;
+				}
 				var item = data[index];
 				if (index.match && index.match(/[0-9]*/)) {
 					var currentIndex = parseInt(index) - 1;
@@ -415,6 +436,9 @@ layui.define(['jquery'], function(exports){
 			layui.each(filterData, function(index, item) {
 				var itemData = [];
 				for (var i in item) {
+					if (!item.hasOwnProperty(i)) {
+						continue;
+					}
 					itemData.push(item[i]);
 				}
 				aoaData.push(itemData);
@@ -443,6 +467,9 @@ layui.define(['jquery'], function(exports){
 				var item = data[i];
 				exportData[i] = {};
 				for (var key in true_fields) {
+					if (!true_fields.hasOwnProperty(key)) {
+						continue;
+					}
 					var new_field_name = key;
 					var old_field_name = true_fields[key];
 					// 如果传入的是回调，则回调的值则为新值
