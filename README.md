@@ -55,9 +55,10 @@
 
 ## 贡献DEMO介绍
 
-| 路径                                                         | 描述               | 贡献人                 |
-| ------------------------------------------------------------ | ------------------ | ---------------------- |
-| [demos/tableExport/index.html](http://excel.wj2015.com/demos/tableExport/index.html) | 导出表格数据的DEMO | 雨桐(yuton.yao@qq.com) |
+| 路径                                                         | 描述                      | 贡献人                     |
+| ------------------------------------------------------------ | ------------------------- | -------------------------- |
+| [demos/tableExport/index.html](http://excel.wj2015.com/demos/tableExport/index.html) | 导出表格数据的DEMO        | 雨桐(yuton.yao@qq.com)     |
+| [demos/noLayui/index.html](http://excel.wj2015.com/demos/noLayui/index.html) | 非LAYUI调用及原生表格导出 | 藏锋入鞘(admin@wj2015.com) |
 
 ## 期望收集
 
@@ -129,7 +130,7 @@ $.ajax({
 
 如果使用 `layuiadmin`,则只需要将插件(`layui_exts/excel.js`)放到 `controller/`下,然后 `layui.use` 即可,或者可以放在 `lib/extend` 中,只不过需要改 `config.js`
 
-非 `layuiadmin` 初始化如下：
+非 `layuiadmin` 的Layui项目初始化如下：
 
 ```javascript
 layui.config({
@@ -139,7 +140,22 @@ layui.config({
 });
 ```
 
+非Layui框架，script标签引入`jQuery`和`layui_exts/excel.js`后，直接使用 `LAY_EXCEL` 全局变量调用函数即可，如：
+
+```html
+<!--先加载jquery-->
+<script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+<!--再加载插件-->
+<script src="../../layui_exts/excel.js"></script>
+<!--直接调用函数即可-->
+<script>
+    LAY_EXCEL.exportExcel([[1, 2, 3]], '表格导出.xlsx', 'xlsx')
+</script>
+```
+
 #### 第三步：手工添加一个表头，并调用导出excel的内部函数
+
+> 非layui框架请直接使用 $.ajax 和 LAY_EXCEL 进行异步操作和导出
 
 ```javascript
 layui.use(['jquery', 'excel', 'layer'], function() {
@@ -840,7 +856,7 @@ layui.use(['jquery', 'excel', 'layer'], function() {
 
 ## 更新预告：
 
-v1.6 支持快速设置边框，支持压缩，支持CSV，支持边距设置，DEMO贡献模块，替换官方的导出功能，分段递归获取数据函数封装，新增常见问题总览
+v1.6 支持快速设置边框，支持压缩，支持CSV，支持边距设置，DEMO贡献模块，替换官方的导出功能，分段递归获取数据函数封装，支持导出原生table，新增常见问题总览
 
 ## 更新记录：
 
