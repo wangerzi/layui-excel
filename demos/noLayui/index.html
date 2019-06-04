@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>非LAYUI加载</title>
+  <!--先加载jquery-->
+  <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+  <!--再加载插件-->
+  <script src="../../layui_exts/excel.js"></script>
+  <script>
+    function exportTable() {
+      // 获取头部和body
+      var data = LAY_EXCEL.tableToJson(document.getElementById('LAY-EXPORT-TEST')) // 或者 $('#LAY-EXPORT-TEST')
+      // console.log(data)
+      var exportData = []
+      exportData.push.apply(exportData, data.head)
+      exportData.push.apply(exportData, data.body)
+      // console.log(exportData)
+
+      LAY_EXCEL.exportExcel(exportData, '表格导出.xlsx', 'xlsx')
+    }
+  </script>
+</head>
+<body>
+  <h3>表格导出DEMO以及无layui导出DEMO</h3>
+  <button type="button" onclick="exportTable()">点我导出表格</button>
+  <table id="LAY-EXPORT-TEST">
+    <thead>
+    <tr><td>第一列</td><td>第二列</td><td>第三列</td></tr>
+    </thead>
+    <tbody>
+    <tr><td>1</td><td>2</td><td>3</td></tr>
+    <tr><td>2</td><td>2</td><td>3</td></tr>
+    <tr><td>3</td><td>2</td><td>3</td></tr>
+    <tr><td>4</td><td>2</td><td>3</td></tr>
+    <tr><td>5</td><td>2</td><td>3</td></tr>
+    <tr><td>6</td><td>2</td><td>3</td></tr>
+    </tbody>
+  </table>
+</body>
+</html>

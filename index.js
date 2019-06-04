@@ -464,13 +464,14 @@ function demoList() {
     var $ = layui.jquery;
 
     var list = [
-      { href: 'http://excel.wj2015.com/demos/tableExport/index.html', path: 'demos/tableExport/index.html', person: '雨桐', email: 'yuton.yao@qq.com', desc: '导出表格数据的DEMO' }
+      { href: 'http://excel.wj2015.com/demos/tableExport/index.html', path: 'demos/tableExport/index.html', person: '雨桐', email: 'yuton.yao@qq.com', desc: '导出表格数据的DEMO' },
+      { href: 'http://excel.wj2015.com/demos/noLayui/index.html', path: 'demos/noLayui/index.html', person: '藏锋入鞘', email: 'admin@wj2015.com', desc: '非LAYUI调用及原生表格导出' }
     ];
     var content = laytpl($('#LAY-excel-demo-list').html()).render({
       list: list
     });
     layer.open({
-      title: "实操样例"
+      title: "使用样例"
       ,area: ['800px', '250px']
       ,content: content
     });

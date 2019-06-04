@@ -8,6 +8,8 @@
 
 > 浏览器兼容性：支持IE10+、Firefox、chrome
 
+> 非Layui环境使用：**需要先加载 jQuery，再加载 layui_exts/excel.min.js，随后使用全局变量 LAY_EXCEL 调用函数**
+
 > 特别注意：**不能直接在IFRAME里边直接调用导出方法，因为浏览器会限制这种导出行为，如有遇到此类情况，可使用 parent.layui.excel.exportExcel() 的方式调用父级页面函数以避免这个问题（父页面需要先加载插件）**
 
 #### 备选下载
@@ -79,6 +81,7 @@
 - [x] 导出压缩功能引入(交流群：你〃祗是莪命中的過客つ)
 - [ ] 分段导出时候的自动打包ZIP（交流群：一直被遗忘▼）
 - [x] 页边距调整(交流群：你〃祗是莪命中的過客つ)
+- [x] 支持非layui框架调用（交流群：忘了名字）
 
 
 ## BUG收集
@@ -185,6 +188,7 @@ layui.use(['jquery', 'excel', 'layer'], function() {
 | setExportCellStyle(data, range, config, filter) | 为sheet级别数据批量设置单元格属性                           | [setExportCellStyle参数配置](https://github.com/wangerzi/layui-excel#setExportCellStyle%E5%8F%82%E6%95%B0%E9%85%8D%E7%BD%AE) |
 | makeColConfig(data, defaultNum)                 | 生成列宽配置，返回结果需放置于opt.extend['!cols']中         | [makeColConfig参数配置](https://github.com/wangerzi/layui-excel#makecolconfig%E5%8F%82%E6%95%B0%E9%85%8D%E7%BD%AE) |
 | makeRowConfig(data, defaultNum)                 | 生成行高配置，返回结果需放置于opt.extend['!rows']           | [makeRowConfig参数配置](https://github.com/wangerzi/layui-excel#makerowconfig%E5%8F%82%E6%95%B0%E9%85%8D%E7%BD%AE) |
+| tableToJson(dom)                                | 将原生table转换为JSON格式                                   |                                                              |
 | filterDataToAoaData(sheet_data)                 | 将单个sheet的映射数组数据转换为加速导出效率的aoa数据        | 无                                                           |
 | filterImportData(data, fields)                  | 梳理导入的数据，字段含义与 filterExportData 类似            | 无                                                           |
 | numToTitle(num)                                 | 将1/2/3...转换为A/B/C/D.../AA/AB/.../ZZ/AAA形式             | 无                                                           |
@@ -531,6 +535,39 @@ excel.exportExcel({
         '!rows': rowConf
     }
 });
+```
+
+#### tableToJson参数配置
+
+> 辅助方法：将原生DOM的表格转换为JSON形式的数据
+
+##### 传入参数
+
+| 参数名称 | 描述                            | 默认值 |
+| -------- | ------------------------------- | ------ |
+| dom      | 原生表格的DOM对象或者jQuery对象 | null   |
+
+##### 返回参数
+
+| 参数名称 | 类型  | 描述               |
+| -------- | ----- | ------------------ |
+| head     | array | 表格头部的数组数据 |
+| body     | array | 表格body的数组数据 |
+
+##### 使用样例
+
+> head是头部数据，body是尾部数据，使用 arr1.push.apply(arr, arr2) 可以合并数组
+
+```javascript
+// 获取头部和body
+var data = LAY_EXCEL.tableToJson(document.getElementById('LAY-EXPORT-TEST')) // 或者 $('#LAY-EXPORT-TEST')
+// console.log(data)
+var exportData = []
+exportData.push.apply(exportData, data.head)
+exportData.push.apply(exportData, data.body)
+// console.log(exportData)
+
+LAY_EXCEL.exportExcel(exportData, '表格导出.xlsx', 'xlsx')
 ```
 
 #### importExcel参数配置

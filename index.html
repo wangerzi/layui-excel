@@ -29,7 +29,9 @@
 						内存(占用73%)： 8.0 GB DDR3,Speed:	1600 MHz <br>
 				<b>数据量测试：</b><br>
 						在决定使用本插件前，请根据业务实际需求量修改『导出数据测试样例』或者『导入样例』进行浏览器压力测试，满足需求再使用本插件。<br>
-						PS：效率和内存占用的问题我目前也没有好的解决方案，因为文件生成逻辑在XLSX.JS那边
+						PS：效率和内存占用的问题我目前也没有好的解决方案，因为文件生成逻辑在XLSX.JS那边 <br>
+				<b>非Layui支持：</b><br>
+						通过全局变量 LAY_EXCEL 调用函数，具体可见demo，<a href="./demos/noLayui/index.html">点此进入</a>
 
 					<p style="color: #f00;margin-top: 20px;">注：不能直接在IFRAME里边直接调用导出方法，因为浏览器会限制这种导出行为，如有遇到此类情况，可使用 parent.layui.excel.exportExcel() 的方式调用父级页面函数以避免这个问题（父页面需要先加载插件）</p>
 			</blockquote>
