@@ -204,7 +204,7 @@ layui.use(['jquery', 'excel', 'layer'], function() {
 | setExportCellStyle(data, range, config, filter) | 为sheet级别数据批量设置单元格属性                           | [setExportCellStyle参数配置](https://github.com/wangerzi/layui-excel#setExportCellStyle%E5%8F%82%E6%95%B0%E9%85%8D%E7%BD%AE) |
 | makeColConfig(data, defaultNum)                 | 生成列宽配置，返回结果需放置于opt.extend['!cols']中         | [makeColConfig参数配置](https://github.com/wangerzi/layui-excel#makecolconfig%E5%8F%82%E6%95%B0%E9%85%8D%E7%BD%AE) |
 | makeRowConfig(data, defaultNum)                 | 生成行高配置，返回结果需放置于opt.extend['!rows']           | [makeRowConfig参数配置](https://github.com/wangerzi/layui-excel#makerowconfig%E5%8F%82%E6%95%B0%E9%85%8D%E7%BD%AE) |
-| tableToJson(dom)                                | 将原生table转换为JSON格式                                   |                                                              |
+| tableToJson(dom)                                | 将原生table转换为JSON格式                                   | [tableToJson参数配置](https://github.com/wangerzi/layui-excel#tabletojson%E5%8F%82%E6%95%B0%E9%85%8D%E7%BD%AE) |
 | filterDataToAoaData(sheet_data)                 | 将单个sheet的映射数组数据转换为加速导出效率的aoa数据        | 无                                                           |
 | filterImportData(data, fields)                  | 梳理导入的数据，字段含义与 filterExportData 类似            | 无                                                           |
 | numToTitle(num)                                 | 将1/2/3...转换为A/B/C/D.../AA/AB/.../ZZ/AAA形式             | 无                                                           |
