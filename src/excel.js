@@ -203,7 +203,7 @@ LAY_EXCEL = {
     var head = []
     dom.find('thead > tr').each(function () {
       var line = []
-      $(this).find('td').each(function () {
+      $(this).find('td,th').each(function () {
         line.push($(this).text())
       })
       head.push(line)
