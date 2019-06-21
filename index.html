@@ -72,6 +72,13 @@
 						<button type="button" class="layui-btn layui-btn-primary" onclick="demoList()">查看样例列表</button>
 					</div>
 				</div>
+        <div class="layui-form-item">
+          <div class="layui-form-label">导入模板</div>
+          <div class="layui-form-block">
+            <a class="layui-btn layui-btn-primary" href="demos/test_import.xlsx">常规单元格数据</a>
+            <a class="layui-btn layui-btn-primary" href="demos/test_merge.xlsx">合并单元格数据</a>
+          </div>
+        </div>
 				<div class="layui-form-item">
 					<div class="layui-form-label">更新及文档</div>
 					<div class="layui-form-block">
@@ -88,22 +95,23 @@
 </div>
 </body>
 <script type="text/html" id="LAY-excel-export-ans">
-	{{# layui.each(d.data, function(index, item){ }}
-		<blockquote class="layui-elem-quote">{{d.files[index].name}}</blockquote>
+	{{# layui.each(d.data, function(file_index, item){ }}
+		<blockquote class="layui-elem-quote">{{d.files[file_index].name}}</blockquote>
 		<div class="layui-tab">
 		  <ul class="layui-tab-title">
-		  	{{# layui.each(item, function(sheetname, content) { }}
-			    <li>{{sheetname}}</li>
+		  	{{# layui.each(item, function(sheet_name, content) { }}
+			    <li>{{sheet_name}}</li>
 		  	{{# }); }}
 		  </ul>
 		  <div class="layui-tab-content">
-		  	{{# layui.each(item, function(sheetname, content) { }}
+		  	{{# layui.each(item, function(sheet_name, content) { }}
 			    <div class="layui-tab-item">
 						<table class="layui-table">
-							{{# layui.each(content, function(index, value) { }}
+							{{# layui.each(content, function(row_index, value) { }}
+                {{# var col_index = 0 }}
 								<tr>
-									{{# layui.each(value, function(key, val) { }}
-									<td>{{val}}</td>
+									{{# layui.each(value, function(col_key, val) { }}
+									<td id="table-export-{{file_index}}-{{sheet_name}}-{{row_index}}-{{col_index++}}">{{val}}</td>
 									{{# });}}
 								</tr>
 							{{# });}}

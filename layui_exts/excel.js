@@ -576,6 +576,7 @@ LAY_EXCEL = {
 
     // 按照二进制读取
     var data = {};
+    var book = {};
     layui.each(files, function(index, item) {
       var reader = new FileReader();
       if (!reader) {
@@ -591,7 +592,8 @@ LAY_EXCEL = {
           // 全为空的去掉
           if (wb.Sheets.hasOwnProperty(sheet)) {
             var opt = {
-              header: option.header
+              header: option.header,
+              defval: ''
             };
             if (option.range) {
               opt.range = option.range;
@@ -604,9 +606,10 @@ LAY_EXCEL = {
           }
         });
         data[index] = excelData;
+        book[index] = wb;
         // 全部读取完毕才执行
         if (index === files.length - 1) {
-          callback && callback.apply && callback.apply(window, [data]);
+          callback && callback.apply && callback.apply(window, [data, book]);
         }
       };
       reader.readAsBinaryString(item);
