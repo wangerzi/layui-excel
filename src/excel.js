@@ -467,7 +467,7 @@ LAY_EXCEL = {
    */
   filterDataToAoaData: function(filterData){
     var aoaData = [];
-    layui.each(filterData, function(index, item) {
+    $.each(filterData, function(index, item) {
       var itemData = [];
       for (var i in item) {
         if (!item.hasOwnProperty(i)) {
@@ -528,8 +528,8 @@ LAY_EXCEL = {
    */
   filterImportData: function(data, fields) {
     var that = this;
-    layui.each(data, function(fileindex, xlsx) {
-      layui.each(xlsx, function(sheetname, content) {
+    $.each(data, function(fileindex, xlsx) {
+      $.each(xlsx, function(sheetname, content) {
         xlsx[sheetname] = that.filterExportData(content, fields);
       });
     });
@@ -568,7 +568,7 @@ LAY_EXCEL = {
       'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
       ''
     ];
-    layui.each(files, function(index, item) {
+    $.each(files, function(index, item) {
       if (supportReadMime.indexOf(item.type) === -1) {
         throw {code: 999, message: item.name+'（'+item.type+'）为不支持的文件类型'};
       }
@@ -577,7 +577,7 @@ LAY_EXCEL = {
     // 按照二进制读取
     var data = {};
     var book = {};
-    layui.each(files, function(index, item) {
+    $.each(files, function(index, item) {
       var reader = new FileReader();
       if (!reader) {
         throw {code: 999, message: '不支持FileReader，请更换更新的浏览器'};
@@ -588,7 +588,7 @@ LAY_EXCEL = {
           type: 'binary'
         });
         var excelData = {};
-        layui.each(wb.Sheets, function(sheet, sheetObj) {
+        $.each(wb.Sheets, function(sheet, sheetObj) {
           // 全为空的去掉
           if (wb.Sheets.hasOwnProperty(sheet)) {
             var opt = {

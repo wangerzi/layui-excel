@@ -25,8 +25,8 @@ layui.use(['jquery', 'layer', 'upload', 'excel', 'laytpl', 'element', 'code'], f
   function uploadExcel(files) {
     try {
       excel.importExcel(files, {
-        // 读取数据的同时梳理数据
-        fields: {
+        // 可以在读取数据的同时梳理数据
+        /*fields: {
           'id': 'A'
           , 'username': 'B'
           , 'experience': 'C'
@@ -36,23 +36,22 @@ layui.use(['jquery', 'layer', 'upload', 'excel', 'laytpl', 'element', 'code'], f
           , 'classify': 'G'
           , 'wealth': 'H'
           , 'sign': 'I'
-        }
+        }*/
       }, function (data, book) {
         // data: {1: {sheet1: [{id: 1, name: 2}, {...}]}}// 工作表的数据对象
         // book: {1: {Sheets: {}, Props: {}, ....}} // 工作表的整个原生对象，https://github.com/SheetJS/js-xlsx#workbook-object
-        // 还可以再进行数据梳理
-        /*						data = excel.filterImportData(data, {
-                 'id': 'A'
-                 ,'username': 'B'
-                 ,'experience': 'C'
-                 ,'sex': 'D'
-                 ,'score': 'E'
-                 ,'city': 'F'
-                 ,'classify': 'G'
-                 ,'wealth': 'H'
-                 ,'sign': 'I'
-               });
-        */
+        // 也可以全部读取出来再进行数据梳理
+        data = excel.filterImportData(data, {
+          'id': 'A'
+          , 'username': 'B'
+          , 'experience': 'C'
+          , 'sex': 'D'
+          , 'score': 'E'
+          , 'city': 'F'
+          , 'classify': 'G'
+          , 'wealth': 'H'
+          , 'sign': 'I'
+        })
         // 如果不需要展示直接上传，可以再次 $.ajax() 将JSON数据通过 JSON.stringify() 处理后传递到后端即可
         /**
          * 2019-06-21 JeffreyWang 应群友需求，加一个单元格合并还原转换
@@ -96,7 +95,7 @@ layui.use(['jquery', 'layer', 'upload', 'excel', 'laytpl', 'element', 'code'], f
                       if (r === mergeObj.s.r && c === mergeObj.s.c) {
                         continue
                       }
-                      $('#table-export-' + file_index + '-' + sheet_name + '-' + r + '-' + c).remove();
+                      $('#table-export-' + file_index + '-' + sheet_name + '-' + r + '-' + c).remove()
                     }
                   }
                 }
