@@ -418,6 +418,7 @@ function exportStyleDemo() {
       {username: '520', sex: '男', city: '上海', 'score': 100, 'start': '2019-03-11'},
       {username: '520', sex: '男', city: '上海', 'score': 100, 'start': '2019-03-11'},
       {username: '520', sex: '男', city: '上海', 'score': 100, 'start': '2019-03-11'},
+      {username: '520', sex: '男', city: '上海', 'score': 100, 'start': '2019-03-11'},
       {username: '520', sex: '男', city: '上海', 'score': 100, 'start': '2019-03-11'}
     ]// 假设的后台的数据
     // 1. 使用filter梳理一下
@@ -455,9 +456,10 @@ function exportStyleDemo() {
       [0, 0, 1, 1, 1, 1, 1, 0, 0],
       [0, 0, 0, 1, 1, 1, 1, 0, 0],
       [0, 0, 0, 0, 1, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0],
     ]
     // 2. 调用设置样式的函数，传入设置的范围，支持回调
-    excel.setExportCellStyle(data, 'A1:I9', {
+    excel.setExportCellStyle(data, 'A1:I10', {
       s: {
         fill: {bgColor: {indexed: 64}, fgColor: {rgb: "FF0000"}},
         alignment: {
@@ -479,7 +481,7 @@ function exportStyleDemo() {
     }, 80)
     var rowConfig = excel.makeRowConfig({
       1: 40,
-      9: 40
+      10: 40
     }, 40)
     excel.exportExcel(data, '批量设置样式.xlsx', 'xlsx', {
       extend: {

@@ -292,8 +292,8 @@ LAY_EXCEL = {
 
     // 以 rowIndex 为键，field 为值
     var fieldKeys = Object.keys(data[0]);
-    var maxCol = data.length -1;
-    var maxRow = fieldKeys.length - 1;
+    var maxCol = fieldKeys.length - 1;
+    var maxRow = data.length -1;
     // 默认 A1 ~ 右下角
     var startPos = {c: 0, r: 0};
     var endPos = {c: maxCol, r: maxRow};
