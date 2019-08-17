@@ -278,18 +278,11 @@ LAY_EXCEL = {
     return total;
   },
   /**
-   * 批量设置单元格属性
-   * @param  {array} data     [sheet级别的数据]
-   * @param  {string} range		 [范围字符串，比如 A1:C12，开始位置默认 A1，结束位置默认整个表格右下角]
-   * @param  {object} config   [批量设置的单元格属性]
-   * @param  {function} filter   [回调函数，传递函数生效，返回值作为新的值（可用于过滤、规则替换样式等骚操作）]
-   * @return {array}          [重新渲染后的 sheet 数据]
+   * 获取数据范围内有效范围
+   * @param data array sheet级别的数据
+   * @param range 范围字符串，如 A1:C12，默认从左上角到右下角
    */
-  setExportCellStyle: function(data, range, config, filter) {
-    if (typeof data !== 'object' || !data.length || !data[0] || !Object.keys(data[0]).length) {
-      return [];
-    }
-
+  getDefaultRange: function(data, range) {
     // 以 rowIndex 为键，field 为值
     var fieldKeys = Object.keys(data[0]);
     var maxCol = fieldKeys.length - 1;
@@ -321,7 +314,22 @@ LAY_EXCEL = {
     if (startPos.r > endPos.r) {
       console.error('开始行不得大于结束行');
     }
-
+    return {
+      startPos: startPos,
+      endPos: endPos,
+      fieldKeys: fieldKeys
+    }
+  },
+  /**
+   * 根据 startPos endPos 遍历设置单元格属性，支持 filter 回调处理
+   * @param data array sheet级别数据
+   * @param startPos object {c: 开始列索引, r: 开始行索引}
+   * @param endPos object {c: 结束列索引, r: 结束行索引}
+   * @param fieldKeys ['第一列属性Key', '第二列属性Key']
+   * @param config object {s: {样式}, v: '值'}
+   * @param filter callable 回调函数，入参 cell(原cell)，newCell(新cell),row(当前行),config(配置), currentRow(当前行索引), currentCol(当前列索引-数字),currentColKey(当前列索引-对象)
+   */
+  setCellStyle: function (data, startPos, endPos, fieldKeys, config, filter) {
     // 遍历范围内的数据，进行样式设置，按从上到下从左到右按行遍历
     for (var currentRow = startPos.r; currentRow <= endPos.r; currentRow++) {
       for (var currentCol = startPos.c; currentCol <= endPos.c; currentCol++) {
@@ -357,6 +365,99 @@ LAY_EXCEL = {
         data[currentRow][fieldKeys[currentCol]] = newCell;
       }
     }
+  },
+  /**
+   * 设置范围内环绕的边框
+   * @param data [sheet级别的数据]
+   * @param range [范围字符串，如 A1:C12，默认从左上角到右下角]
+   * @param config [border 上下左右属性配置信息（对角线的三个属性被下放到left/right/top/bottom下），如：{top: {xxx}, bottom: {}, left: {}, right: {}}]
+   */
+  setRoundBorder: function(data, range, config) {
+    if (typeof data !== 'object' || !data.length || !data[0] || !Object.keys(data[0]).length) {
+      return [];
+    }
+
+    var rangeObj = this.getDefaultRange(data, range);
+    var startPos = rangeObj.startPos;
+    var endPos = rangeObj.endPos;
+    var fieldKeys = rangeObj.fieldKeys;
+
+    // 顶部 border 属性取 config.top
+    this.setCellStyle(data, startPos, {
+      c: endPos.c,
+      r: startPos.r
+    }, fieldKeys, {
+      s: {
+        border: {
+          top: config.top,
+          diagonal: config.top.diagonal,
+          diagonalUp: config.top.diagonalUp,
+          diagonalDown: config.top.diagonalDown
+        }
+      }
+    })
+    // 右侧 border 属性取 config.right
+    this.setCellStyle(data, {
+      c: endPos.c,
+      r: startPos.r
+    }, endPos, fieldKeys, {
+      s: {
+        border: {
+          right: config.right,
+          diagonal: config.right.diagonal,
+          diagonalUp: config.right.diagonalUp,
+          diagonalDown: config.right.diagonalDown
+        }
+      }
+    })
+    // 底部 border 属性取 config.bottom
+    this.setCellStyle(data, {
+      c: startPos.c,
+      r: endPos.r
+    }, endPos, fieldKeys, {
+      s: {
+        border: {
+          bottom: config.bottom,
+          diagonal: config.bottom.diagonal,
+          diagonalUp: config.bottom.diagonalUp,
+          diagonalDown: config.bottom.diagonalDown
+        }
+      }
+    })
+    // 左侧 border 属性取 config.left
+    this.setCellStyle(data, startPos, {
+      c: startPos.c,
+      r: endPos.r
+    }, fieldKeys, {
+      s: {
+        border: {
+          left: config.left,
+          diagonal: config.left.diagonal,
+          diagonalUp: config.left.diagonalUp,
+          diagonalDown: config.left.diagonalDown
+        }
+      }
+    })
+  },
+  /**
+   * 批量设置单元格属性
+   * @param  {array} data     [sheet级别的数据]
+   * @param  {string} range		 [范围字符串，比如 A1:C12，开始位置默认 A1，结束位置默认整个表格右下角]
+   * @param  {object} config   [批量设置的单元格属性]
+   * @param  {function} filter   [回调函数，传递函数生效，返回值作为新的值（可用于过滤、规则替换样式等骚操作）]
+   * @return {array}          [重新渲染后的 sheet 数据]
+   */
+  setExportCellStyle: function(data, range, config, filter) {
+    if (typeof data !== 'object' || !data.length || !data[0] || !Object.keys(data[0]).length) {
+      return [];
+    }
+
+    var rangeObj = this.getDefaultRange(data, range);
+    var startPos = rangeObj.startPos;
+    var endPos = rangeObj.endPos;
+    var fieldKeys = rangeObj.fieldKeys;
+
+    this.setCellStyle(data, startPos, endPos, fieldKeys, config, filter);
     return data;
   },
   /**
@@ -369,7 +470,7 @@ LAY_EXCEL = {
     for (var index = 0; index < origin.length; index++) {
       merge.push({
         s: this.splitPosition(origin[index][0]),
-        e: this.splitPosition(origin[index][1]),
+        e: this.splitPosition(origin[index][1])
       });
     }
     return merge;

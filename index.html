@@ -4,6 +4,11 @@
 	<meta charset="utf-8">
 	<title>excel导出扩展分享</title>
 	<link rel="stylesheet" type="text/css" href="layui/css/layui.css">
+	<style>
+		.layui-container {
+			padding-bottom: 50px;
+		}
+	</style>
 	<script type="text/javascript" src="layui/layui.js"></script>
 	<script type="text/javascript">
 	layui.config({
@@ -47,6 +52,13 @@
 					</div>
 				</div>
 				<div class="layui-form-item">
+					<div class="layui-form-label">导入模板</div>
+					<div class="layui-form-block">
+						<a class="layui-btn layui-btn-primary" href="demos/test_import.xlsx">常规单元格数据</a>
+						<a class="layui-btn layui-btn-primary" href="demos/test_merge.xlsx">合并单元格数据</a>
+					</div>
+				</div>
+				<div class="layui-form-item">
 					<div class="layui-form-label">导入操作</div>
 					<div class="layui-form-block">
 						<input type="file" class="layui-btn layui-btn-primary" id="LAY-excel-import-excel" multiple="multiple">
@@ -66,19 +78,12 @@
 						</button>
 					</div>
 				</div>
-				<div class="layui-form-item">
-					<div class="layui-form-label">使用样例</div>
-					<div class="layui-form-block">
-						<button type="button" class="layui-btn layui-btn-primary" onclick="demoList()">查看样例列表</button>
-					</div>
-				</div>
-        <div class="layui-form-item">
-          <div class="layui-form-label">导入模板</div>
-          <div class="layui-form-block">
-            <a class="layui-btn layui-btn-primary" href="demos/test_import.xlsx">常规单元格数据</a>
-            <a class="layui-btn layui-btn-primary" href="demos/test_merge.xlsx">合并单元格数据</a>
-          </div>
-        </div>
+				<!--<div class="layui-form-item">-->
+					<!--<div class="layui-form-label">使用样例</div>-->
+					<!--<div class="layui-form-block">-->
+						<!--<button type="button" class="layui-btn layui-btn-primary" onclick="demoList()">查看样例列表</button>-->
+					<!--</div>-->
+				<!--</div>-->
 				<div class="layui-form-item">
 					<div class="layui-form-label">更新及文档</div>
 					<div class="layui-form-block">
@@ -89,6 +94,7 @@
 						<button type="button" class="layui-btn layui-btn-primary" onclick="groupAdd()">加群交流</button>
 					</div>
 				</div>
+				<div id="LAY-excel-demo-list-dom"></div>
 			</div>
 		</div>
 	</div>
@@ -136,16 +142,16 @@
 <table class="layui-table">
 	<thead>
 	<tr>
-		<td>路径</td>
-		<td>描述</td>
+		<td>样例描述</td>
+		<td>样例路径 <b style="color: #f00;">(可点击跳转)</b></td>
 		<td>贡献人</td>
 	</tr>
 	</thead>
 	<tbody>
   {{# layui.each(d.list, function(index, value) { }}
 	<tr>
-		<td><a href="{{value.href}}" target="_blank">{{value.path}}</a></td>
 		<td>{{value.desc}}</td>
+		<td><a href="{{value.href}}" target="_blank">{{value.path}}</a></td>
 		<td>{{value.person}}({{value.email}})</td>
 	</tr>
 	{{# });}}

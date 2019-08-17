@@ -19,7 +19,7 @@ layui.use(['jquery', 'layer', 'upload', 'excel', 'laytpl', 'element', 'code'], f
 
   /**
    * 上传excel的处理函数，传入文件对象数组
-   * @param  {[type]} files [description]
+   * @param  {FileList} files [description]
    * @return {[type]}       [description]
    */
   function uploadExcel(files) {
@@ -129,14 +129,17 @@ layui.use(['jquery', 'layer', 'upload', 'excel', 'laytpl', 'element', 'code'], f
       uploadExcel(files)
     })
     // 文件拖拽
-    $('body')[0].ondragover = function (e) {
+    document.body.ondragover = function (e) {
       e.preventDefault()
     }
-    $('body')[0].ondrop = function (e) {
+    document.body.ondrop = function (e) {
       e.preventDefault()
       var files = e.dataTransfer.files
       uploadExcel(files)
     }
+    // 2019-08-17 页面直接展示所有demo
+    renderDemoList()
+
   })
 })
 
@@ -493,15 +496,6 @@ function exportStyleDemo() {
 }
 
 /**
- * 快速设置边框辅助函数用法（待完善）
- */
-function exportBorderDemo() {
-  layui.use(['layer'], function () {
-    layer.msg('完善中')
-  })
-}
-
-/**
  * 加群交流弹窗
  * @return {[type]} [description]
  */
@@ -520,10 +514,9 @@ function groupAdd() {
   })
 }
 
-function demoList() {
-  layui.use(['laytpl', 'layer', 'jquery'], function () {
+function getDemoListContent(callback) {
+  layui.use(['laytpl', 'jquery'], function () {
     var laytpl = layui.laytpl
-    var layer = layui.layer
     var $ = layui.jquery
 
     var list = [
@@ -540,15 +533,53 @@ function demoList() {
         person: '藏锋入鞘',
         email: 'admin@wj2015.com',
         desc: '非LAYUI调用及原生表格导出'
+      },
+      {
+        href: 'demos/borderExport/index.html',
+        path: 'demos/borderExport/index.html',
+        person: '藏锋入鞘',
+        email: 'admin@wj2015.com',
+        desc: '边框设置DEMO'
+      },
+      {
+        href: 'demos/iframeExport/index.html',
+        path: 'demos/iframeExport/index.html',
+        person: '藏锋入鞘',
+        email: 'admin@wj2015.com',
+        desc: '子页面调用导出'
       }
     ]
     var content = laytpl($('#LAY-excel-demo-list').html()).render({
       list: list
     })
-    layer.open({
-      title: "使用样例"
-      , area: ['800px', '250px']
-      , content: content
+    if (typeof callback == 'function' && callback.apply) {
+      callback.apply(window, [content])
+    }
+  })
+}
+
+/**
+ * 弹窗弹出demo列表
+ */
+function demoList() {
+  getDemoListContent(function (content) {
+    layui.use(['layer'], function () {
+      var layer = layui.layer
+
+      layer.open({
+        title: "使用样例"
+        , area: ['800px', '250px']
+        , content: content
+      })
     })
+  })
+}
+
+/**
+ * 页面上直接展示demo列表
+ */
+function renderDemoList() {
+  getDemoListContent(function (content) {
+    $('#LAY-excel-demo-list-dom').html(content)
   })
 }
