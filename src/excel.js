@@ -647,7 +647,7 @@ LAY_EXCEL = {
     var option = {
       header: 'A',
       range: null,
-      fields: null,
+      fields: null
     };
     $.extend(option, opt);
     var that = this;

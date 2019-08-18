@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>时间处理</title>
+  <link rel="stylesheet" href="../../layui/css/layui.css">
+</head>
+<body>
+<div class="layui-container">
+  <div class="layui-row">
+    <div class="layui-col-md11 layui-col-md-offset1">
+      <fieldset class="layui-elem-field layui-field-title">
+        <legend>与时间相关的导入导出</legend>
+      </fieldset>
+      <blockquote class="layui-elem-quote">
+        时间在 Excel 中以数字的形式存在，具体意义是与 1990-01-01 00:00:00 相比的第几天，比如 1990-01-01 00:00:00 就存为1，1990-01-02 00:00:00 就存为2。为方便操作，插件提供了对应辅助方法。
+      </blockquote>
+      <div class="layui-form">
+        <div class="layui-form-item">
+          <div class="layui-form-label">时间操作</div>
+          <div class="layui-form-block">
+            <button type="button" class="layui-btn layui-btn-primary" onclick="exportTimeDemo()">导出各种格式的时间</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="../../layui/layui.js"></script>
+<script src="../../layui_exts/excel.js"></script>
+<script>
+  function exportTimeDemo() {
+    // 假设从后端拿到了 2019-08-18 00:00:00 的数据，然后前端需要导出不同的格式
+    var data = [
+      {
+        date1: '2019-08-18 20:30:12',
+        date2: '2019-08-18 20:30:12',
+        date3: '2019-08-18 20:30:12'
+      },
+      {
+        date1: '2019-08-18 20:30:12',
+        date2: '2019-08-18 20:30:12',
+        date3: '2019-08-18 20:30:12'
+      },
+      {
+        date1: '2019-08-18 20:30:12',
+        date2: '2019-08-18 20:30:12',
+        date3: '2019-08-18 20:30:12'
+      },
+      {
+        date1: '2019-08-18 20:30:12',
+        date2: '2019-08-18 20:30:12',
+        date3: '2019-08-18 20:30:12'
+      }
+    ];
+    LAY_EXCEL.filterExportData({
+      date1: function (v) {
+        return {
+          v: v,
+          t: 'n',
+          w: v
+        }
+      }
+    })
+    // 加表头
+    data.unshift({
+      date1: '第一种格式',
+      date2: '第二种格式',
+      date3: '第三种格式'
+    });
+    LAY_EXCEL.exportExcel(data, '导出各种格式的时间.xlsx', 'xlsx');
+  }
+</script>
+</body>
+</html>

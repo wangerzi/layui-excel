@@ -556,6 +556,13 @@ function getDemoListContent(callback) {
         person: '藏锋入鞘',
         email: 'admin@wj2015.com',
         desc: 'iframe子页面调用导出'
+      },
+      {
+        href: 'demos/timeHandle/index.html',
+        path: 'demos/timeHandle/index.html',
+        person: '藏锋入鞘',
+        email: 'admin@wj2015.com',
+        desc: '时间的导入导出控制'
       }
     ]
     var content = laytpl($('#LAY-excel-demo-list').html()).render({
