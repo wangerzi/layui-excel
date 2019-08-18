@@ -39,7 +39,9 @@
       name: '测试111',
       age: 20,
       sex: '男',
-      city: '魔都'
+      city: '魔都',
+      address: 'XX区XX县XX公路X号',
+      comment: '这是一个很长很长很长的备注~'
     }
     for (var i = 0; i < 10000; i++) {
       data.push(template)
@@ -48,7 +50,7 @@
   }
   function errorExport() {
     layui.use(['layer'], function () {
-      layui.layer.alert('部分情况无法弹出下载');
+      layui.layer.alert('部分情况下无法弹出下载');
       // 直接调用iframe中的导出函数无法弹出下载
       LAY_EXCEL.exportExcel(getExportData(), 'test.xlsx', 'xlsx')
     });

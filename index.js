@@ -41,7 +41,7 @@ layui.use(['jquery', 'layer', 'upload', 'excel', 'laytpl', 'element', 'code'], f
         // data: {1: {sheet1: [{id: 1, name: 2}, {...}]}}// 工作表的数据对象
         // book: {1: {Sheets: {}, Props: {}, ....}} // 工作表的整个原生对象，https://github.com/SheetJS/js-xlsx#workbook-object
         // 也可以全部读取出来再进行数据梳理
-        data = excel.filterImportData(data, {
+/*        data = excel.filterImportData(data, {
           'id': 'A'
           , 'username': 'B'
           , 'experience': 'C'
@@ -51,7 +51,7 @@ layui.use(['jquery', 'layer', 'upload', 'excel', 'laytpl', 'element', 'code'], f
           , 'classify': 'G'
           , 'wealth': 'H'
           , 'sign': 'I'
-        })
+        })*/
         // 如果不需要展示直接上传，可以再次 $.ajax() 将JSON数据通过 JSON.stringify() 处理后传递到后端即可
         /**
          * 2019-06-21 JeffreyWang 应群友需求，加一个单元格合并还原转换
@@ -117,16 +117,25 @@ layui.use(['jquery', 'layer', 'upload', 'excel', 'laytpl', 'element', 'code'], f
     , accept: 'file'
     , choose: function (obj) {// 选择文件回调
       var files = obj.pushFile()
-      files = Object.values(files)// 注意这里的数据需要是数组，所以需要转换一下
-      uploadExcel(files) // 如果只需要最新选择的文件，可以这样写： uploadExcel([files.pop()])
+      var fileArr = Object.values(files)// 注意这里的数据需要是数组，所以需要转换一下
+      // 用完就清理掉，避免多次选中相同文件时出现问题
+      for (var index in files) {
+        if (files.hasOwnProperty(index)) {
+          delete files[index]
+        }
+      }
+      uploadExcel(fileArr) // 如果只需要最新选择的文件，可以这样写： uploadExcel([files.pop()])
     }
   })
 
   $(function () {
     // 监听上传文件的事件
     $('#LAY-excel-import-excel').change(function (e) {
-      var files = e.target.files
+      // 注意：这里直接引用 e.target.files 会导致 FileList 对象在读取之前变化，导致无法弹出文件
+      var files = Object.values(e.target.files)
       uploadExcel(files)
+      // 变更完清空，否则选择同一个文件不触发此事件
+      e.target.value = ''
     })
     // 文件拖拽
     document.body.ondragover = function (e) {
@@ -546,7 +555,7 @@ function getDemoListContent(callback) {
         path: 'demos/iframeExport/index.html',
         person: '藏锋入鞘',
         email: 'admin@wj2015.com',
-        desc: '子页面调用导出'
+        desc: 'iframe子页面调用导出'
       }
     ]
     var content = laytpl($('#LAY-excel-demo-list').html()).render({
