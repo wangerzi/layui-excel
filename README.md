@@ -59,6 +59,8 @@
 | ------------------------------------------------------------ | ------------------------- | -------------------------- |
 | [demos/tableExport/index.html](http://excel.wj2015.com/demos/tableExport/index.html) | 导出表格数据的DEMO        | 雨桐(yuton.yao@qq.com)     |
 | [demos/noLayui/index.html](http://excel.wj2015.com/demos/noLayui/index.html) | 非LAYUI调用及原生表格导出 | 藏锋入鞘(admin@wj2015.com) |
+| [demos/borderExport/index.html](http://excel.wj2015.com/demos/borderExport/index.html) | 便捷边框设置DEMO          | 藏锋入鞘(admin@wj2015.com) |
+| [demos/iframeExport/index.html](http://excel.wj2015.com/demos/iframeExport/index.html) | iframe子页面调用导出      | 藏锋入鞘(admin@wj2015.com) |
 
 ## 期望收集
 
@@ -72,9 +74,9 @@
 - [x] 可以读取Excel内容(个人)
 - [x] 支持一个Excel导出多个sheet（个人、社区：[玛琳菲森 ](https://fly.layui.com/u/29272992/)）
 - [x] 批量设置样式(个人、交流群：limin)
-- [ ] 边框设置的样例(交流群：limin)
+- [x] 边框设置的样例(交流群：limin)
 - [x] layui上传文件的样例(交流群：睡不够先森)
-- [ ] 替换官方的导出功能（社区：[yutons](https://fly.layui.com/u/5932248/)）
+- [x] 替换官方的导出功能（社区：[yutons](https://fly.layui.com/u/5932248/)）
 - [ ] 分段上传辅助函数(交流群：忘了名字）
 - [ ] 获取一定范围的EXCEL数据导入辅助(交流群：忘了名字)
 - [ ] 导入时间转换函数(交流群：你〃祗是莪命中的過客つ)
@@ -111,6 +113,18 @@
 
 > 由于插件规模扩大和功能的增加，导致插件上手难度有一定的增加。但如果只使用核心功能，其实没有必要去研究插件的所有方法，故在此把此插件解决核心需求的方法展示出来。
 
+#### 试一试：一句话导出 Hello World
+
+> 在 [http://excel.wj2015.com](http://excel.wj2015.com) 下按 F12 弹出 console 调试工具，然后在里边输入如下命令，下载完毕后打开看到如下结果就说明成功了
+
+```javascript
+LAY_EXCEL.exportExcel([['Hello', 'World', '!']], 'hello.xlsx', 'xlsx')
+```
+
+![1566996326664](assets\1566996326664.png)
+
+PS：这个就是核心的导出功能，第一个参数是一个二维数组，第二个参数是导出文件名，第三个参数是文件类型，是不是特别简洁，有一定JS基础的童鞋相信一眼就能看懂！下面继续介绍如何与 AJAX 结合，导出后端给到的数据。
+
 #### 第一步：从后台获取需要导出的数据
 
 > 一般的导出场景是后端给出获取数据的接口，前端请求后端接口后，根据接口返回参数导出，所以需要 $.ajax() 异步请求接口数据
@@ -130,7 +144,7 @@ $.ajax({
 
 如果使用 `layuiadmin`,则只需要将插件(`layui_exts/excel.js`)放到 `controller/`下,然后 `layui.use` 即可,或者可以放在 `lib/extend` 中,只不过需要改 `config.js`
 
-非 `layuiadmin` 的Layui项目初始化如下：
+Layui项目，非 `layuiadmin` 的插件初始化如下：
 
 ```javascript
 layui.config({
@@ -140,7 +154,7 @@ layui.config({
 });
 ```
 
-非Layui框架，script标签引入`jQuery`和`layui_exts/excel.js`后，直接使用 `LAY_EXCEL` 全局变量调用函数即可，如：
+**PS:现已支持直接引入JS文件的方式加载插件，然后通过 LAY_EXCEL 全局变量调用相关函数了，非LAYUI或者不熟悉LAYUI的插件加载机制的童鞋可以在HTML文件中通过 script 标签引入，如：**
 
 ```html
 <!--先加载jquery-->
@@ -196,15 +210,16 @@ layui.use(['jquery', 'excel', 'layer'], function() {
 
 | 函数名                                          | 描述                                                        | 索引                                                         |
 | ----------------------------------------------- | ----------------------------------------------------------- | ------------------------------------------------------------ |
-| **exportExcel(data, filename, type, opt)**      | 导出数据，并弹出指定文件名的下载框                          | [exportExcel参数配置](https://github.com/wangerzi/layui-excel#exportexcel%E5%8F%82%E6%95%B0%E9%85%8D%E7%BD%AE) |
-| downloadExl(data, filename, type)               | 快速导出excel，无需指定 sheet_name 和文件后缀               | [downloadExl参数配置](https://github.com/wangerzi/layui-excel#downloadexl%E5%8F%82%E6%95%B0%E9%85%8D%E7%BD%AE) |
-| **filterExportData(data, fields)**              | 梳理导出的数据，包括字段排序和多余数据                      | [filterExportData参数配置](https://github.com/wangerzi/layui-excel#filterexportdata%E5%8F%82%E6%95%B0%E9%85%8D%E7%BD%AE) |
-| **importExcel(files, opt, callback)**           | 读取Excel，支持多文件多表格读取                             | [importExcel参数配置](https://github.com/wangerzi/layui-excel#importexcel%E5%8F%82%E6%95%B0%E9%85%8D%E7%BD%AE) |
-| **makeMergeConfig(origin)**                     | 生成合并的配置参数，返回结果需放置于opt.extend['!merges']中 | [makeMergeConfig参数配置](https://github.com/wangerzi/layui-excel#makemergeconfig%E5%8F%82%E6%95%B0%E9%85%8D%E7%BD%AE) |
-| setExportCellStyle(data, range, config, filter) | 为sheet级别数据批量设置单元格属性                           | [setExportCellStyle参数配置](https://github.com/wangerzi/layui-excel#setExportCellStyle%E5%8F%82%E6%95%B0%E9%85%8D%E7%BD%AE) |
-| makeColConfig(data, defaultNum)                 | 生成列宽配置，返回结果需放置于opt.extend['!cols']中         | [makeColConfig参数配置](https://github.com/wangerzi/layui-excel#makecolconfig%E5%8F%82%E6%95%B0%E9%85%8D%E7%BD%AE) |
-| makeRowConfig(data, defaultNum)                 | 生成行高配置，返回结果需放置于opt.extend['!rows']           | [makeRowConfig参数配置](https://github.com/wangerzi/layui-excel#makerowconfig%E5%8F%82%E6%95%B0%E9%85%8D%E7%BD%AE) |
-| tableToJson(dom)                                | 将原生table转换为JSON格式                                   | [tableToJson参数配置](https://github.com/wangerzi/layui-excel#tabletojson%E5%8F%82%E6%95%B0%E9%85%8D%E7%BD%AE) |
+| **exportExcel(data, filename, type, opt)**      | 导出数据，并弹出指定文件名的下载框                          | [exportExcel参数配置](#exportexcel%E5%8F%82%E6%95%B0%E9%85%8D%E7%BD%AE) |
+| downloadExl(data, filename, type)               | 快速导出excel，无需指定 sheet_name 和文件后缀               | [downloadExl参数配置](#downloadexl%E5%8F%82%E6%95%B0%E9%85%8D%E7%BD%AE) |
+| **filterExportData(data, fields)**              | 梳理导出的数据，包括字段排序和多余数据                      | [filterExportData参数配置](#filterexportdata%E5%8F%82%E6%95%B0%E9%85%8D%E7%BD%AE) |
+| **importExcel(files, opt, callback)**           | 读取Excel，支持多文件多表格读取                             | [importExcel参数配置](#importexcel%E5%8F%82%E6%95%B0%E9%85%8D%E7%BD%AE) |
+| **makeMergeConfig(origin)**                     | 生成合并的配置参数，返回结果需放置于opt.extend['!merges']中 | [makeMergeConfig参数配置](#makemergeconfig%E5%8F%82%E6%95%B0%E9%85%8D%E7%BD%AE) |
+| setExportCellStyle(data, range, config, filter) | 为sheet级别数据批量设置单元格属性                           | [setExportCellStyle参数配置](#setExportCellStyle%E5%8F%82%E6%95%B0%E9%85%8D%E7%BD%AE) |
+| makeColConfig(data, defaultNum)                 | 生成列宽配置，返回结果需放置于opt.extend['!cols']中         | [makeColConfig参数配置](#makecolconfig%E5%8F%82%E6%95%B0%E9%85%8D%E7%BD%AE) |
+| makeRowConfig(data, defaultNum)                 | 生成行高配置，返回结果需放置于opt.extend['!rows']           | [makeRowConfig参数配置](#makerowconfig%E5%8F%82%E6%95%B0%E9%85%8D%E7%BD%AE) |
+| tableToJson(dom)                                | 将原生table转换为JSON格式                                   | [tableToJson参数配置](#tabletojson%E5%8F%82%E6%95%B0%E9%85%8D%E7%BD%AE) |
+| setRoundBorder(data, range ,config)             | 设置范围环绕的边框                                          | [setRoundBorder参数配置](#setRoundBorder%E5%8F%82%E6%95%B0%E9%85%8D%E7%BD%AE) |
 | filterDataToAoaData(sheet_data)                 | 将单个sheet的映射数组数据转换为加速导出效率的aoa数据        | 无                                                           |
 | filterImportData(data, fields)                  | 梳理导入的数据，字段含义与 filterExportData 类似            | 无                                                           |
 | numToTitle(num)                                 | 将1/2/3...转换为A/B/C/D.../AA/AB/.../ZZ/AAA形式             | 无                                                           |
@@ -553,39 +568,6 @@ excel.exportExcel({
 });
 ```
 
-#### tableToJson参数配置
-
-> 辅助方法：将原生DOM的表格转换为JSON形式的数据
-
-##### 传入参数
-
-| 参数名称 | 描述                            | 默认值 |
-| -------- | ------------------------------- | ------ |
-| dom      | 原生表格的DOM对象或者jQuery对象 | null   |
-
-##### 返回参数
-
-| 参数名称 | 类型  | 描述               |
-| -------- | ----- | ------------------ |
-| head     | array | 表格头部的数组数据 |
-| body     | array | 表格body的数组数据 |
-
-##### 使用样例
-
-> head是头部数据，body是尾部数据，使用 arr1.push.apply(arr, arr2) 可以合并数组
-
-```javascript
-// 获取头部和body
-var data = LAY_EXCEL.tableToJson(document.getElementById('LAY-EXPORT-TEST')) // 或者 $('#LAY-EXPORT-TEST')
-// console.log(data)
-var exportData = []
-exportData.push.apply(exportData, data.head)
-exportData.push.apply(exportData, data.body)
-// console.log(exportData)
-
-LAY_EXCEL.exportExcel(exportData, '表格导出.xlsx', 'xlsx')
-```
-
 #### importExcel参数配置
 
 > 核心方法，用于读取用户选择的Excel信息，文件读取基于 FileReader，所以对浏览器版本要求较高
@@ -658,6 +640,39 @@ $(function(){
 });
 ```
 
+#### tableToJson参数配置
+
+> 辅助方法：将原生DOM的表格转换为JSON形式的数据
+
+##### 传入参数
+
+| 参数名称 | 描述                            | 默认值 |
+| -------- | ------------------------------- | ------ |
+| dom      | 原生表格的DOM对象或者jQuery对象 | null   |
+
+##### 返回参数
+
+| 参数名称 | 类型  | 描述               |
+| -------- | ----- | ------------------ |
+| head     | array | 表格头部的数组数据 |
+| body     | array | 表格body的数组数据 |
+
+##### 使用样例
+
+> head是头部数据，body是尾部数据，使用 arr1.push.apply(arr, arr2) 可以合并数组
+
+```javascript
+// 获取头部和body
+var data = LAY_EXCEL.tableToJson(document.getElementById('LAY-EXPORT-TEST')) // 或者 $('#LAY-EXPORT-TEST')
+// console.log(data)
+var exportData = []
+exportData.push.apply(exportData, data.head)
+exportData.push.apply(exportData, data.body)
+// console.log(exportData)
+
+LAY_EXCEL.exportExcel(exportData, '表格导出.xlsx', 'xlsx')
+```
+
 ## 样式设置专区：
 
 #### s属性支持的单元格样式
@@ -684,7 +699,7 @@ $(function(){
 |                 |                | `"m/dd/yy"` // 使用Excel的格式表示法字符串日期格式 |
 | alignment       | vertical       | `"bottom"` or `"center"` or `"top"`|
 |                 | horizontal     | `"bottom"` or `"center"` or `"top"`|
-|                 | wrapText       |  `true ` or ` false`|
+|                 | wrapText       | `true ` or ` false` // 自动换行 |
 |                 | readingOrder   | `2` // 从右到左 |
 |                 | textRotation   | 从 `0` 到 `180` 或者 `255` (默认为 `0`) |
 |                 |                | `90` 旋转90度 |
@@ -735,7 +750,7 @@ $(function(){
 
 > 数据规模：前端导出**纯数据 9列10w** 的数据量需要 **7秒左右**的时间，**30W数据占用1.8G，耗时24秒**，普通电脑**最多能导出50w数据，耗时45秒**，文件大小173M，提示内存超限
 
-- 如果数据量比较大，**并且不涉及样式**，最好直接转换为纯数组的导出，可以省去 filterExportData 和 组装样式的时间和内存（PS：效率提升不算太大，30W数据能提速2s左右，资源主要消耗在调用 XLSX.js之后）
+- 如果数据量比较大，**并且不涉及样式**，最好直接转换为纯数组+CSV的导出，可以省去 filterExportData 和 组装样式的时间和内存（PS：效率提升不算太大，30W数据能提速2s左右，资源主要消耗在调用 XLSX.js之后）
 - 一般 exportExcel 会放在 $.ajax() 等异步调用中，如果有需要在点击后纯前端生成Excel，可以使用 async、setTimeout等方式实现异步导出，否则会阻塞主进程。
 
 ## 功能概览：
@@ -856,7 +871,9 @@ layui.use(['jquery', 'excel', 'layer'], function() {
 
 ## 更新预告：
 
-v1.6 支持快速设置边框，支持压缩（已实现），支持CSV（已实现），支持边距设置（已实现），DEMO贡献模块（已实现），替换官方的导出功能（Demo已实现），分段递归获取数据函数封装，支持导出原生table（已实现），非Layui调用（已实现），新增常见问题总览
+v1.7 分段递归获取数据函数封装，分段压缩打包功能，单元测试覆盖，尝试富文本，CI/CD
+
+v1.6 支持快速设置边框（已实现），支持压缩（已实现），支持CSV（已实现），支持边距设置（已实现），DEMO贡献模块（已实现），替换官方的导出功能（Demo已实现），支持导出原生table（已实现），非Layui调用（已实现），导出时间转换，常见问题整理，README文件优化
 
 ## 更新记录：
 
