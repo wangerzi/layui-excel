@@ -26,6 +26,8 @@
     </div>
   </div>
 </div>
+<!-- 借助一下monent.js，更多使用方法请参见文档：http://momentjs.cn/docs/#/use-it/ -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
 <script src="../../layui/layui.js"></script>
 <script src="../../layui_exts/excel.js"></script>
 <script>
@@ -53,12 +55,30 @@
         date3: '2019-08-18 20:30:12'
       }
     ];
-    LAY_EXCEL.filterExportData({
+    data = LAY_EXCEL.filterExportData(data, {
       date1: function (v) {
+        // 注：v传Date对象即可
+        var date = moment(v);
         return {
-          v: v,
-          t: 'n',
-          w: v
+          v: date.toDate(),
+          t: 'd',
+          w: 'YYYY-MM-DD'
+        }
+      },
+      date2: function (v) {
+        var date = moment(v);
+        return {
+          v: date.toDate(),
+          t: 'd',
+          w: 'YYYY年MM月DD日'
+        }
+      },
+      date3: function (v) {
+        var date = moment(v);
+        return {
+          v: date.toDate(),
+          t: 'd',
+          w: date.format('dddd, MMMM Do YYYY')
         }
       }
     })
