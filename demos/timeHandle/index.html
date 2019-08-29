@@ -62,7 +62,7 @@
         return {
           v: date.toDate(),
           t: 'd',
-          w: 'YYYY-MM-DD'
+          w: date.format('YYYY-MM-DD mm:dd:ss')
         }
       },
       date2: function (v) {
@@ -70,7 +70,7 @@
         return {
           v: date.toDate(),
           t: 'd',
-          w: 'YYYY年MM月DD日'
+          w: date.format('YYYY年MM月DD日')
         }
       },
       date3: function (v) {
