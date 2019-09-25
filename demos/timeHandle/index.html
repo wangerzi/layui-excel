@@ -26,8 +26,6 @@
     </div>
   </div>
 </div>
-<!-- 借助一下monent.js，更多使用方法请参见文档：http://momentjs.cn/docs/#/use-it/ -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
 <script src="../../layui/layui.js"></script>
 <script src="../../layui_exts/excel.js"></script>
 <script>
@@ -55,30 +53,34 @@
         date3: '2019-08-18 20:30:12'
       }
     ];
+    // filterExportData 是以列为维度的数据梳理函数，适用于梳理除表头外的纯粹数据，遵循左新右旧的原则，更多详见文档
     data = LAY_EXCEL.filterExportData(data, {
       date1: function (v) {
-        // 注：v传Date对象即可
-        var date = moment(v);
+        // 注：d传Date对象，v传入天数即可
+        var date = new Date(v);
         return {
-          v: date.toDate(),
+          d: date,
+          v: Number(date) / 86400000,
           t: 'd',
-          w: date.format('YYYY-MM-DD mm:dd:ss')
+          z: 'yy-m-d h:m:s'
         }
       },
       date2: function (v) {
-        var date = moment(v);
+        var date = new Date(v);
         return {
-          v: date.toDate(),
+          d: date,
+          v: Number(date) / 86400000,
           t: 'd',
-          w: date.format('YYYY年MM月DD日')
+          z: 'yyyy-mm-dd hh:mm:ss'
         }
       },
       date3: function (v) {
-        var date = moment(v);
+        var date = new Date(v);
         return {
-          v: date.toDate(),
+          d: date,
+          v: Number(date) / 86400000,
           t: 'd',
-          w: date.format('dddd, MMMM Do YYYY')
+          z: 'yyyy年mm月dd日 hh时mm分ss秒'
         }
       }
     })
@@ -88,6 +90,7 @@
       date2: '第二种格式',
       date3: '第三种格式'
     });
+    console.log(data)
     LAY_EXCEL.exportExcel(data, '导出各种格式的时间.xlsx', 'xlsx');
   }
 </script>
