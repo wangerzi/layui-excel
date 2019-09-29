@@ -256,14 +256,14 @@ function exportApiDemo(url) {
           , username: 'username'
           , experience: 'experience'
           , sex: 'sex'
-          , score: function (value, line, data) {
+          , score: function (value, line, data, lineIndex, newField) {
             // 可以直接指定类型为数字
             return {
               v: value,
               t: 'n'
             }
           }
-          , city: function (value, line, data) {
+          , city: function (value, line, data, lineIndex, newField) {
             return {
               v: value,
               s: {

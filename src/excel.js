@@ -609,7 +609,7 @@ LAY_EXCEL = {
         var old_field_name = true_fields[key];
         // 如果传入的是回调，则回调的值则为新值
         if (typeof old_field_name === 'function' && old_field_name.apply) {
-          exportData[i][new_field_name] = old_field_name.apply(window, [item[new_field_name], item, data]);
+          exportData[i][new_field_name] = old_field_name.apply(window, [item[new_field_name], item, data, i, new_field_name]);
         } else {
           if (typeof item[old_field_name] !== 'undefined') {
             exportData[i][new_field_name] = item[old_field_name];
