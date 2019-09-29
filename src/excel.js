@@ -4,7 +4,7 @@
 * @Version: v1.4
 * @Date:   2018-03-24 09:54:17
 * @Last Modified by:   Jeffrey Wang
-* @Last Modified time: 2019-01-15 11:49:09
+* @Last Modified ~: 2019-01-15 11:49:09
 */
 if (typeof layui === 'undefined' && typeof jQuery === 'undefined') {
 	console.error('非layui调用请先加载jQuery')
@@ -715,6 +715,90 @@ LAY_EXCEL = {
       };
       reader.readAsBinaryString(item);
     });
+  },
+  /**
+   * 格式化日期信息
+   * @param code double excel中存储的日期格式码
+   */
+  dateCodeToDate: function(code)
+  {
+    var obj = XLSX.SSF.parse_date_code(code);
+    return (new Date(obj.y + '-' + obj.m + '-' + obj.d + ' ' + obj.H + ':' + obj.M + ':' + obj.S));
+  },
+  strPad: function(str, maxLength, padString) {
+    str = str + ''
+    if (typeof maxLength === 'undefined') {
+      maxLength = 2
+    }
+    if (typeof padString === 'undefined') {
+      padString = ''
+    }
+
+    if (str.length < maxLength) {
+      var repeatCount = Math.floor((maxLength - str.length) / padString.length);
+      var exceptStr = '';
+      if (repeatCount * padString.length < str.length) {
+        exceptStr = padString.substr(0, str.length - repeatCount * padString.length)
+      }
+      if (repeatCount * padString)
+      return padString * repeatCount + exceptStr  + str
+    } else {
+      return str
+    }
+  },
+  /**
+   * 简易格式转换
+   * @param date Date 待转换时间
+   * @param format String 日期格式 YYYY-MM-DD HH:ii:ss
+   */
+  dateFormat: function(date, format)
+  {
+    if (!(date instanceof Date)) {
+      console.error(date+'需要是时间日期对象');
+    }
+    if (typeof format === 'undefined') {
+      format = 'YYYY-MM-DD HH:ii:ss';
+    }
+    // 制造 format 相关参数
+    var YYYY = date.getFullYear();
+    var YY = (YYYY + '').substr(2, 2)
+    var M = date.getMonth();
+    var MM = this.strPad(M, 2, '0');
+    var D = date.getDay();
+    var DD = this.strPad(D, 2, '0');
+    var H = date.getHours();
+    var HH = this.strPad(H, 2, '0');
+    var i = date.getMinutes();
+    var ii = this.strPad(i, 2, '0');
+    var s = date.getSeconds();
+    var ss = this.strPad(s, 2, '0');
+
+    var config = {
+      'YYYY': YYYY,
+      'YY': YY,
+      'MM': MM,
+      'M': M,
+      'DD': DD,
+      'D': D,
+      'HH': HH,
+      'H': H,
+      'ii': ii,
+      'i': i,
+      'ss': ss,
+      's': s
+    };
+
+    for (var key in config) {
+      if (!config.hasOwnProperty(key)) {
+        continue;
+      }
+
+      var reg = RegExp('/'+key+'/g');
+
+      format = format.replace(reg, config[key]);
+    }
+
+    return format;
   }
 }
 

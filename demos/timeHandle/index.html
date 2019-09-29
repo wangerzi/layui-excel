@@ -20,12 +20,17 @@
           <div class="layui-form-label">时间操作</div>
           <div class="layui-form-block">
             <button type="button" class="layui-btn layui-btn-primary" onclick="exportTimeDemo()">导出各种格式的时间</button>
+            <button type="button" class="layui-btn layui-btn-primary" onclick="importTimeDemo()">导入时间转换演示</button>
           </div>
         </div>
       </div>
     </div>
   </div>
 </div>
+<script type="text/html">
+<div>
+</div>
+</script>
 <script src="../../layui/layui.js"></script>
 <script src="../../layui_exts/excel.js"></script>
 <script>
@@ -90,8 +95,30 @@
       date2: '第二种格式',
       date3: '第三种格式'
     });
-    console.log(data)
     LAY_EXCEL.exportExcel(data, '导出各种格式的时间.xlsx', 'xlsx');
+  }
+
+  function importTimeDemo() {
+    // 假设导入拿到的数据如下（一个文件组成的数组）：
+    var data = [{
+      Sheet1: [
+          {"A":"格式1","B":"格式2","C":"格式三"},
+          {"A":43729,"B":43730,"C":43737.54167824074}
+      ]
+    }];
+    // 按照文档执行 filter 映射
+    data = LAY_EXCEL.filterImportData(data, {
+      'format_1': function (v, item, data, rowIndex, newFieldName) {
+        if (rowIndex > 0) {
+          // 首先，转换为 date 对象，然后进行格式化
+          var date = LAY_EXCEL.dateCodeToDate(item['A']);
+          return '';
+        } else {
+          return item['A'];
+        }
+      }
+    })
+    console.log(data)
   }
 </script>
 </body>
