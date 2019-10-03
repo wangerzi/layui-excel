@@ -717,7 +717,7 @@ LAY_EXCEL = {
     });
   },
   /**
-   * 格式化日期信息
+   * EXCEL日期码转换为Date对象
    * @param code double excel中存储的日期格式码
    */
   dateCodeToDate: function(code)

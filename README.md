@@ -79,7 +79,7 @@
 - [x] 替换官方的导出功能（社区：[yutons](https://fly.layui.com/u/5932248/)）
 - [ ] 分段上传辅助函数(交流群：忘了名字）
 - [ ] 获取一定范围的EXCEL数据导入辅助(交流群：忘了名字)
-- [ ] 导入时间转换函数(交流群：你〃祗是莪命中的過客つ)
+- [x] 导入时间转换函数(交流群：你〃祗是莪命中的過客つ)
 - [x] 通过改造xlsx.js彻底解决数字0不显示的问题([tanzx](https://github.com/tanzx))
 - [x] 导出压缩功能引入(交流群：你〃祗是莪命中的過客つ)
 - [ ] 分段导出时候的自动打包ZIP（交流群：一直被遗忘▼）
@@ -90,8 +90,8 @@
 ## BUG收集
 
 - [x] QQ浏览器MIME-TYPE 无法读取(交流群：三小)
-- [ ] 导出xls实际类型不一致问题（交流群：背后的故事†）
-- [ ] 导入日期处理(交流群：雨桐)
+- [x] 导出xls实际类型不一致问题（交流群：背后的故事†）
+- [x] 导入日期处理(交流群：雨桐)
 - [x] 导出;导致区分cell的问题
 - [x] 导入的range参数传递问题
 - [x] 直接传入数字0，单元格不显示的问题
@@ -208,23 +208,26 @@ layui.use(['jquery', 'excel', 'layer'], function() {
 
 > 仅做函数用途介绍，具体使用方法请见 『重要函数参数配置』
 
-| 函数名                                          | 描述                                                        | 索引                                                         |
-| ----------------------------------------------- | ----------------------------------------------------------- | ------------------------------------------------------------ |
-| **exportExcel(data, filename, type, opt)**      | 导出数据，并弹出指定文件名的下载框                          | [exportExcel参数配置](#exportexcel%E5%8F%82%E6%95%B0%E9%85%8D%E7%BD%AE) |
-| downloadExl(data, filename, type)               | 快速导出excel，无需指定 sheet_name 和文件后缀               | [downloadExl参数配置](#downloadexl%E5%8F%82%E6%95%B0%E9%85%8D%E7%BD%AE) |
-| **filterExportData(data, fields)**              | 梳理导出的数据，包括字段排序和多余数据                      | [filterExportData参数配置](#filterexportdata%E5%8F%82%E6%95%B0%E9%85%8D%E7%BD%AE) |
-| **importExcel(files, opt, callback)**           | 读取Excel，支持多文件多表格读取                             | [importExcel参数配置](#importexcel%E5%8F%82%E6%95%B0%E9%85%8D%E7%BD%AE) |
-| **makeMergeConfig(origin)**                     | 生成合并的配置参数，返回结果需放置于opt.extend['!merges']中 | [makeMergeConfig参数配置](#makemergeconfig%E5%8F%82%E6%95%B0%E9%85%8D%E7%BD%AE) |
-| setExportCellStyle(data, range, config, filter) | 为sheet级别数据批量设置单元格属性                           | [setExportCellStyle参数配置](#setExportCellStyle%E5%8F%82%E6%95%B0%E9%85%8D%E7%BD%AE) |
-| makeColConfig(data, defaultNum)                 | 生成列宽配置，返回结果需放置于opt.extend['!cols']中         | [makeColConfig参数配置](#makecolconfig%E5%8F%82%E6%95%B0%E9%85%8D%E7%BD%AE) |
-| makeRowConfig(data, defaultNum)                 | 生成行高配置，返回结果需放置于opt.extend['!rows']           | [makeRowConfig参数配置](#makerowconfig%E5%8F%82%E6%95%B0%E9%85%8D%E7%BD%AE) |
-| tableToJson(dom)                                | 将原生table转换为JSON格式                                   | [tableToJson参数配置](#tabletojson%E5%8F%82%E6%95%B0%E9%85%8D%E7%BD%AE) |
-| setRoundBorder(data, range ,config)             | 设置范围环绕的边框                                          | [setRoundBorder参数配置](#setRoundBorder%E5%8F%82%E6%95%B0%E9%85%8D%E7%BD%AE) |
-| filterDataToAoaData(sheet_data)                 | 将单个sheet的映射数组数据转换为加速导出效率的aoa数据        | 无                                                           |
-| filterImportData(data, fields)                  | 梳理导入的数据，字段含义与 filterExportData 类似            | 无                                                           |
-| numToTitle(num)                                 | 将1/2/3...转换为A/B/C/D.../AA/AB/.../ZZ/AAA形式             | 无                                                           |
-| titleToNum(title)                               | 将A、B、AA、ABC转换为 1、2、3形式的数字                     | 无                                                           |
-| splitPosition(pos)                              | 将A1分离成 {c: 0, r: 1} 格式的数据                          | 无                                                           |
+| 函数名                                              | 描述                                                        | 索引                                                         |
+| --------------------------------------------------- | ----------------------------------------------------------- | ------------------------------------------------------------ |
+| **exportExcel(data, filename, type, opt)**          | 导出数据，并弹出指定文件名的下载框                          | [exportExcel参数配置](#exportexcel%E5%8F%82%E6%95%B0%E9%85%8D%E7%BD%AE) |
+| downloadExl(data, filename, type)                   | 快速导出excel，无需指定 sheet_name 和文件后缀               | [downloadExl参数配置](#downloadexl%E5%8F%82%E6%95%B0%E9%85%8D%E7%BD%AE) |
+| **filterExportData(data, fields)**                  | 梳理导出的数据，包括字段排序和多余数据                      | [filterExportData参数配置](#filterexportdata%E5%8F%82%E6%95%B0%E9%85%8D%E7%BD%AE) |
+| **importExcel(files, opt, callback)**               | 读取Excel，支持多文件多表格读取                             | [importExcel参数配置](#importexcel%E5%8F%82%E6%95%B0%E9%85%8D%E7%BD%AE) |
+| **makeMergeConfig(origin)**                         | 生成合并的配置参数，返回结果需放置于opt.extend['!merges']中 | [makeMergeConfig参数配置](#makemergeconfig%E5%8F%82%E6%95%B0%E9%85%8D%E7%BD%AE) |
+| **setExportCellStyle(data, range, config, filter)** | 为sheet级别数据批量设置单元格属性                           | [setExportCellStyle参数配置](#setExportCellStyle%E5%8F%82%E6%95%B0%E9%85%8D%E7%BD%AE) |
+| makeColConfig(data, defaultNum)                     | 生成列宽配置，返回结果需放置于opt.extend['!cols']中         | [makeColConfig参数配置](#makecolconfig%E5%8F%82%E6%95%B0%E9%85%8D%E7%BD%AE) |
+| makeRowConfig(data, defaultNum)                     | 生成行高配置，返回结果需放置于opt.extend['!rows']           | [makeRowConfig参数配置](#makerowconfig%E5%8F%82%E6%95%B0%E9%85%8D%E7%BD%AE) |
+| tableToJson(dom)                                    | 将原生table转换为JSON格式                                   | [tableToJson参数配置](#tabletojson%E5%8F%82%E6%95%B0%E9%85%8D%E7%BD%AE) |
+| **setRoundBorder(data, range ,config)**             | 设置范围环绕的边框                                          | [setRoundBorder参数配置](#setRoundBorder%E5%8F%82%E6%95%B0%E9%85%8D%E7%BD%AE) |
+| dateCodeToDate(code)                                | EXCEL日期码转换为Date对象                                   | [dateCodeToDate参数配置](#dateCodeToDate%E5%8F%82%E6%95%B0%E9%85%8D%E7%BD%AE) |
+| dateFormat(date, format)                            | Date 对象格式化                                             | [dateFormat参数配置](#dateFormat%E5%8F%82%E6%95%B0%E9%85%8D%E7%BD%AE) |
+| dateCodeFormat(code, format)                        | EXCEL日期码转换为格式化字符串                               | [dateCodeFormat参数配置](#dateCodeFormat%E5%8F%82%E6%95%B0%E9%85%8D%E7%BD%AE) |
+| filterDataToAoaData(sheet_data)                     | 将单个sheet的映射数组数据转换为加速导出效率的aoa数据        | 无                                                           |
+| filterImportData(data, fields)                      | 梳理导入的数据，字段含义与 filterExportData 类似            | 无                                                           |
+| numToTitle(num)                                     | 将1/2/3...转换为A/B/C/D.../AA/AB/.../ZZ/AAA形式             | 无                                                           |
+| titleToNum(title)                                   | 将A、B、AA、ABC转换为 1、2、3形式的数字                     | 无                                                           |
+| splitPosition(pos)                                  | 将A1分离成 {c: 0, r: 1} 格式的数据                          | 无                                                           |
 
 ## 重要函数参数配置
 
@@ -481,6 +484,27 @@ excel.setExportCellStyle(data, 'A1:C3', {
 excel.exportExcel(data, '批量设置样式.xlsx', 'xlsx');
 ```
 
+#### setRoundBorder参数配置
+
+> 辅助方法：设置范围内环绕的边框
+
+| 参数名称 | 描述                                                         | 默认值                                        |
+| -------- | ------------------------------------------------------------ | --------------------------------------------- |
+| data     | Sheet级别的数据                                              | []                                            |
+| range    | 范围字符串，如 A1:C12，默认从左上角到右下角                  | "A1:C12"                                      |
+| config   | border 上下左右属性配置信息（对角线的三个属性被下放到left/right/top/bottom下） | {top: {xxx}, bottom: {}, left: {}, right: {}} |
+
+##### 调用样例
+
+```javascript
+LAY_EXCEL.setRoundBorder(list, 'A1:C2', {
+    top: {style: 'thick', color: {rgb: 'FFFF0000'}},
+    bottom: {style: 'thick', color: {rgb: 'FFFF0000'}},
+    left: {style: 'thick', color: {rgb: 'FFFF0000'}},
+    right: {style: 'thick', color: {rgb: 'FFFF0000'}}
+});
+```
+
 #### makeMergeConfig参数配置
 
 > 辅助方法：用于生成合并表格的配置项，注意需要传入到 exportExcel 的 opt.extend['!merge'] 中
@@ -671,6 +695,98 @@ exportData.push.apply(exportData, data.body)
 // console.log(exportData)
 
 LAY_EXCEL.exportExcel(exportData, '表格导出.xlsx', 'xlsx')
+```
+
+### EXCEL时间处理相关函数
+
+> 时间在 Excel 中以数字的形式存在，具体意义是与 1990-01-01 00:00:00 相比的第几天，比如 1990-01-01 00:00:00 就存为1，1990-01-02 00:00:00 就存为2。为方便操作，插件提供了对应辅助方法：dateCodeFormat('存储的数字'， '格式') 、dateFormat('Date对象', '格式')、dateCodeToDate('存储的数字') 方便操作。
+
+#### dateCodeToDate参数配置
+
+> 辅助方法：用于将EXCEL中的时间数字转换为 Date 对象
+
+##### 传入参数
+
+| 参数名称 | 描述                  | 默认值 |
+| -------- | --------------------- | ------ |
+| code     | EXCEL中存储的时间数字 |        |
+
+##### 返回参数
+
+转换过后的Date对象
+
+##### 使用样例
+
+```javascript
+var date = LAY_EXCEL.dateCodeToDate(43737.54167824074)
+console.log(date); // Sun Sep 29 2019 13:00:01 GMT+0800 (中国标准时间)
+```
+
+#### dateCodeFormat参数配置
+
+> 辅助方法：用于将EXCEL中的时间数字转换为对应格式的时间字符串
+
+##### 传入参数
+
+| 参数名称 | 描述                  | 默认值              |
+| -------- | --------------------- | ------------------- |
+| code     | EXCEL中存储的时间数字 |                     |
+| format   | 日期格式              | YYYY-MM-DD HH:ii:ss |
+
+##### 返回参数
+
+转换后的字符串
+
+##### 支持的替换参数
+
+可以将 format 中的字符串转换为特定含义的数字
+
+| 替换参数 | 含义                  |
+| -------- | --------------------- |
+| YY       | 二位数的年            |
+| YYYY     | 四位数的年            |
+| MM       | 二位数的月（补全0）   |
+| M        | 自然数的月（不补全0） |
+| DD       | 二位数的日（补全0）   |
+| D        | 自然数的日            |
+| HH       | 二位数的时（补全0）   |
+| H        | 自然数的时            |
+| ii       | 二位数的分            |
+| i        | 自然数的分            |
+| ss       | 二位数的秒            |
+| s        | 自然数的秒            |
+
+##### 使用样例
+
+```javascript
+var date = LAY_EXCEL.dateCodeFormat(43737.54167824074, 'YYYY-MM-DD HH:ii:ss')
+console.log(date) // "2019-08-00 13:00:01"
+```
+
+#### dateFormat参数配置
+
+> 辅助方法：用于将Date对象转换为对应格式的时间字符串
+
+##### 传入参数
+
+| 参数名称 | 描述     | 默认值              |
+| -------- | -------- | ------------------- |
+| date     | Date对象 |                     |
+| format   | 日期格式 | YYYY-MM-DD HH:ii:ss |
+
+##### 返回参数
+
+转换后的字符串
+
+##### 支持的替换参数
+
+与上文相同
+
+##### 使用样例
+
+```javascript
+var date = LAY_EXCEL.dateCodeFormat(new Date(), 'YYYY-MM-DD HH:ii:ss')
+console.log(date) // "2019-09-04 22:39:25"
 ```
 
 ## 样式设置专区：
@@ -871,11 +987,11 @@ layui.use(['jquery', 'excel', 'layer'], function() {
 
 ## 更新预告：
 
-v1.7 分段递归获取数据函数封装，分段压缩打包功能，单元测试覆盖，CI/CD
-
-v1.6 支持快速设置边框（已实现），支持压缩（已实现），支持CSV（已实现），支持边距设置（已实现），DEMO贡献模块（已实现），替换官方的导出功能（Demo已实现），支持导出原生table（已实现），非Layui调用（已实现），导出时间转换，常见问题整理，README文件优化
+v1.7 分段递归获取数据函数封装，分段压缩打包功能，常见问题整理，单元测试覆盖，CI/CD
 
 ## 更新记录：
+
+2019-10-03 v1.6 支持快速设置边框，支持压缩，支持CSV，支持边距设置，DEMO贡献模块，替换官方的导出功能，支持导出原生table，非Layui调用，导出时间转换，README文件优化
 
 2019-03-11 v1.5 打包依赖方便使用并增加兼容性，支持花式设置样式，正式支持导入，修复各种BUG
 
