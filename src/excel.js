@@ -725,22 +725,33 @@ LAY_EXCEL = {
     var obj = XLSX.SSF.parse_date_code(code);
     return (new Date(obj.y + '-' + obj.m + '-' + obj.d + ' ' + obj.H + ':' + obj.M + ':' + obj.S));
   },
+  /**
+   * 字符补全函数
+   * @param str
+   * @param maxLength
+   * @param padString
+   * @returns {*}
+   */
   strPad: function(str, maxLength, padString) {
     str = str + ''
     if (typeof maxLength === 'undefined') {
       maxLength = 2
     }
     if (typeof padString === 'undefined') {
-      padString = ''
+      padString = '0'
+    }
+
+    if (padString.length <= 0) {
+      console.error('strPad error');
+      return str;
     }
 
     if (str.length < maxLength) {
       var repeatCount = Math.floor((maxLength - str.length) / padString.length);
       var exceptStr = '';
-      if (repeatCount * padString.length < str.length) {
-        exceptStr = padString.substr(0, str.length - repeatCount * padString.length)
+      if (repeatCount * padString.length < maxLength - 1) {
+        exceptStr = padString.substr(0, maxLength - 1 - repeatCount * padString.length)
       }
-      if (repeatCount * padString)
       return padString * repeatCount + exceptStr  + str
     } else {
       return str
@@ -793,12 +804,21 @@ LAY_EXCEL = {
         continue;
       }
 
-      var reg = RegExp('/'+key+'/g');
+      var reg = RegExp(key, 'g');
 
       format = format.replace(reg, config[key]);
     }
 
     return format;
+  },
+  /**
+   * excel的日期CODE格式化
+   * @param code
+   * @param format
+   * @returns {*|void|string}
+   */
+  dateCodeFormat: function (code, format) {
+    return this.dateFormat(this.dateCodeToDate(code), format)
   }
 }
 
