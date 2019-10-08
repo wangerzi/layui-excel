@@ -27,5 +27,8 @@
   "bugs": {
     "url": "https://github.com/wangerzi/layui-excel/issues"
   },
-  "homepage": "https://github.com/wangerzi/layui-excel#readme"
+  "homepage": "https://github.com/wangerzi/layui-excel#readme",
+  "dependencies": {
+    "npm": "^6.11.3"
+  }
 }

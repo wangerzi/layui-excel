@@ -1,0 +1,37 @@
+{
+  "author": "Jeffrey Wang <admin@wj2015.com>",
+  "description": "This is a doc created by gitbook",
+  "extension": null,
+  "generator": "site",
+  "isbn": "",
+  "links": {
+    "sharing": {
+      "all": null,
+      "facebook": null,
+      "google": null,
+      "twitter": null,
+      "weibo": null
+    },
+    "sidebar": {
+      "作者博客": "https://blog.wj2015.com",
+      "功能演示": "http://excel.wj2015.com"
+    }
+  },
+  "output": null,
+  "pdf": {
+    "fontSize": 12,
+    "footerTemplate": null,
+    "headerTemplate": null,
+    "margin": {
+      "bottom": 36,
+      "left": 62,
+      "right": 62,
+      "top": 36
+    },
+    "pageNumbers": false,
+    "paperSize": "a4"
+  },
+  "plugins": [],
+  "title": "LAY-EXCEL 插件文档",
+  "variables": {}
+}
