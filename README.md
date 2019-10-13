@@ -16,7 +16,7 @@
 
 ## 快速入门
 
-一句话导出，快速上手请查看 [『快速上手』](http://excel.wj2015.com/_book/docs/快速入门.html)，更多便捷函数请查看[『函数列表』](http://excel.wj2015.com/_book/docs/函数列表/README.html)，样式设置请查看[『样式设置专区』](http://excel.wj2015.com/_book/docs/样式设置专区.html)。
+一句话导出，快速上手请查看 [『快速上手』](http://excel.wj2015.com/_book/docs/快速上手.html)，更多便捷函数请查看[『函数列表』](http://excel.wj2015.com/_book/docs/函数列表/)，样式设置请查看[『样式设置专区』](http://excel.wj2015.com/_book/docs/样式设置专区.html)。
 
 ## 依赖的开源项目
 
