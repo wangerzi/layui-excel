@@ -655,25 +655,6 @@ LAY_EXCEL = {
     if (files.length < 1) {
       throw {code: 999, 'message': '传入文件为空'};
     }
-    var supportReadMime = [
-      'application/vnd.ms-excel',
-      'application/msexcel',
-      'application/x-msexcel',
-      'application/x-ms-excel',
-      'application/x-excel',
-      'application/x-dos_ms_excel',
-      'application/xls',
-      'application/x-xls',
-      'application/vnd-xls',
-      'application/csv',
-      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-      ''
-    ];
-    $.each(files, function(index, item) {
-      if (supportReadMime.indexOf(item.type) === -1) {
-        throw {code: 999, message: item.name+'（'+item.type+'）为不支持的文件类型'};
-      }
-    });
 
     // 按照二进制读取
     var data = {};

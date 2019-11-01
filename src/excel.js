@@ -647,7 +647,8 @@ LAY_EXCEL = {
     var option = {
       header: 'A',
       range: null,
-      fields: null
+      fields: null,
+      checkMime: true,
     };
     $.extend(option, opt);
     var that = this;
@@ -669,11 +670,14 @@ LAY_EXCEL = {
       'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
       ''
     ];
-    $.each(files, function(index, item) {
-      if (supportReadMime.indexOf(item.type) === -1) {
-        throw {code: 999, message: item.name+'（'+item.type+'）为不支持的文件类型'};
-      }
-    });
+    if (option.checkMime) {
+      $.each(files, function(index, item) {
+        if (supportReadMime.indexOf(item.type) === -1) {
+          throw {code: 999, message: item.name+'（'+item.type+'）为不支持的文件类型'};
+        }
+      });
+    }
+    delete option.checkMime;
 
     // 按照二进制读取
     var data = {};

@@ -9,12 +9,12 @@
  */
 
 layui.use(['jquery', 'layer', 'upload', 'excel', 'laytpl', 'element', 'code'], function () {
-  var $ = layui.jquery
-  var layer = layui.layer
-  var upload = layui.upload
-  var excel = layui.excel
-  var laytpl = layui.laytpl
-  var element = layui.element
+  var $ = layui.jquery;
+  var layer = layui.layer;
+  var upload = layui.upload;
+  var excel = layui.excel;
+  var laytpl = layui.laytpl;
+  var element = layui.element;
 
 
   /**
@@ -118,15 +118,18 @@ layui.use(['jquery', 'layer', 'upload', 'excel', 'laytpl', 'element', 'code'], f
     , choose: function (obj) {// 选择文件回调
       var files = obj.pushFile()
       var fileArr = Object.values(files)// 注意这里的数据需要是数组，所以需要转换一下
+
       // 用完就清理掉，避免多次选中相同文件时出现问题
       for (var index in files) {
         if (files.hasOwnProperty(index)) {
           delete files[index]
         }
       }
+      $('#LAY-excel-upload').next().val('');
+
       uploadExcel(fileArr) // 如果只需要最新选择的文件，可以这样写： uploadExcel([files.pop()])
     }
-  })
+  });
 
   $(function () {
     // 监听上传文件的事件
