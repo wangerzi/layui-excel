@@ -56,7 +56,7 @@
 
 感谢 Layui 社区的小伙伴们的使用及建议，还有交流群中反馈各种问题和积极回复问题的群友们，以及 Github 上提 ISSUE、PR 的小伙伴们~
 
-## 相关链接
+## 友情链接
 
 [Auahtree插件](https://github.com/wangerzi/layui-authtree)、[JeffreyWang的个人博客](https://blog.wj2015.com)
 
