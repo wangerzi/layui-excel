@@ -668,6 +668,7 @@ LAY_EXCEL = {
       'application/vnd-xls',
       'application/csv',
       'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      'application/wps-office.xlsx',
       ''
     ];
     if (option.checkMime) {
