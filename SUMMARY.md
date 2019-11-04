@@ -2,7 +2,7 @@
 
 * [概览](README.md)
     * [功能概览](docs/功能概览.md)
-    * [已有DEMO](docs/已有DEMO.md)
+    * [贡献DEMO](docs/贡献DEMO.md)
     * [参与开发](docs/参与开发.md)
     * [更新记录](docs/更新记录.md)
 * [快速上手](docs/快速上手.md)
