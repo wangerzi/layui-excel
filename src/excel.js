@@ -1,7 +1,7 @@
 /*
 * @Author: Jeffrey Wang
 * @Desc:  整理强大的 SheetJS 功能，依赖 XLSX.js 和 FileSaver
-* @Version: v1.6
+* @Version: v1.6.1
 * @Date:   2018-03-24 09:54:17
 * @Last Modified by:   Jeffrey Wang
 * @Last Modified ~: 2019-10-03 23:12:00
@@ -777,9 +777,9 @@ LAY_EXCEL = {
     // 制造 format 相关参数
     var YYYY = date.getFullYear();
     var YY = (YYYY + '').substr(2, 2)
-    var M = date.getMonth();
+    var M = date.getMonth() + 1;
     var MM = this.strPad(M, 2, '0');
-    var D = date.getDay();
+    var D = date.getDate();
     var DD = this.strPad(D, 2, '0');
     var H = date.getHours();
     var HH = this.strPad(H, 2, '0');
