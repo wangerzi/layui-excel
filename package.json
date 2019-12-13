@@ -29,6 +29,6 @@
   },
   "homepage": "https://github.com/wangerzi/layui-excel#readme",
   "dependencies": {
-    "npm": "^6.11.3"
+    "npm": "^6.13.4"
   }
 }
