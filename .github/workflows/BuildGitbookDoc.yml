@@ -19,7 +19,10 @@ jobs:
           source_dir:  .                  # gitbook-sorce at dir:docs
           publish_dir: _book            # publish for this repo dir:gitbook-docs
           publish_branch: doc
-        run: git checkout doc
+      - name: Checkout doc
+        uses: actions/checkout@master
+        with:
+          ref: doc
       - name: Deploy to GitHub Pages
         if: success()
         uses: crazy-max/ghaction-github-pages@v1
