@@ -1,0 +1,20 @@
+name: Deploy to Github Pages
+
+on:
+  push:
+    branches:
+      - doc
+
+jobs:
+  publish_doc:
+    name: Publish doc to Github Pages
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Deploy to GitHub Pages
+        if: success()
+        uses: crazy-max/ghaction-github-pages@v1
+        with:
+          target_branch: doc
+          build_dir: _book
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
