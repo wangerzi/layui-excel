@@ -23,7 +23,7 @@ jobs:
         if: success()
         uses: crazy-max/ghaction-github-pages@v1
         with:
-          target_branch: docs
+          target_branch: doc
           build_dir: _book
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
