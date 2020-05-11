@@ -16,6 +16,16 @@ jobs:
           token: ${{ secrets.PERSONAL_TOKEN }}
           time_zone: Asia/Shanghai
           source_branch: master             # clone source master
-          source_dir: docs                  # gitbook-sorce at dir:docs
+          source_dir:  .                  # gitbook-sorce at dir:docs
           publish_dir: _book            # publish for this repo dir:gitbook-docs
           publish_branch: doc
+      - name: Checkout doc branch
+        run: git checkout doc
+      - name: Deploy to GitHub Pages
+        if: success()
+        uses: crazy-max/ghaction-github-pages@v1
+        with:
+          target_branch: doc
+          build_dir: _book
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
