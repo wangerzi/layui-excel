@@ -1,6 +1,6 @@
 {
   "name": "lay-excel",
-  "version": "1.6.1",
+  "version": "1.6.2",
   "devDependencies": {
     "gitbook-cli": "^2.3.2",
     "grunt": "~0.4.5",
