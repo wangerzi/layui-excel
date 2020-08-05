@@ -1,0 +1,33 @@
+name: Build Gitbook Doc
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build_doc:
+    name: Build doc
+    runs-on: ubuntu-18.04
+    steps:
+      - name: build doc by gitbook
+        uses: zanderzhao/gitbook-action@v1.2
+        with:
+          token: ${{ secrets.PERSONAL_TOKEN }}
+          time_zone: Asia/Shanghai
+          source_branch: master             # clone source master
+          source_dir:  .                  # gitbook-sorce at dir:docs
+          publish_dir: _book            # publish for this repo dir:gitbook-docs
+          publish_branch: gh-pages
+      - name: Checkout doc
+        if: success()
+        uses: actions/checkout@master
+        with:
+          ref: gh-pages
+      - name: Deploy to GitHub Pages
+        if: success()
+        uses: crazy-max/ghaction-github-pages@v1
+        with:
+          build_dir: _book
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
