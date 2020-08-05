@@ -1,7 +1,7 @@
 /*
 * @Author: Jeffrey Wang
 * @Desc:  整理强大的 SheetJS 功能，依赖 XLSX.js 和 FileSaver
-* @Version: v1.6.1
+* @Version: v1.6.2
 * @Date:   2018-03-24 09:54:17
 * @Last Modified by:   Jeffrey Wang
 * @Last Modified ~: 2019-10-03 23:12:00
