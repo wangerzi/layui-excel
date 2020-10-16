@@ -4,15 +4,15 @@
 
 导出excel功能基于 XLSX.js，下载功能基于 FileSaver，读取文件基于 H5的 FileReader。
 
-**功能演示地址：**[http://excel.wj2015.com](http://excel.wj2015.com)
+**功能演示地址：** [http://excel.wj2015.com](http://excel.wj2015.com)
 
-**文档地址：**[http://excel.wj2015.com/_book/](http://excel.wj2015.com/_book/)
+**文档地址：** [http://excel.wj2015.com/_book/](http://excel.wj2015.com/_book/)
 
 ![1570418356365](ScreenToGif.gif)
 
 ## 兼容性
 
-支持IE10+、Firefox、chrome
+支持IE10+、Firefox、Chrome 等
 
 ## 快速入门
 
@@ -58,7 +58,7 @@
 
 ## 友情链接
 
-[Auahtree插件](https://github.com/wangerzi/layui-authtree)、[JeffreyWang的个人博客](https://blog.wj2015.com)
+[Authtree插件](https://github.com/wangerzi/layui-authtree)、[JeffreyWang的个人博客](https://blog.wj2015.com)
 
 ## 开源协议
 

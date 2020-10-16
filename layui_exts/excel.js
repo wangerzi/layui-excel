@@ -1,7 +1,7 @@
 /*
 * @Author: Jeffrey Wang
 * @Desc:  整理强大的 SheetJS 功能，依赖 XLSX.js 和 FileSaver
-* @Version: v1.6.2
+* @Version: v1.6.1
 * @Date:   2018-03-24 09:54:17
 * @Last Modified by:   Jeffrey Wang
 * @Last Modified ~: 2019-10-03 23:12:00
@@ -106,16 +106,16 @@ LAY_EXCEL = {
           var splitRes = this.splitContent(content);
         }
         var ws = XLSX.utils.json_to_sheet(content, option);
-        // 特殊属性，支持单独设置某个sheet的属性
-        if (wbExtend[sheet_name]) {
-          $.extend(ws, wbExtend[sheet_name]);
-        } else {
-          $.extend(ws, wbExtend);
-        }
         // 合并样式
         if (typeof splitRes !== 'undefined') {
           this.mergeCellOpt(ws, splitRes.style);
         }
+      }
+      // 特殊属性，支持单独设置某个sheet的属性
+      if (wbExtend[sheet_name]) {
+        $.extend(ws, wbExtend[sheet_name]);
+      } else {
+        $.extend(ws, wbExtend);
       }
       wb.Sheets[sheet_name] = ws;
     };
@@ -230,29 +230,28 @@ LAY_EXCEL = {
   // titleToTitle 备忘录提效
   titleNumsCache: {},
   /**
-   * 将数字(从一开始)转换为 A、B、C...AA、AB
-   * @param  {[int]} num [description]
-   * @return {[type]}     [description]
+   * 将数字(从1开始)转换为 A、B、C...AA、AB，内藏规律，解码为0代表A
+   * @param  num int [description]
+   * @return string     [description]
    */
   numToTitle: function(num) {
-    if (this.numsTitleCache[num]) {
-      return this.numsTitleCache[num];
+    if (num <= 0) {
+      return '';
     }
-    var ans = '';
-    if (num > 26) {
-      // 要注意小心 26 的倍数导致的无限递归问题
-      var dec = num % 26;
-      ans = this.numToTitle((num - dec)/26) + this.numToTitle(dec?dec:26);
-      this.numsTitleCache[num] = ans;
-      this.titleNumsCache[ans] = num;
-      return ans;
-    } else {
-      // A 的 ascii 为 0，顺位相加
-      ans = String.fromCharCode(64 + num);
-      this.numsTitleCache[num] = ans;
-      this.titleNumsCache[ans] = num;
-      return ans;
+    var remainder = num % 26;
+    var left = Math.floor(num / 26);
+    if (remainder === 0) {
+      remainder = 26;
+      left -= 1;
     }
+    var ans = String.fromCharCode(64 + remainder);
+
+    if (left > 0) {
+      ans = this.numToTitle(left) + ans;
+    }
+    this.numsTitleCache[num] = ans;
+    this.titleNumsCache[ans] = num;
+    return ans;
   },
   /**
    * 将A、B、AA、ABC转换为 1、2、3形式的数字

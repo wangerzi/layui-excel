@@ -13,6 +13,7 @@
   "main": "index.js",
   "scripts": {
     "test": "",
+    "build": "grunt",
     "build-doc": "node ./node_modules/gitbook-cli/bin/gitbook.js -V && node ./node_modules/gitbook-cli/bin/gitbook.js build"
   },
   "repository": {
