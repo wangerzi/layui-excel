@@ -598,7 +598,10 @@ function demoList() {
  * 页面上直接展示demo列表
  */
 function renderDemoList() {
-  getDemoListContent(function (content) {
-    $('#LAY-excel-demo-list-dom').html(content)
-  })
+  layui.use(['jquery'], function () {
+    var $ = layui.jquery;
+    getDemoListContent(function (content) {
+      $('#LAY-excel-demo-list-dom').html(content)
+    })
+  });
 }

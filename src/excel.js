@@ -6,13 +6,25 @@
 * @Last Modified by:   Jeffrey Wang
 * @Last Modified ~: 2019-10-03 23:12:00
 */
-if (typeof layui === 'undefined' && typeof jQuery === 'undefined') {
-	console.error('非layui调用请先加载jQuery')
-}
-if (typeof jQuery !== 'undefined') {
-  $ = jQuery
-}
-LAY_EXCEL = {
+var LAY_EXCEL = {
+  /**
+   * 合并对象
+   */
+  objectExtend: function() {
+    return Object.assign.apply(this, arguments)
+  },
+  /**
+   * 遍历对象
+   * @param object
+   * @param callback
+   */
+  each: function (object, callback) {
+    for (var k in object) {
+      if (object.hasOwnProperty(k)) {
+        callback.apply(this, [k, object[k]])
+      }
+    }
+  },
   /**
    * 兼容老版本的导出函数
    * @param  {[type]} data     [description]
@@ -51,7 +63,7 @@ LAY_EXCEL = {
       LastAuthor: '',
       CreatedData: new Date(),
     };
-    opt && opt.Props && (Props = $.extend(Props, opt.Props));
+    opt && opt.Props && (Props = this.objectExtend(Props, opt.Props));
     // 默认进行压缩
     wb.compression = opt ? opt.compression : true
     if(wb.compression !== false) {
@@ -67,7 +79,7 @@ LAY_EXCEL = {
       ,'!protect': null
       ,'!autofilter': null
     };
-    opt && opt.extend && (wbExtend = $.extend(wbExtend, opt.extend));
+    opt && opt.extend && (wbExtend = this.objectExtend(wbExtend, opt.extend));
     // 清理空配置
     for (var key in wbExtend) {
       if (!wbExtend.hasOwnProperty(key)) {
@@ -79,7 +91,7 @@ LAY_EXCEL = {
     }
 
     // 判断 data 如果是 sheet 级别数据，自动加 sheet1
-    if ($.isArray(data)) {
+    if (Array.isArray(data)) {
       data = {sheet1: data};
     }
 
@@ -92,7 +104,7 @@ LAY_EXCEL = {
       wb.SheetNames.push(sheet_name);
       // 3. 分配工作表对象到 sheet
       var is_aoa = false;
-      if (content.length && content[0] && $.isArray(content[0])) {
+      if (content.length && content[0] && Array.isArray(content[0])) {
         is_aoa = true;
       }
       if (is_aoa) {
@@ -113,9 +125,9 @@ LAY_EXCEL = {
       }
       // 特殊属性，支持单独设置某个sheet的属性
       if (wbExtend[sheet_name]) {
-        $.extend(ws, wbExtend[sheet_name]);
+        this.objectExtend(ws, wbExtend[sheet_name]);
       } else {
-        $.extend(ws, wbExtend);
+        this.objectExtend(ws, wbExtend);
       }
       wb.Sheets[sheet_name] = ws;
     };
@@ -189,7 +201,7 @@ LAY_EXCEL = {
         for (var i = 0; i < otherOpt.length; i++) {
           ws[row][otherOpt[i]] = ws[row][otherOpt[i]];
         }
-        $.extend(ws[row], rowOpt);
+        this.objectExtend(ws[row], rowOpt);
       }
     }
   },
@@ -198,25 +210,27 @@ LAY_EXCEL = {
    * @param dom
    */
   tableToJson: function(dom) {
-    dom = $(dom)
+    if (!dom || !dom.querySelectorAll) {
+      return [];
+    }
 
-    var head = []
-    dom.find('thead > tr').each(function () {
-      var line = []
-      $(this).find('td,th').each(function () {
-        line.push($(this).text())
+    var that = this;
+    var handleLineNode = function (lineDomList) {
+      var res = [];
+      that.each(lineDomList, function (key, val) {
+        var line = [];
+        that.each(val.querySelectorAll('td,th'), function (k, v) {
+          line.push(v.innerText);
+        });
+        res.push(line);
       })
-      head.push(line)
-    })
+      return res;
+    };
 
-    var body = [];
-    dom.find('tbody > tr').each(function () {
-      var line = []
-      $(this).find('td').each(function () {
-        line.push($(this).text())
-      })
-      body.push(line)
-    })
+    var headDom = dom.querySelectorAll('thead > tr');
+    var bodyDom = dom.querySelectorAll('tbody > tr');
+    var head = handleLineNode(headDom);
+    var body = handleLineNode(bodyDom);
 
     return {
       head: head,
@@ -349,9 +363,9 @@ LAY_EXCEL = {
 
         // 手工合并（相同的则以当前函数config为准）
         if (typeof cell === 'object') {
-          newCell = $.extend(true, {}, cell, config);
+          newCell = this.objectExtend(true, {}, cell, config);
         } else {
-          newCell = $.extend(true, {}, {v: cell}, config);
+          newCell = this.objectExtend(true, {}, {v: cell}, config);
         }
 
         if (
@@ -567,7 +581,7 @@ LAY_EXCEL = {
    */
   filterDataToAoaData: function(filterData){
     var aoaData = [];
-    $.each(filterData, function(index, item) {
+    this.each(filterData, function(index, item) {
       var itemData = [];
       for (var i in item) {
         if (!item.hasOwnProperty(i)) {
@@ -628,8 +642,8 @@ LAY_EXCEL = {
    */
   filterImportData: function(data, fields) {
     var that = this;
-    $.each(data, function(fileindex, xlsx) {
-      $.each(xlsx, function(sheetname, content) {
+    this.each(data, function(fileindex, xlsx) {
+      this.each(xlsx, function(sheetname, content) {
         xlsx[sheetname] = that.filterExportData(content, fields);
       });
     });
@@ -649,7 +663,7 @@ LAY_EXCEL = {
       fields: null,
       checkMime: true,
     };
-    $.extend(option, opt);
+    this.objectExtend(option, opt);
     var that = this;
 
     if (files.length < 1) {
@@ -671,7 +685,7 @@ LAY_EXCEL = {
       ''
     ];
     if (option.checkMime) {
-      $.each(files, function(index, item) {
+      this.each(files, function(index, item) {
         if (supportReadMime.indexOf(item.type) === -1) {
           throw {code: 999, message: item.name+'（'+item.type+'）为不支持的文件类型'};
         }
@@ -682,7 +696,7 @@ LAY_EXCEL = {
     // 按照二进制读取
     var data = {};
     var book = {};
-    $.each(files, function(index, item) {
+    this.each(files, function(index, item) {
       var reader = new FileReader();
       if (!reader) {
         throw {code: 999, message: '不支持FileReader，请更换更新的浏览器'};
@@ -693,7 +707,7 @@ LAY_EXCEL = {
           type: 'binary'
         });
         var excelData = {};
-        $.each(wb.Sheets, function(sheet, sheetObj) {
+        that.each(wb.Sheets, function(sheet, sheetObj) {
           // 全为空的去掉
           if (wb.Sheets.hasOwnProperty(sheet)) {
             var opt = {
@@ -827,8 +841,7 @@ LAY_EXCEL = {
 }
 
 if (typeof layui !== 'undefined') {
-  layui.define(['jquery'], function(exports){
-    $ = layui.jquery;
+  layui.define([], function(exports){
     exports('excel', LAY_EXCEL);
   });
 }
