@@ -21,6 +21,9 @@ var LAY_EXCEL = {
   each: function (object, callback) {
     for (var k in object) {
       if (object.hasOwnProperty(k)) {
+        if (Array.isArray(object)) {
+          k = parseInt(k);
+        }
         callback.apply(this, [k, object[k]])
       }
     }
