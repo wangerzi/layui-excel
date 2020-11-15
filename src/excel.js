@@ -1,10 +1,8 @@
 /*
 * @Author: Jeffrey Wang
 * @Desc:  整理强大的 SheetJS 功能，依赖 XLSX.js 和 FileSaver
-* @Version: v1.6.1
 * @Date:   2018-03-24 09:54:17
 * @Last Modified by:   Jeffrey Wang
-* @Last Modified ~: 2019-10-03 23:12:00
 */
 
 import Blob from 'blob';
@@ -13,6 +11,7 @@ import XLSX from './xlsx.js';
 import 'babel-polyfill';
 
 function make_lay_excel(global) {
+  global.VERSION = 'v1.6.3';
   global = {
     /**
      * 合并对象
@@ -858,7 +857,9 @@ if (typeof layui !== 'undefined') {
   });
 }
 
-if(typeof exports !== 'undefined') make_lay_excel(exports);
+if(typeof exports !== 'undefined') {make_lay_excel(exports);}
 else if(typeof module !== 'undefined' && module.exports) make_lay_excel(module.exports);
-else if(typeof define === 'function' && define.amd) define('xlsx', function() { return make_lay_excel(LAY_EXCEL); });
+else if(typeof define === 'function' && define.amd) define('lay-excel', function() { return make_lay_excel(LAY_EXCEL); });
 else make_lay_excel(LAY_EXCEL);
+
+export default make_lay_excel(LAY_EXCEL);

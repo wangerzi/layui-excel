@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>模块化调用</title>
+    <script type="module">
+        import LAY_EXCEL from '../../dist/excel.js'
+        console.log(LAY_EXCEL);
+        // LAY_EXCEL.downloadExl([[1, 2, 3]], );
+    </script>
+</head>
+<body>
+<h3>模块化调用</h3>
+<button type="button" onclick="exportTable()">点我导出</button>
+<p style="color: #f00;">注：npm install lay-excel 即可具体使用请参见文档</p>
+</body>
+</html>
