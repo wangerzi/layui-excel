@@ -1333,7 +1333,7 @@ function make_xlsx_lib(XLSX){
       return o;
     }
     var fs;
-    function get_fs() { return fs || (fs = require('fs')); }
+    // function get_fs() { return fs || (fs = require('fs')); }
     function parse(file, options) {
       if(file[0] == 0x50 && file[1] == 0x4b) return parse_zip(file, options);
       if(file.length < 512) throw new Error("CFB file size " + file.length + " < 512");
@@ -1649,7 +1649,7 @@ function make_xlsx_lib(XLSX){
     }
 
     function read_file(filename, options) {
-      get_fs();
+      // get_fs();
       return parse(fs.readFileSync(filename), options);
     }
 
@@ -1929,7 +1929,7 @@ function make_xlsx_lib(XLSX){
     };
 
     function write_file(cfb, filename, options) {
-      get_fs();
+      // get_fs();
       var o = _write(cfb, options);
       fs.writeFileSync(filename, o);
     }
@@ -1943,7 +1943,7 @@ function make_xlsx_lib(XLSX){
     function write(cfb, options) {
       var o = _write(cfb, options);
       switch(options && options.type) {
-        case "file": get_fs(); fs.writeFileSync(options.filename, (o)); return o;
+        case "file": /*get_fs();*/ fs.writeFileSync(options.filename, (o)); return o;
         case "binary": return a2s(o);
         case "base64": return Base64.encode(a2s(o));
       }
@@ -21483,10 +21483,10 @@ function write_cc(data, name:string, opts) {
   XLSX.CFB = CFB;
 }
 /*global define */
-// if(typeof exports !== 'undefined') make_xlsx_lib(exports);
-// else if(typeof module !== 'undefined' && module.exports) make_xlsx_lib(module.exports);
-// else if(typeof define === 'function' && define.amd) define('xlsx', function() { if(!XLSX.version) make_xlsx_lib(XLSX); return XLSX; });
-// else make_xlsx_lib(XLSX);
-make_xlsx_lib(XLSX);
+if(typeof exports !== 'undefined') make_xlsx_lib(exports);
+else if(typeof module !== 'undefined' && module.exports) make_xlsx_lib(module.exports);
+else if(typeof define === 'function' && define.amd) define('xlsx', function() { if(!XLSX.version) make_xlsx_lib(XLSX); return XLSX; });
+else make_xlsx_lib(XLSX);
+// make_xlsx_lib(XLSX);
 /*exported XLS, ODS */
-var XLS = XLSX, ODS = XLSX;
+// var XLS = XLSX, ODS = XLSX;
