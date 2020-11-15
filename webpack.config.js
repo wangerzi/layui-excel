@@ -7,6 +7,18 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'),
     filename: 'excel.js',
   },
-  plugins: [
-  ],
+  module: {
+    rules: [
+      {
+        test:/\.js$/,
+        exclude:/(node_modules|bower_components)/,//排除掉node_module目录
+        use:{
+          loader:'babel-loader',
+          options:{
+            presets:['env'] //转码规则
+          }
+        }
+      }
+    ]
+  },
 }

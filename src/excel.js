@@ -11,6 +11,7 @@ import XLSX from './xlsx.js';
 import 'babel-polyfill';
 
 function make_lay_excel(global) {
+  global.VERSION = 'v1.6.3';
   global = {
     /**
      * 合并对象
@@ -876,7 +877,9 @@ if (typeof layui !== 'undefined') {
   });
 }
 
-if(typeof exports !== 'undefined') make_lay_excel(exports);
+if(typeof exports !== 'undefined') {make_lay_excel(exports);}
 else if(typeof module !== 'undefined' && module.exports) make_lay_excel(module.exports);
-else if(typeof define === 'function' && define.amd) define('xlsx', function() { return make_lay_excel(LAY_EXCEL); });
+else if(typeof define === 'function' && define.amd) define('lay-excel', function() { return make_lay_excel(LAY_EXCEL); });
 else make_lay_excel(LAY_EXCEL);
+
+export default make_lay_excel(LAY_EXCEL);
