@@ -4,9 +4,10 @@ module.exports = {
   mode: 'production',
   entry: './src/excel.js',
   output: {
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(__dirname, 'layui_exts'),
     filename: 'excel.js',
   },
+  devtool: 'source-map',
   module: {
     rules: [
       {
@@ -21,4 +22,11 @@ module.exports = {
       }
     ]
   },
+  performance: {
+    maxAssetSize: 1024000000,
+    maxEntrypointSize: 1024000000,
+    assetFilter: function (assetFilename) {
+      return assetFilename.endsWith('.css') || assetFilename.endsWith('.js');
+    }
+  }
 }
