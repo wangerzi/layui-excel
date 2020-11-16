@@ -1,0 +1,11 @@
+.github/
+_book/
+demos/
+docs/
+layui/
+lay_exts/
+node_modules/
+book.json
+*.png
+*.html
+*.gif
