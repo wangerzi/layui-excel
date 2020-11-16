@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/wangerzi/layui-excel#readme",
   "dependencies": {
+    "babel-plugin-transform-remove-strict-mode": "0.0.2",
     "babel-polyfill": "^6.26.0",
     "blob": "^0.1.0",
     "file-saver": "^2.0.2",
