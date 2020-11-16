@@ -2,7 +2,7 @@
   "name": "lay-excel",
   "version": "1.7.0",
   "description": "简单快捷的导出插件，导出仅需一句话",
-  "main": "index.js",
+  "main": "src/excel.js",
   "scripts": {
     "test": "",
     "build": "./node_modules/.bin/webpack-cli -c webpack.config.js",
