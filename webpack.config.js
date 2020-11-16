@@ -2,7 +2,7 @@ const path = require('path');
 
 module.exports = {
   mode: 'production',
-  entry: './src/excel.js',
+  entry: ['babel-polyfill', './src/excel.js'],
   output: {
     path: path.resolve(__dirname, 'layui_exts'),
     filename: 'excel.js',

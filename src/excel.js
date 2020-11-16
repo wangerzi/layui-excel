@@ -4,11 +4,9 @@
 * @Date:   2018-03-24 09:54:17
 * @Last Modified by:   Jeffrey Wang
 */
-
 import Blob from 'blob';
 import FileSaver from 'file-saver';
 import XLSX from './xlsx.js';
-import 'babel-polyfill';
 
 function make_lay_excel(global) {
   // default
