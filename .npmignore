@@ -1,11 +1,13 @@
+.idea/
 .github/
 _book/
 demos/
 docs/
 layui/
-lay_exts/
+layui_exts/
 node_modules/
 book.json
+index.js
 *.png
 *.html
 *.gif
