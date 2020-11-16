@@ -1,17 +1,35 @@
 /*
 * @Author: Jeffrey Wang
 * @Desc:  整理强大的 SheetJS 功能，依赖 XLSX.js 和 FileSaver
-* @Version: v1.6.1
 * @Date:   2018-03-24 09:54:17
 * @Last Modified by:   Jeffrey Wang
-* @Last Modified ~: 2019-10-03 23:12:00
 */
 var LAY_EXCEL = {
   /**
    * 合并对象
    */
-  objectExtend: function() {
-    return Object.assign.apply(this, arguments)
+  objectExtend: function(target) {
+    if (typeof Object.assign != 'function') {
+      'use strict';
+      if (target == null) {
+        throw new TypeError('Cannot convert undefined or null to object');
+      }
+
+      target = Object(target);
+      for (var index = 1; index < arguments.length; index++) {
+        var source = arguments[index];
+        if (source != null) {
+          for (var key in source) {
+            if (Object.prototype.hasOwnProperty.call(source, key)) {
+              target[key] = source[key];
+            }
+          }
+        }
+      }
+      return target;
+    } else {
+      return Object.assign.apply(this, arguments)
+    }
   },
   /**
    * 遍历对象
