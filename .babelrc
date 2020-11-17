@@ -1,4 +1,3 @@
 {
-  "compact": false,
-  "plugins": ["transform-remove-strict-mode"]
+  "compact": false
 }

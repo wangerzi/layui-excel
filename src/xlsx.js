@@ -20377,7 +20377,7 @@ function write_cc(data, name:string, opts) {
   /*global encrypt_agile */
   function write_zip_type(wb, opts) {
     var o = opts||{};
-    style_builder  = new StyleBuilder(opts);
+    var style_builder  = new StyleBuilder(opts);
     var z = write_zip(wb, o);
     var oopts = {};
     if(o.compression) oopts.compression = 'DEFLATE';
@@ -21057,7 +21057,7 @@ function write_cc(data, name:string, opts) {
         return this;
       }
 
-      var APOS = "'"; QUOTE = '"'
+      var APOS = "'"; var QUOTE = '"'
       var ESCAPED_QUOTE = {  }
       ESCAPED_QUOTE[QUOTE] = '&quot;'
       ESCAPED_QUOTE[APOS] = '&apos;'
@@ -21135,8 +21135,8 @@ function write_cc(data, name:string, opts) {
 
 
     // cache style specs to avoid excessive duplication
-    _hashIndex = {};
-    _listIndex = [];
+    var _hashIndex = {};
+    var _listIndex = [];
 
     return {
 
