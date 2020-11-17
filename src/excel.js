@@ -13,7 +13,6 @@ function make_lay_excel(global) {
   if (!global) {
     global = {};
   }
-  global.VERSION = 'v1.6.3';
   global = {
     /**
      * 合并对象

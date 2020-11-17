@@ -1,6 +1,6 @@
 # LAY-EXCEL 简单快捷的导出插件
 
-现有导出前端库中，XLSX.JS功能强大但是操作颇为不便，于是封装了此插件，依赖jQuery，支持Layui插件形式加载，**导出仅需一句话**。
+现有导出前端库中，XLSX.JS功能强大但是操作颇为不便，于是封装了此插件，**无额外依赖**，支持 **npm 引入**，支持 **Layui插件形式**加载，**导出仅需一句话**。
 
 导出excel功能基于 XLSX.js，下载功能基于 FileSaver，读取文件基于 H5的 FileReader。
 
@@ -14,9 +14,48 @@
 
 支持IE10+、Firefox、Chrome 等
 
+**！！！ 兼容性警告： v1.7.2+ 不再支持 IE9 ，如需必须在 IE9 环境使用，请使用 v1.6.5 版本！！！**
+
 ## 快速入门
 
 一句话导出，快速上手请查看 [『快速上手』](http://excel.wj2015.com/_book/docs/快速上手.html)，更多便捷函数请查看[『函数列表』](http://excel.wj2015.com/_book/docs/函数列表/)，样式设置请查看[『样式设置专区』](http://excel.wj2015.com/_book/docs/样式设置专区.html)。
+
+## 使用本项目的几种方式
+
+### npm安装
+
+```shell
+$ npm i lay-excel
+```
+
+然后使用 `import` 引入并调用导出函数
+
+```js
+import LAY_EXCEL from 'lay-excel';
+LAY_EXCEL.exportExcel([[1, 2, 3]], '表格导出.xlsx', 'xlsx')
+```
+
+### script引入
+
+```html
+<script src="layui_exts/excel.js"></script>
+<script>
+    LAY_EXCEL.exportExcel([[1, 2, 3]], '表格导出.xlsx', 'xlsx')
+</script>
+```
+
+### Layui插件引入
+
+```js
+layui.config({
+	base: 'layui_exts/', // 配置一个可访问地址
+}).extend({
+    excel: 'excel',
+});
+layui.use(['excel'], function (){
+    layui.excel.exportExcel([[1, 2, 3]], '表格导出.xlsx', 'xlsx')
+})
+```
 
 ## 依赖的开源项目
 
@@ -38,7 +77,7 @@
 - [x] 【文档】新增『常见问题整理』，整理群内高频问题，提高处理效率
 - [x] 【兼容】移除 jQuery 依赖
 - [ ] 【兼容】导入支持IE11（卡住）
-- [ ] **【兼容】兼容 npm 的方式加载**
+- [x] **【兼容】兼容 npm 的方式加载**，vue demo：[lay-excel-vue](https://github.com/wangerzi/lay-excel-vue)
 - [ ] 【测试】单元测试覆盖
 - [ ] 【测试】建立CI/CD机制（做了一半）
 - [ ] 【导出】分段递归获取数据函数封装
