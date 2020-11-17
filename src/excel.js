@@ -879,11 +879,9 @@ if (typeof layui !== 'undefined') {
   });
 }
 
-debugger;
 if(typeof exports !== 'undefined') {make_lay_excel(exports);}
 else if(typeof module !== 'undefined' && module.exports) make_lay_excel(module.exports);
 else if(typeof define === 'function' && define.amd) define('lay-excel', function() { return make_lay_excel(); });
-
 
 window.LAY_EXCEL = make_lay_excel();
 
