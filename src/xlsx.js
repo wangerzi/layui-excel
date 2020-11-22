@@ -6,6 +6,7 @@
 import JSZipSync from './jszip.js';
 
 var XLSX = {};
+var style_builder;
 function make_xlsx_lib(XLSX){
   XLSX.version = '0.14.3';
   var current_codepage = 1200, current_ansi = 1252;
@@ -20377,7 +20378,7 @@ function write_cc(data, name:string, opts) {
   /*global encrypt_agile */
   function write_zip_type(wb, opts) {
     var o = opts||{};
-    var style_builder  = new StyleBuilder(opts);
+    style_builder  = new StyleBuilder(opts);
     var z = write_zip(wb, o);
     var oopts = {};
     if(o.compression) oopts.compression = 'DEFLATE';
