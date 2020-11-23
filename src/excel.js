@@ -757,7 +757,7 @@ function make_lay_excel(global) {
           data[index] = excelData;
           book[index] = wb;
           // 全部读取完毕才执行
-          if (index === files.length - 1) {
+          if (parseInt(index) === files.length - 1) {
             callback && callback.apply && callback.apply(window, [data, book]);
           }
         };
