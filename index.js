@@ -540,6 +540,13 @@ function getDemoListContent(callback) {
         desc: '导出表格数据的DEMO'
       },
       {
+        href: 'https://kingxjs.github.io/layui-excel-merge/',
+        path: 'kingxjs.github.io/layui-excel-merge/',
+        person: 'kingxjs',
+        email: '未知',
+        desc: 'layui 表格中的复杂表头导出'
+      },
+      {
         href: 'demos/noLayui/index.html',
         path: 'demos/noLayui/index.html',
         person: '藏锋入鞘',
