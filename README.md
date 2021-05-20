@@ -98,12 +98,12 @@ layui.use(['excel'], function (){
 
 感谢 Layui 社区的小伙伴们的使用及建议，还有交流群中反馈各种问题和积极回复问题的群友们，以及 Github 上提 ISSUE、PR 的小伙伴们~
 
+也非常感谢大方的 Jetbrains 提供的免费 IDE License，很好用很强大，[https://www.jetbrains.com/?from=LAY-EXCEL](https://www.jetbrains.com/?from=LAY-EXCEL)
+
 ## 友情链接
 
-[Authtree插件](https://github.com/wangerzi/layui-authtree)、[JeffreyWang的个人博客](https://blog.wj2015.com)
+[Authtree插件](https://github.com/wangerzi/layui-authtree) 、 [JeffreyWang的个人博客](https://blog.wj2015.com)
 
 ## 开源协议
 
 LAY-EXCEL is licensed under the Apache License, Version 2.0. See [LICENSE](https://github.com/GitbookIO/gitbook/blob/master/LICENSE) for the full license text.
-
- 
