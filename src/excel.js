@@ -162,8 +162,12 @@ function make_lay_excel(global) {
         wb.Sheets[sheet_name] = ws;
       };
 
+      var writeOpt = {bookType: type, type: 'binary', cellStyles: true, compression: wb.compression};
+      if (opt && typeof opt === 'object' && typeof opt.writeOpt === 'object' && opt.writeOpt) {
+        this.objectExtend(writeOpt, opt.writeOpt)
+      }
       // 4. 输出工作表
-      var wbout = XLSX.write(wb, {bookType: type, type: 'binary', cellStyles: true, compression: wb.compression});
+      var wbout = XLSX.write(wb, writeOpt);
 
       // 5. 跨浏览器支持，采用 FileSaver 三方库
       FileSaver.saveAs(new Blob([this.s2ab(wbout)], {type: "application/octet-stream"}), filename);
