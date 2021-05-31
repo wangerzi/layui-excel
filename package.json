@@ -1,0 +1,44 @@
+{
+  "name": "lay-excel",
+  "version": "1.7.5",
+  "description": "简单快捷的导出插件，导出仅需一句话",
+  "main": "src/excel.js",
+  "scripts": {
+    "test": "",
+    "build": "./node_modules/.bin/webpack-cli -c webpack.config.js",
+    "build-doc": "node ./node_modules/gitbook-cli/bin/gitbook.js -V && node ./node_modules/gitbook-cli/bin/gitbook.js build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wangerzi/layui-excel.git"
+  },
+  "keywords": [
+    "layui",
+    "excel",
+    "xlsx"
+  ],
+  "author": "JeffreyWang",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/wangerzi/layui-excel/issues"
+  },
+  "homepage": "https://github.com/wangerzi/layui-excel#readme",
+  "dependencies": {
+    "blob": "^0.1.0",
+    "file-saver": "^2.0.2",
+    "fs": "0.0.1-security",
+    "jszip": "^3.5.0",
+    "npm": "^6.14.6"
+  },
+  "devDependencies": {
+    "@babel/plugin-transform-modules-commonjs": "^7.12.1",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.5",
+    "babel-plugin-transform-remove-strict-mode": "0.0.2",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "gitbook-cli": "^2.3.2",
+    "webpack-cli": "^4.2.0",
+    "webpack": "^4.0.0"
+  }
+}
