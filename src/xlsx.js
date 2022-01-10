@@ -2580,7 +2580,8 @@ function make_xlsx_lib(XLSX){
 
   if(typeof require !== 'undefined' && typeof module !== 'undefined' && typeof DO_NOT_EXPORT_CFB === 'undefined') { module.exports = CFB; }
   var _fs;
-  if(typeof require !== 'undefined') try { _fs = require('fs'); } catch(e) {}
+  // warning: vite can't support
+  // if(typeof require !== 'undefined') try { _fs = require('fs'); } catch(e) {}
 
   /* normalize data for blob ctor */
   function blobify(data) {
