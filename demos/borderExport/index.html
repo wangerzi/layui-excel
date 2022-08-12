@@ -39,7 +39,8 @@
    * 导出非合并单元格边框的样例
    */
   function exportCellSingle() {
-    layui.use(['layer'], function () {
+    layui.use(['jquery', 'layer'], function () {
+      $ = layui.jquery;
       $.ajax({
         url: '../../list.json',
         success: function (res) {
@@ -82,7 +83,8 @@
    * 导出合并单元格边框样例
    */
   function exportMergeCell() {
-    layui.use(['layer'], function () {
+    layui.use(['jquery', 'layer'], function () {
+      $ = layui.jquery;
       $.ajax({
         url: '../../list.json',
         success: function (res) {
@@ -101,7 +103,7 @@
           })
           // 2.1 插入需要合并的表头，对应坐标 A2:A3
           list.unshift({
-            id: '主键ID',
+            id: 'ID',
             username: '基础信息',
             sex: ''
           })
@@ -117,8 +119,9 @@
             left: {style: 'thick', color: {rgb: 'FFFF0000'}},
             right: {style: 'thick', color: {rgb: 'FFFF0000'}}
           })
+          console.log("list result", list);
           // 3. 调用导出函数弹出下载
-          LAY_EXCEL.exportExcel(list, '无合并单元格加边框.xlsx', 'xlsx', {
+          LAY_EXCEL.exportExcel(list, '合并单元格加包围边框.xlsx', 'xlsx', {
             extend: {
               '!merges': mergeConf
             }
