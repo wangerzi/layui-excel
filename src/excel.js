@@ -6,6 +6,7 @@
 */
 import Blob from 'blob';
 import FileSaver from 'file-saver';
+import {merge} from "lodash"
 import XLSX from './xlsx.js';
 
 function make_lay_excel(global) {
@@ -17,28 +18,29 @@ function make_lay_excel(global) {
     /**
      * 合并对象
      */
-    objectExtend: function(target) {
-      if (typeof Object.assign != 'function') {
-        'use strict';
-        if (target == null) {
-          throw new TypeError('Cannot convert undefined or null to object');
-        }
+    objectExtend: function() {
+      return merge(...arguments);
+      // if (typeof Object.assign != 'function') {
+      //   'use strict';
+      //   if (target == null) {
+      //     throw new TypeError('Cannot convert undefined or null to object');
+      //   }
 
-        target = Object(target);
-        for (var index = 1; index < arguments.length; index++) {
-          var source = arguments[index];
-          if (source != null) {
-            for (var key in source) {
-              if (Object.prototype.hasOwnProperty.call(source, key)) {
-                target[key] = source[key];
-              }
-            }
-          }
-        }
-        return target;
-      } else {
-        return Object.assign.apply(this, arguments)
-      }
+      //   target = Object(target);
+      //   for (var index = 1; index < arguments.length; index++) {
+      //     var source = arguments[index];
+      //     if (source != null) {
+      //       for (var key in source) {
+      //         if (Object.prototype.hasOwnProperty.call(source, key)) {
+      //           target[key] = source[key];
+      //         }
+      //       }
+      //     }
+      //   }
+      //   return target;
+      // } else {
+      //   return Object.assign.apply(this, arguments)
+      // }
     },
     /**
      * 遍历对象
@@ -397,9 +399,9 @@ function make_lay_excel(global) {
 
           // 手工合并（相同的则以当前函数config为准）
           if (typeof cell === 'object') {
-            newCell = this.objectExtend(true, {}, cell, config);
+            newCell = this.objectExtend({}, cell, config);
           } else {
-            newCell = this.objectExtend(true, {}, {v: cell}, config);
+            newCell = this.objectExtend({}, {v: cell}, config);
           }
 
           if (
@@ -430,6 +432,7 @@ function make_lay_excel(global) {
       var fieldKeys = rangeObj.fieldKeys;
 
       // 顶部 border 属性取 config.top
+      // console.warn("top,", "from:", this.numToTitle(startPos.c)+startPos.r, ",to:", this.numToTitle(endPos.c)+startPos.r);
       this.setCellStyle(data, startPos, {
         c: endPos.c,
         r: startPos.r
@@ -442,8 +445,9 @@ function make_lay_excel(global) {
             diagonalDown: config.top.diagonalDown
           }
         }
-      })
+      });
       // 右侧 border 属性取 config.right
+      // console.warn("right,", "from:", this.numToTitle(endPos.c)+startPos.r, ",to:", this.numToTitle(endPos.c)+endPos.r);
       this.setCellStyle(data, {
         c: endPos.c,
         r: startPos.r
@@ -458,6 +462,7 @@ function make_lay_excel(global) {
         }
       })
       // 底部 border 属性取 config.bottom
+      // console.warn("bottom,", "from:", this.numToTitle(startPos.c)+endPos.r, ",to:", this.numToTitle(endPos.c)+endPos.r);
       this.setCellStyle(data, {
         c: startPos.c,
         r: endPos.r
@@ -472,6 +477,7 @@ function make_lay_excel(global) {
         }
       })
       // 左侧 border 属性取 config.left
+      // console.warn("left,", "from:", this.numToTitle(startPos.c)+startPos.r, ",to:", this.numToTitle(startPos.c)+endPos.r);
       this.setCellStyle(data, startPos, {
         c: startPos.c,
         r: endPos.r
