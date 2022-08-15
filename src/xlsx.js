@@ -5375,6 +5375,42 @@ function parse_rels(data, currentFilePath) {
 }
 
 
+/** 2022-08-15 导出图片 */
+var DRAW_ROOT = writextag('xdr:wsDr', null, {
+	'xmlns:xdr': 'http://schemas.openxmlformats.org/drawingml/2006/spreadsheetDrawing',
+	'xmlns:a': 'http://schemas.openxmlformats.org/drawingml/2006/main'
+	//'xmlns:ns0': XMLNS.RELS,
+	// 'xmlns': XMLNS.RELS
+});
+function write_drawing(images, rId) {
+	var o = [];
+	o[o.length] = (XML_HEADER);
+	o[o.length] = (DRAW_ROOT);
+
+	for (var i = 0; i < images.length; i++) {
+		var image = images[i];
+		var pos = image.position || {};
+		if (pos.type === 'twoCellAnchor') {
+			var from = pos.from || {}, to = pos.to || {},
+				fromCol = from.col || 0, toCol = to.col || 0,
+				fromRow = from.row || 0, toRow = to.row || 0;
+
+			var twoCell = '<xdr:from><xdr:col>' + fromCol + '</xdr:col><xdr:colOff>0</xdr:colOff><xdr:row>' + fromRow + '</xdr:row><xdr:rowOff>0</xdr:rowOff></xdr:from>';
+			twoCell += '<xdr:to><xdr:col>' + toCol + '</xdr:col><xdr:colOff>0</xdr:colOff><xdr:row>' + toRow + '</xdr:row><xdr:rowOff>0</xdr:rowOff></xdr:to>';
+			twoCell += '<xdr:pic><xdr:nvPicPr><xdr:cNvPr id="' + rId + '" name="' + image.name + '">';
+			twoCell += '</xdr:cNvPr><xdr:cNvPicPr><a:picLocks noChangeAspect="1"/></xdr:cNvPicPr></xdr:nvPicPr>';
+			twoCell += '<xdr:blipFill><a:blip xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" r:embed="rId' + rId + '"/>';
+			twoCell += '<a:stretch><a:fillRect/></a:stretch></xdr:blipFill><xdr:spPr><a:prstGeom prst="rect"><a:avLst/></a:prstGeom></xdr:spPr></xdr:pic><xdr:clientData/>';
+			o[o.length] = (writextag('xdr:twoCellAnchor', twoCell, images[i].attrs));
+		}
+	}
+
+	if (o.length > 2) {
+		o[o.length] = ('</xdr:wsDr>');
+		o[1] = o[1].replace("/>", ">");
+	}
+	return o.join("");
+}
 /* TODO */
 function write_rels(rels) {
 	var o = [XML_HEADER, writextag('Relationships', null, {
@@ -15779,8 +15815,33 @@ ws['!links'].forEach(function(l) {
 	/* tableParts */
 	/* extLst */
 
+	/** 2022-08-15 导出图片 */
+	var images = ws['!images'] || [];
+	if (images.length) o[o.length] = '<drawing r:id="rId' + (idx + 1) + '"/>';
+
 	if(o.length>1) { o[o.length] = ('</worksheet>'); o[1]=o[1].replace("/>",">"); }
 	return o.join("");
+}
+
+/** 2022-08-15 导出图片 */
+function write_ws_xml_view_pane(pane) {
+	var p = {
+		state: pane.state === 'split' || pane.state === 'frozen' || pane.state === 'frozenSplit' ? pane.state : 'split',
+		xSplit: pane.xSplit || 0,
+		ySplit: pane.ySplit || 0
+	};
+
+	// If frozen pane, defaults to the cell in first unfrozen column and first unfrozen row
+	if (p.state !== 'split') {
+		p.topLeftCell = pane.topLeftCell || encode_cell({ c: p.xSplit, r: p.ySplit });
+	}
+	else if (pane.topLeftCell !== undefined) {
+		p.topLeftCell = pane.topLeftCell;
+	}
+
+	if (pane.activePane !== undefined) p.activePane = pane.activePane;
+
+	return writextag('pane', null, p);
 }
 
 /* [MS-XLSB] 2.4.726 BrtRowHdr */
@@ -16876,16 +16937,30 @@ function parse_cs_xml(data, opts, idx, rels, wb) {
 	if(rels['!id'][s['!rel']]) s['!drawel'] = rels['!id'][s['!rel']];
 	return s;
 }
-//function write_cs_xml(idx, opts, wb, rels) {
-//	var o = [XML_HEADER, writextag('chartsheet', null, {
-//		'xmlns': XMLNS_main[0],
-//		'xmlns:r': XMLNS.r
-//	})];
-//	o[o.length] = writextag("drawing", null, {"r:id": "rId1"});
-//	add_rels(rels, -1, "../drawings/drawing" + (idx+1) + ".xml", RELS.DRAW);
-//	if(o.length>2) { o[o.length] = ('</chartsheet>'); o[1]=o[1].replace("/>",">"); }
-//	return o.join("");
-//}
+
+
+// function write_cs_xml(idx, opts, wb, rels) {
+// 	var o = [XML_HEADER, writextag('chartsheet', null, {
+// 		'xmlns': XMLNS_main[0],
+// 		'xmlns:r': XMLNS.r
+// 	})];
+// 	o[o.length] = writextag("drawing", null, {"r:id": "rId1"});
+// 	add_rels(rels, -1, "../drawings/drawing" + (idx+1) + ".xml", RELS.DRAW);
+// 	if(o.length>2) { o[o.length] = ('</chartsheet>'); o[1]=o[1].replace("/>",">"); }
+// 	return o.join("");
+// }
+
+/** 2022-08-15 导出图片，好像没用到，被注释了 */
+function write_cs_xml(idx, opts, wb, rels) {
+	var o = [XML_HEADER, CS_XML_ROOT];
+	o[o.length] = writextag("drawing", null, { "r:id": "rId1" });
+	add_rels(rels, -1, "../drawings/drawing" + (idx + 1) + ".xml", RELS.DRAW);
+	if (o.length > 2) {
+		o[o.length] = ('</chartsheet>');
+		o[1] = o[1].replace("/>", ">");
+	}
+	return o.join("");
+}
 
 /* [MS-XLSB] 2.4.331 BrtCsProp */
 function parse_BrtCsProp(data, length) {
@@ -24751,7 +24826,7 @@ function write_zip_xlsx(wb, opts) {
 	ct.coreprops.push(f);
 	add_rels(opts.rels, 2, f, RELS.CORE_PROPS);
 
-f = "docProps/app.xml";
+	f = "docProps/app.xml";
 	if(wb.Props && wb.Props.SheetNames){/* empty */}
 	else if(!wb.Workbook || !wb.Workbook.Sheets) wb.Props.SheetNames = wb.SheetNames;
 	else {
@@ -24779,6 +24854,30 @@ f = "docProps/app.xml";
 		var wsrels = {'!id':{}};
 		var ws = wb.Sheets[wb.SheetNames[rId-1]];
 		var _type = (ws || {})["!type"] || "sheet";
+
+		/** 2022-08-15 导出图片 */
+		var images = ws['!images'] || [];
+		// var rels = ws['!rels'] = [],
+		if (images.length > 0) {
+			var rels = ws['!rels'] = [], draw_rels = [];
+			for (var sId = 1; sId < images.length + 1; ++sId) {
+				var image = images[sId - 1];
+				f = 'xl/media/' + image.name;
+				// zip.file(f, image.data, image.opts);
+				// zip_add_file(zip, f, write_cust_props(image.data, image.opts))
+				zip_add_file(zip, f, image.data, image.opts);
+				add_rels(draw_rels, sId, "../media/" + image.name, RELS.IMG);
+			}
+			// zip.file("xl/drawings/drawing" + rId + "." + wbext, write_drawing(images, rId));
+			zip_add_file(zip, "xl/drawings/drawing" + rId + "." + wbext, write_drawing(images, rId))
+			add_rels(rels, rId, "../drawings/drawing" + rId + "." + wbext, RELS.DRAW);
+			// zip.file("xl/drawings/_rels/drawing" + rId + "." + wbext + ".rels", write_rels(draw_rels));
+			zip_add_file(zip, "xl/drawings/_rels/drawing" + rId + "." + wbext + ".rels", write_rels(draw_rels))
+			// zip.file("xl/worksheets/_rels/sheet" + rId + "." + wbext + '.rels', write_rels(rels));
+			zip_add_file(zip, "xl/worksheets/_rels/sheet" + rId + "." + wbext + '.rels', write_rels(rels))
+		}
+		/** 2022-08-15 导出图片 */
+
 		switch(_type) {
 		case "chart":
 			/* falls through */
@@ -25009,6 +25108,10 @@ function write_cfb_ctr(cfb, o) {
 	return CFB.write(cfb, o);
 }
 
+/** 2022-08-15 导出图片 */
+RELS.IMG = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/image";
+RELS.DRAW = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/drawing";
+
 function write_zip(wb, opts) {
 	switch(opts.bookType) {
 		case "ods": return write_ods(wb, opts);
@@ -25020,13 +25123,13 @@ function write_zip(wb, opts) {
 
 function write_zip_type(wb, opts) {
 	var o = dup(opts||{});
-  style_builder  = new StyleBuilder(o);
+    style_builder  = new StyleBuilder(o);
 	var z = write_zip(wb, o);
 	return write_zip_denouement(z, o);
 }
 function write_zip_typeXLSX(wb, opts) {
 	var o = dup(opts||{});
-  style_builder  = new StyleBuilder(o);
+    style_builder  = new StyleBuilder(o);
 	var z = write_zip_xlsx(wb, o);
 	return write_zip_denouement(z, o);
 }
