@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>非LAYUI加载</title>
+  <!--加载插件-->
+  <script src="../../layui_exts/excel.js"></script>
+  <script>
+    function exportTable() {
+      // 获取头部和body
+      var data = LAY_EXCEL.tableToJson(document.getElementById('LAY-EXPORT-TEST')) // 或者 $('#LAY-EXPORT-TEST')
+      // console.log(data)
+      var exportData = []
+      exportData.push.apply(exportData, data.head)
+      exportData.push.apply(exportData, data.body)
+      // console.log(exportData)
+
+      LAY_EXCEL.exportExcel(exportData, '表格导出.xlsx', 'xlsx')
+    }
+  </script>
+</head>
+<body>
+  <h3>表格导出DEMO以及无layui导出DEMO</h3>
+  <button type="button" onclick="exportTable()">点我导出表格</button>
+  <p style="color: #f00;">注：表格可编辑</p>
+  <table id="LAY-EXPORT-TEST" border>
+    <thead>
+    <tr><th contenteditable="true">第一列</th><th contenteditable="true">第二列</th><th contenteditable="true">第三列</th></tr>
+    </thead>
+    <tbody>
+    <tr><td contenteditable="true">1</td><td contenteditable="true">2</td><td contenteditable="true">3</td></tr>
+    <tr><td contenteditable="true">2</td><td contenteditable="true">2</td><td contenteditable="true">3</td></tr>
+    <tr><td contenteditable="true">3</td><td contenteditable="true">2</td><td contenteditable="true">3</td></tr>
+    <tr><td contenteditable="true">4</td><td contenteditable="true">2</td><td contenteditable="true">3</td></tr>
+    <tr><td contenteditable="true">5</td><td contenteditable="true">2</td><td contenteditable="true">3</td></tr>
+    <tr><td contenteditable="true">6</td><td contenteditable="true">2</td><td contenteditable="true">3</td></tr>
+    <tr><td contenteditable="true">7</td><td contenteditable="true">2</td><td contenteditable="true">3</td></tr>
+    <tr><td contenteditable="true">8</td><td contenteditable="true">2</td><td contenteditable="true">3</td></tr>
+    </tbody>
+  </table>
+</body>
+</html>

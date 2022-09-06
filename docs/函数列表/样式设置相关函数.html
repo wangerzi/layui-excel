@@ -1,0 +1,701 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>样式设置相关函数 · LAY-EXCEL 插件文档</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        <meta name="author" content="Jeffrey Wang <admin@wj2015.com>">
+        
+        
+    
+    <link rel="stylesheet" href="../../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="EXCEL时间处理函数.html" />
+    
+    
+    <link rel="prev" href="导入相关函数.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+    
+        
+        <li>
+            <a href="https://blog.wj2015.com" target="_blank" class="custom-link">作者博客</a>
+        </li>
+    
+        
+        <li>
+            <a href="http://excel.wj2015.com" target="_blank" class="custom-link">功能演示</a>
+        </li>
+    
+    
+
+    
+    <li class="divider"></li>
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="../../">
+            
+                <a href="../../">
+            
+                    
+                    概览
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.1.1" data-path="../功能概览.html">
+            
+                <a href="../功能概览.html">
+            
+                    
+                    功能概览
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.1.2" data-path="../贡献DEMO.html">
+            
+                <a href="../贡献DEMO.html">
+            
+                    
+                    贡献DEMO
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.1.3" data-path="../参与开发.html">
+            
+                <a href="../参与开发.html">
+            
+                    
+                    参与开发
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.1.4" data-path="../更新记录.html">
+            
+                <a href="../更新记录.html">
+            
+                    
+                    更新记录
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="../快速上手.html">
+            
+                <a href="../快速上手.html">
+            
+                    
+                    快速上手
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" data-path="../常见问题.html">
+            
+                <a href="../常见问题.html">
+            
+                    
+                    常见问题
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4" data-path="./">
+            
+                <a href="./">
+            
+                    
+                    函数列表
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.4.1" data-path="导出相关函数.html">
+            
+                <a href="导出相关函数.html">
+            
+                    
+                    导出相关函数
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.2" data-path="导入相关函数.html">
+            
+                <a href="导入相关函数.html">
+            
+                    
+                    导入相关函数
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="1.4.3" data-path="样式设置相关函数.html">
+            
+                <a href="样式设置相关函数.html">
+            
+                    
+                    样式设置相关函数
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.4" data-path="EXCEL时间处理函数.html">
+            
+                <a href="EXCEL时间处理函数.html">
+            
+                    
+                    EXCEL时间处理函数
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5" data-path="../样式设置专区.html">
+            
+                <a href="../样式设置专区.html">
+            
+                    
+                    样式设置专区
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6" data-path="../交流反馈.html">
+            
+                <a href="../交流反馈.html">
+            
+                    
+                    交流反馈
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7" data-path="../赞赏支持.html">
+            
+                <a href="../赞赏支持.html">
+            
+                    
+                    赞赏支持
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="../.." >样式设置相关函数</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="&#x6837;&#x5F0F;&#x8BBE;&#x7F6E;&#x76F8;&#x5173;&#x51FD;&#x6570;">&#x6837;&#x5F0F;&#x8BBE;&#x7F6E;&#x76F8;&#x5173;&#x51FD;&#x6570;</h1>
+<blockquote>
+<p>&#x6837;&#x5F0F;&#x8BBE;&#x7F6E;&#x5305;&#x62EC;&#xFF0C;&#x7ED9;&#x8868;&#x683C;&#x8BBE;&#x7F6E;&#x8FB9;&#x6846;&#xFF0C;&#x6DFB;&#x52A0;&#x80CC;&#x666F;&#x8272;&#xFF0C;&#x6539;&#x5B57;&#x53F7;&#xFF0C;&#x6587;&#x5B57;&#x5C40;&#x4E2D;&#xFF0C;&#x8BBE;&#x7F6E;&#x884C;&#x9AD8;&#x5217;&#x5BBD;&#xFF0C;&#x5408;&#x5E76;&#x5355;&#x5143;&#x683C;&#x7B49;&#x529F;&#x80FD;&#xFF0C;&#x5F00;&#x53D1;&#x4E86;&#x8BF8;&#x5982; setExportCellStyle &#x8F85;&#x52A9;&#x6DFB;&#x52A0;&#x6837;&#x5F0F;&#xFF0C;setRoundBorder &#x7528;&#x4E8E;&#x8C03;&#x6574;&#x8FB9;&#x6846;&#x7B49;&#xFF0C;makeRowConf &#x8C03;&#x6574;&#x884C;&#x9AD8;&#xFF0C;makeColConf &#x8C03;&#x6574;&#x5217;&#x5BBD;&#xFF0C;makeMergeConf &#x5904;&#x7406;&#x5408;&#x5E76;&#x3002;</p>
+</blockquote>
+<h4 id="setexportcellstyle&#x53C2;&#x6570;&#x914D;&#x7F6E;">setExportCellStyle&#x53C2;&#x6570;&#x914D;&#x7F6E;</h4>
+<blockquote>
+<p>&#x8F85;&#x52A9;&#x65B9;&#x6CD5;&#xFF1A;&#x4E3A; sheet &#x7EA7;&#x522B;&#x7684;&#x6570;&#x636E;&#x6279;&#x91CF;&#x8BBE;&#x7F6E;&#x5355;&#x5143;&#x683C;&#x5C5E;&#x6027;&#xFF0C;&#x8BF7;&#x4E00;&#x5B9A;&#x6CE8;&#x610F;&#x7B2C;&#x4E00;&#x4E2A;&#x53C2;&#x6570;&#x8981;&#x7ECF;&#x8FC7; filter &#x51FD;&#x6570;&#x7684;&#x5904;&#x7406;&#xFF0C;&#x4FDD;&#x8BC1; key &#x7684;&#x987A;&#x5E8F;&#x548C;&#x5B8C;&#x6574;&#xFF0C;&#x5982;&#x679C;&#x4F20;&#x5165;&#x7B2C;&#x56DB;&#x4E2A;&#x53C2;&#x6570;&#xFF08;&#x56DE;&#x8C03;&#x51FD;&#x6570;&#xFF09;&#xFF0C;&#x5355;&#x5143;&#x683C;&#x6570;&#x636E;&#x5C06;&#x4F1A;&#x4EE5;&#x56DE;&#x8C03;&#x51FD;&#x6570;&#x8FD4;&#x56DE;&#x7684;&#x6570;&#x636E;&#x4E3A;&#x51C6;</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>&#x53C2;&#x6570;&#x540D;&#x79F0;</th>
+<th>&#x63CF;&#x8FF0;</th>
+<th>&#x9ED8;&#x8BA4;&#x503C;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>data</td>
+<td>sheet&#x7EA7;&#x522B;&#x7684;&#x6570;&#x636E;</td>
+<td>undefined</td>
+</tr>
+<tr>
+<td>range</td>
+<td>&#x8303;&#x56F4;&#x5B57;&#x7B26;&#x4E32;&#xFF0C;&#x6BD4;&#x5982;<code>&quot; A1:C12&quot;</code>&#x8868;&#x793A;&#x5F00;&#x59CB;&#x4F4D;&#x7F6E;&#x9ED8;&#x8BA4; A1&#xFF0C;&#x7ED3;&#x675F;&#x4F4D;&#x7F6E;C12&#xFF0C;&#x76EE;&#x524D;&#x8FD8;&#x4E0D;&#x652F;&#x6301;&#x5176;&#x4ED6;&#x683C;&#x5F0F;&#xFF0C;&#x8BF7;&#x4E0D;&#x8981;&#x5199; <code>A~B,1~2</code>&#x7B49;&#x81EA;&#x521B;&#x5199;&#x6CD5;</td>
+<td>&#x6570;&#x636E;&#x8303;&#x56F4;&#x5185;&#x5DE6;&#x4E0A;&#x89D2;&#x5230;&#x53F3;&#x4E0B;&#x89D2;</td>
+</tr>
+<tr>
+<td>config</td>
+<td>&#x6279;&#x91CF;&#x8BBE;&#x7F6E;&#x7684;&#x5355;&#x5143;&#x683C;&#x5C5E;&#x6027;&#xFF0C;&#x5982;&#x679C;&#x6CA1;&#x6709;&#x56DE;&#x8C03;&#x51FD;&#x6570;&#x8FD4;&#x56DE;&#x5219;&#x6837;&#x5F0F;&#x5408;&#x5E76;&#xFF0C;&#x5B58;&#x5728;&#x56DE;&#x8C03;&#x8FD4;&#x56DE;&#x5219;&#x4EE5;&#x8FD4;&#x56DE;&#x503C;&#x4E3A;&#x51C6;</td>
+<td>undefined</td>
+</tr>
+<tr>
+<td>filter</td>
+<td>&#x56DE;&#x8C03;&#x51FD;&#x6570;&#xFF0C;&#x4F20;&#x9012;&#x51FD;&#x6570;&#x751F;&#x6548;&#xFF0C;&#x8FD4;&#x56DE;&#x503C;&#x4F5C;&#x4E3A;&#x65B0;&#x7684;&#x503C;&#xFF08;&#x53EF;&#x7528;&#x4E8E;&#x8FC7;&#x6EE4;&#x3001;&#x89C4;&#x5219;&#x66FF;&#x6362;&#x6837;&#x5F0F;&#x7B49;&#x9A9A;&#x64CD;&#x4F5C;&#xFF09;<strong>&#x300E;&#x975E;&#x5FC5;&#x586B;&#x53C2;&#x6570;&#x300F;</strong></td>
+<td>undefined</td>
+</tr>
+</tbody>
+</table>
+<h5 id="filter&#x5165;&#x53C2;&#x5217;&#x8868;">filter&#x5165;&#x53C2;&#x5217;&#x8868;</h5>
+<blockquote>
+<p>&#x6B64;&#x53C2;&#x6570;&#x9009;&#x586B;&#xFF0C;&#x5982;&#x679C;&#x4E0D;&#x4F20;&#x5165;&#x5219;&#x76F4;&#x63A5;&#x6309;&#x7167;&#x89C4;&#x5219;&#x8986;&#x76D6;</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>&#x53C2;&#x6570;&#x540D;&#x79F0;</th>
+<th>&#x63CF;&#x8FF0;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>cell</td>
+<td>&#x539F;&#x6709;&#x5355;&#x5143;&#x683C;&#x6570;&#x636E;</td>
+</tr>
+<tr>
+<td>newCell</td>
+<td>&#x6839;&#x636E;&#x6279;&#x91CF;&#x8BBE;&#x7F6E;&#x89C4;&#x5219;&#x81EA;&#x52A8;&#x751F;&#x6210;&#x6837;&#x5F0F;&#x7684;&#x5355;&#x5143;&#x683C;&#x6570;&#x636E;&#xFF08;&#x5408;&#x5E76;&#xFF09;</td>
+</tr>
+<tr>
+<td>row</td>
+<td>&#x6240;&#x5728;&#x884C;&#x6570;&#x636E;</td>
+</tr>
+<tr>
+<td>config</td>
+<td>&#x4F20;&#x5165;&#x7684;&#x914D;&#x7F6E;</td>
+</tr>
+<tr>
+<td>currentCol</td>
+<td>&#x5F53;&#x524D;&#x5217;&#x7D22;&#x5F15;</td>
+</tr>
+<tr>
+<td>fieldKey</td>
+<td>&#x5F53;&#x524D;&#x5B57;&#x6BB5;key</td>
+</tr>
+</tbody>
+</table>
+<h5 id="&#x8C03;&#x7528;&#x6837;&#x4F8B;&#x66F4;&#x591A;&#x7528;&#x6CD5;&#x53EF;&#x53C2;&#x8003;-indexjs-&#x4E2D;&#x7684;&#x6837;&#x4F8B;">&#x8C03;&#x7528;&#x6837;&#x4F8B;(&#x66F4;&#x591A;&#x7528;&#x6CD5;&#x53EF;&#x53C2;&#x8003; index.js &#x4E2D;&#x7684;&#x6837;&#x4F8B;)</h5>
+<blockquote>
+<p>&#x5982;&#x679C;&#x60F3;&#x52A8;&#x6001;&#x7684;&#x4F20;&#x5165;&#x8303;&#x56F4; A1:C{&#x6570;&#x636E;&#x957F;&#x5EA6;}&#xFF0C;&#x53EF;&#x4EE5;&#x5C06;&#x7B2C;&#x4E8C;&#x4E2A;&#x53C2;&#x6570;&#x6539;&#x4E3A; <code>&apos;A1:C&apos;+data.length</code></p>
+</blockquote>
+<pre><code class="lang-javascript"><span class="hljs-comment">// 1. &#x5047;&#x8BBE;&#x7684;&#x68B3;&#x7406;&#x540E;&#x7684;&#x540E;&#x53F0;&#x7684;&#x6570;&#x636E;(&#x7701;&#x7565;filter&#x51FD;&#x6570;&#x68B3;&#x7406;)</span>
+<span class="hljs-keyword">var</span> data = [
+    { username: <span class="hljs-string">&apos;520&apos;</span>,sex: <span class="hljs-string">&apos;&#x7537;&apos;</span>, city: <span class="hljs-string">&apos;J&apos;</span>, <span class="hljs-string">&apos;score&apos;</span>: <span class="hljs-number">100</span>, <span class="hljs-string">&apos;start&apos;</span>: <span class="hljs-string">&apos;2019-03-11&apos;</span> },
+    { username: <span class="hljs-string">&apos;520&apos;</span>,sex: <span class="hljs-string">&apos;&#x5973;&apos;</span>, city: <span class="hljs-string">&apos;X&apos;</span>, <span class="hljs-string">&apos;score&apos;</span>: <span class="hljs-number">100</span>, <span class="hljs-string">&apos;start&apos;</span>: <span class="hljs-string">&apos;2019-03-11&apos;</span> },
+    { username: <span class="hljs-string">&apos;520&apos;</span>,sex: <span class="hljs-string">&apos;&#x7537;&apos;</span>, city: <span class="hljs-string">&apos;&#x4E0A;&#x6D77;&apos;</span>, <span class="hljs-string">&apos;score&apos;</span>: <span class="hljs-number">100</span>, <span class="hljs-string">&apos;start&apos;</span>: <span class="hljs-string">&apos;2019-03-11&apos;</span> }
+];
+<span class="hljs-comment">// 2. &#x8C03;&#x7528;&#x8BBE;&#x7F6E;&#x6837;&#x5F0F;&#x7684;&#x51FD;&#x6570;&#xFF0C;&#x4F20;&#x5165;&#x8BBE;&#x7F6E;&#x7684;&#x8303;&#x56F4;&#xFF0C;&#x652F;&#x6301;&#x56DE;&#x8C03;</span>
+excel.setExportCellStyle(data, <span class="hljs-string">&apos;A1:C3&apos;</span>, {
+    s: {
+        fill: { bgColor: { indexed: <span class="hljs-number">64</span> }, fgColor: { rgb: <span class="hljs-string">&quot;FF0000&quot;</span> } },
+        alignment: {
+            horizontal: <span class="hljs-string">&apos;center&apos;</span>,
+            vertical: <span class="hljs-string">&apos;center&apos;</span>
+        }
+    }
+}, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">cell, newCell, row, config, currentRow, currentCol, fieldKey</span>) </span>{
+    <span class="hljs-comment">// &#x56DE;&#x8C03;&#x53C2;&#x6570;&#xFF0C;cell:&#x539F;&#x6709;&#x6570;&#x636E;&#xFF0C;newCell:&#x6839;&#x636E;&#x6279;&#x91CF;&#x8BBE;&#x7F6E;&#x89C4;&#x5219;&#x81EA;&#x52A8;&#x751F;&#x6210;&#x7684;&#x6837;&#x5F0F;&#xFF0C;row:&#x6240;&#x5728;&#x884C;&#x6570;&#x636E;&#xFF0C;config:&#x4F20;&#x5165;&#x7684;&#x914D;&#x7F6E;,currentRow:&#x5F53;&#x524D;&#x884C;&#x7D22;&#x5F15;,currentCol:&#x5F53;&#x524D;&#x5217;&#x7D22;&#x5F15;&#xFF0C;fieldKey:&#x5F53;&#x524D;&#x5B57;&#x6BB5;&#x7D22;&#x5F15;</span>
+    <span class="hljs-keyword">return</span> ((currentRow + currentCol) % <span class="hljs-number">2</span> === <span class="hljs-number">0</span>) ? newCell : cell;<span class="hljs-comment">// &#x9694;&#x884C;&#x9694;&#x5217;&#x4E0A;&#x8272;</span>
+} );
+<span class="hljs-comment">// 3. &#x5BFC;&#x51FA;&#x6570;&#x636E;</span>
+excel.exportExcel(data, <span class="hljs-string">&apos;&#x6279;&#x91CF;&#x8BBE;&#x7F6E;&#x6837;&#x5F0F;.xlsx&apos;</span>, <span class="hljs-string">&apos;xlsx&apos;</span>);
+</code></pre>
+<h4 id="setroundborder&#x53C2;&#x6570;&#x914D;&#x7F6E;">setRoundBorder&#x53C2;&#x6570;&#x914D;&#x7F6E;</h4>
+<blockquote>
+<p>&#x8F85;&#x52A9;&#x65B9;&#x6CD5;&#xFF1A;&#x8BBE;&#x7F6E;&#x8303;&#x56F4;&#x5185;&#x73AF;&#x7ED5;&#x7684;&#x8FB9;&#x6846;</p>
+<p>&#x3010;&#x6CE8;&#x3011;&#x6B64;&#x65B9;&#x6CD5;&#x5E95;&#x5C42;&#x4E0E; setExportCellStyle &#x65B9;&#x6CD5;&#x4E00;&#x81F4;&#xFF0C;&#x6240;&#x4EE5;&#x5728;&#x4E24;&#x4E2A;&#x65B9;&#x6CD5;&#x6DF7;&#x5408;&#x8C03;&#x7528;&#x4E0B;&#x53EF;&#x80FD;&#x4F1A;&#x5BFC;&#x81F4;&#x6837;&#x5F0F;&#x8986;&#x76D6;&#xFF0C;&#x7279;&#x522B;&#x662F;&#x5728;&#x4F7F;&#x7528; setExportCellStyle &#x7684;&#x56DE;&#x8C03;&#x6A21;&#x5F0F;&#x4E4B;&#x65F6;</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>&#x53C2;&#x6570;&#x540D;&#x79F0;</th>
+<th>&#x63CF;&#x8FF0;</th>
+<th>&#x9ED8;&#x8BA4;&#x503C;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>data</td>
+<td>Sheet&#x7EA7;&#x522B;&#x7684;&#x6570;&#x636E;</td>
+<td>[]</td>
+</tr>
+<tr>
+<td>range</td>
+<td>&#x8303;&#x56F4;&#x5B57;&#x7B26;&#x4E32;&#xFF0C;&#x5982; A1:C12&#xFF0C;&#x9ED8;&#x8BA4;&#x4ECE;&#x5DE6;&#x4E0A;&#x89D2;&#x5230;&#x53F3;&#x4E0B;&#x89D2;</td>
+<td>&quot;A1:C12&quot;</td>
+</tr>
+<tr>
+<td>config</td>
+<td>border &#x4E0A;&#x4E0B;&#x5DE6;&#x53F3;&#x5C5E;&#x6027;&#x914D;&#x7F6E;&#x4FE1;&#x606F;&#xFF08;&#x5BF9;&#x89D2;&#x7EBF;&#x7684;&#x4E09;&#x4E2A;&#x5C5E;&#x6027;&#x88AB;&#x4E0B;&#x653E;&#x5230;left/right/top/bottom&#x4E0B;&#xFF09;</td>
+<td>{top: {xxx}, bottom: {}, left: {}, right: {}}</td>
+</tr>
+</tbody>
+</table>
+<h5 id="&#x8C03;&#x7528;&#x6837;&#x4F8B;">&#x8C03;&#x7528;&#x6837;&#x4F8B;</h5>
+<pre><code class="lang-javascript">LAY_EXCEL.setRoundBorder(list, <span class="hljs-string">&apos;A1:C2&apos;</span>, {
+    top: {style: <span class="hljs-string">&apos;thick&apos;</span>, color: {rgb: <span class="hljs-string">&apos;FFFF0000&apos;</span>}},
+    bottom: {style: <span class="hljs-string">&apos;thick&apos;</span>, color: {rgb: <span class="hljs-string">&apos;FFFF0000&apos;</span>}},
+    left: {style: <span class="hljs-string">&apos;thick&apos;</span>, color: {rgb: <span class="hljs-string">&apos;FFFF0000&apos;</span>}},
+    right: {style: <span class="hljs-string">&apos;thick&apos;</span>, color: {rgb: <span class="hljs-string">&apos;FFFF0000&apos;</span>}}
+});
+</code></pre>
+<h4 id="makemergeconfig&#x53C2;&#x6570;&#x914D;&#x7F6E;">makeMergeConfig&#x53C2;&#x6570;&#x914D;&#x7F6E;</h4>
+<blockquote>
+<p>&#x8F85;&#x52A9;&#x65B9;&#x6CD5;&#xFF1A;&#x7528;&#x4E8E;&#x751F;&#x6210;&#x5408;&#x5E76;&#x8868;&#x683C;&#x7684;&#x914D;&#x7F6E;&#x9879;&#xFF0C;&#x6CE8;&#x610F;&#x9700;&#x8981;&#x4F20;&#x5165;&#x5230; exportExcel &#x7684; opt.extend[&apos;!merge&apos;] &#x4E2D;</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>&#x53C2;&#x6570;&#x540D;&#x79F0;</th>
+<th>&#x63CF;&#x8FF0;</th>
+<th>&#x9ED8;&#x8BA4;&#x503C;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>origin</td>
+<td>&#x4E8C;&#x7EF4;&#x6570;&#x7EC4;</td>
+<td>undefined</td>
+</tr>
+</tbody>
+</table>
+<h5 id="&#x8C03;&#x7528;&#x6837;&#x4F8B;">&#x8C03;&#x7528;&#x6837;&#x4F8B;</h5>
+<blockquote>
+<p>&#x5982;&#x4E0B;&#x4EE3;&#x7801;&#x8868;&#x793A;&#x5408;&#x5E76; A1~E1 &#x884C;&#xFF0C;&#x5E76;&#x4E14;&#x5408;&#x5E76; A2~D4&#x884C;&#xFF0C;&#x5982;&#x679C;&#x6709;&#x52A8;&#x6001;&#x5408;&#x5E76;&#x5217;&#x7684;&#x9700;&#x6C42;&#xFF0C;&#x8BF7;&#x4F7F;&#x7528; JS &#x5FAA;&#x73AF;&#x751F;&#x6210;&#x53C2;&#x6570;&#x4F20;&#x5165;</p>
+</blockquote>
+<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> mergeConf = excel.makeMergeConfig([
+    [<span class="hljs-string">&apos;A1&apos;</span>, <span class="hljs-string">&apos;E1&apos;</span>],
+    [<span class="hljs-string">&apos;A2&apos;</span>, <span class="hljs-string">&apos;D4&apos;</span>]
+]);
+excel.exportExcel({
+    sheet1: data
+}, <span class="hljs-string">&apos;&#x6D4B;&#x8BD5;&#x5BFC;&#x51FA;&#x590D;&#x6742;&#x8868;&#x5934;.xlsx&apos;</span>, <span class="hljs-string">&apos;xlsx&apos;</span>, {
+    extend: {
+        <span class="hljs-comment">// &#x9700;&#x4F20;&#x5165;&#x751F;&#x6210;&#x597D;&#x7684;&#x914D;&#x7F6E;&#x4FE1;&#x606F;</span>
+        <span class="hljs-string">&apos;!merges&apos;</span>: mergeConf
+    }
+});
+</code></pre>
+<h4 id="makecolconfig&#x53C2;&#x6570;&#x914D;&#x7F6E;">makeColConfig&#x53C2;&#x6570;&#x914D;&#x7F6E;</h4>
+<blockquote>
+<p>&#x8F85;&#x52A9;&#x65B9;&#x6CD5;&#xFF1A;&#x751F;&#x6210;&#x5217;&#x5BBD;&#x914D;&#x7F6E;&#xFF0C;&#x8FD4;&#x56DE;&#x7ED3;&#x679C;&#x9700;&#x653E;&#x7F6E;&#x4E8E;opt.extend[&apos;!cols&apos;]&#x4E2D;</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>&#x53C2;&#x6570;&#x540D;&#x79F0;</th>
+<th>&#x63CF;&#x8FF0;</th>
+<th>&#x9ED8;&#x8BA4;&#x503C;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>data</td>
+<td>&#x4E00;&#x4E2A;&#x5BF9;&#x8C61;&#xFF0C;&#x5BF9;&#x8C61;&#x7684;key&#x4EE3;&#x8868;&#x5217;&#xFF08;&#x5982;&#xFF1A;ABCDE&#xFF09;&#xFF0C;value&#x4EE3;&#x8868;&#x5BBD;&#x5EA6;</td>
+<td>null</td>
+</tr>
+<tr>
+<td>defaultNum</td>
+<td>&#x6E32;&#x67D3;&#x8FC7;&#x7A0B;&#x4E2D;&#x672A;&#x6307;&#x5B9A;&#x5355;&#x5143;&#x683C;&#x7684;&#x9ED8;&#x8BA4;&#x5BBD;&#x5EA6;</td>
+<td>60</td>
+</tr>
+</tbody>
+</table>
+<h5 id="&#x4F7F;&#x7528;&#x6837;&#x4F8B;">&#x4F7F;&#x7528;&#x6837;&#x4F8B;</h5>
+<blockquote>
+<p>key&#x8868;&#x793A;&#x5217;&#xFF0C;value&#x8868;&#x793A;&#x5BBD;&#xFF0C;<strong>&#x914D;&#x7F6E;&#x6700;&#x5C0F;&#x5217;&#x548C;&#x6700;&#x5927;&#x5217;&#x4E4B;&#x95F4;&#x672A;&#x5B9A;&#x4E49;&#x7684;&#x5217;&#x5BBD;&#x53D6;&#x914D;&#x7F6E;&#x7684;&#x9ED8;&#x8BA4;&#x503C;</strong>&#xFF0C;&#x7279;&#x522B;&#x6CE8;&#x610F;&#x8981;&#x653E;&#x5728; opt.extend[&apos;!cols&apos;] &#x4E2D;
+&#x8FD9;&#x91CC;&#x975E;&#x5E38;&#x611F;&#x8C22;&#x7FA4;&#x91CC;&#x7684;&#x300E;&#x5C0F;&#x661F;&#x7403;&#x1F98F;&#x300F;&#x540C;&#x5B66;&#xFF0C;&#x975E;&#x5E38;&#x7EC6;&#x81F4;&#x7684;&#x627E;&#x51FA;&#x4E86;&#x884C;&#x9AD8;&#x5217;&#x5BBD;&#x7684;&#x5355;&#x4F4D;&#x9519;&#x8BEF;</p>
+</blockquote>
+<pre><code class="lang-javascript"><span class="hljs-comment">// &#x610F;&#x601D;&#x662F;&#xFF1A;A&#x5217;40&#xFF0C;B&#x5217;80(&#x88AB;&#x8BBE;&#x7F6E;&#x9ED8;&#x8BA4;&#x5217;&#x5BBD;)&#xFF0C;C&#x5217;120px&#xFF0C;D&#x3001;E&#x3001;F&#x7B49;&#x5747;&#x672A;&#x5B9A;&#x4E49;&#xFF08;&#x8868;&#x683C;&#x9ED8;&#x8BA4;&#x5217;&#x5BBD;&#xFF0C;&#x975E; 80&#xFF09;&#xFF0C;&#x5355;&#x4F4D;&#x662F;&#x78C5;</span>
+<span class="hljs-keyword">var</span> colConf = excel.makeColConfig({
+    <span class="hljs-string">&apos;A&apos;</span>: <span class="hljs-number">40</span>,
+    <span class="hljs-string">&apos;C&apos;</span>: <span class="hljs-number">120</span>
+}, <span class="hljs-number">80</span>);
+excel.exportExcel({
+    sheet1: data
+}, <span class="hljs-string">&apos;&#x6D4B;&#x8BD5;&#x5BFC;&#x51FA;&#x590D;&#x6742;&#x8868;&#x5934;.xlsx&apos;</span>, <span class="hljs-string">&apos;xlsx&apos;</span>, {
+    extend: {
+        <span class="hljs-string">&apos;!cols&apos;</span>: colConf
+    }
+});
+</code></pre>
+<h4 id="makerowconfig&#x53C2;&#x6570;&#x914D;&#x7F6E;">makeRowConfig&#x53C2;&#x6570;&#x914D;&#x7F6E;</h4>
+<blockquote>
+<p>&#x8F85;&#x52A9;&#x65B9;&#x6CD5;&#xFF1A;&#x751F;&#x6210;&#x5217;&#x5BBD;&#x914D;&#x7F6E;&#xFF0C;&#x8FD4;&#x56DE;&#x7ED3;&#x679C;&#x9700;&#x653E;&#x7F6E;&#x4E8E;opt.extend[&apos;!rows&apos;]&#x4E2D;</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>&#x53C2;&#x6570;&#x540D;&#x79F0;</th>
+<th>&#x63CF;&#x8FF0;</th>
+<th>&#x9ED8;&#x8BA4;&#x503C;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>data</td>
+<td>&#x4E00;&#x4E2A;&#x5BF9;&#x8C61;&#xFF0C;&#x5BF9;&#x8C61;&#x7684;key&#x4EE3;&#x8868;&#x4ECE;1&#x5F00;&#x59CB;&#x7684;&#x884C;&#xFF08;&#x5982;&#xFF1A;1234&#xFF09;&#xFF0C;value&#x4EE3;&#x8868;&#x9AD8;&#x5EA6;</td>
+<td>null</td>
+</tr>
+<tr>
+<td>defaultNum</td>
+<td>&#x6E32;&#x67D3;&#x8FC7;&#x7A0B;&#x4E2D;&#x672A;&#x6307;&#x5B9A;&#x5355;&#x5143;&#x683C;&#x7684;&#x9ED8;&#x8BA4;&#x5BBD;&#x5EA6;</td>
+<td>60</td>
+</tr>
+</tbody>
+</table>
+<h5 id="&#x4F7F;&#x7528;&#x6837;&#x4F8B;">&#x4F7F;&#x7528;&#x6837;&#x4F8B;</h5>
+<blockquote>
+<p>key&#x8868;&#x793A;&#x884C;&#xFF0C;value&#x8868;&#x793A;&#x9AD8;&#x5EA6;&#xFF0C;<strong>&#x914D;&#x7F6E;&#x6700;&#x5C0F;&#x884C;&#x548C;&#x6700;&#x5927;&#x884C;&#x4E4B;&#x95F4;&#x672A;&#x5B9A;&#x4E49;&#x7684;&#x884C;&#x9AD8;&#x53D6;&#x914D;&#x7F6E;&#x7684;&#x9ED8;&#x8BA4;&#x503C;</strong>&#xFF0C;&#x7279;&#x522B;&#x6CE8;&#x610F;&#x8981;&#x653E;&#x5728; opt.extend[&apos;!rows&apos;] &#x4E2D;</p>
+</blockquote>
+<pre><code class="lang-javascript"><span class="hljs-comment">// &#x610F;&#x601D;&#x662F;&#xFF1A;1&#x884C;40&#xFF0C;2&#x884C;80(&#x88AB;&#x8BBE;&#x7F6E;&#x4E86;&#x9ED8;&#x8BA4;&#x5217;&#x5BBD;)&#xFF0C;3&#x884C;120px&#xFF0C;4/5/6/7&#x7B49;&#x884C;&#x5747;&#x672A;&#x5B9A;&#x4E49;&#xFF08;&#x8868;&#x683C;&#x9ED8;&#x8BA4;&#x884C;&#x5BBD;&#xFF0C;&#x975E;80&#xFF09;&#xFF0C;1&#x5927;&#x7EA6;&#x5BF9;&#x5E94; 1.1&#x78C5;&#xFF0C;&#x7531;&#x5E95;&#x5C42;&#x63A7;&#x5236;&#x4E86;&#xFF0C;&#x5E76;&#x672A;&#x5728;&#x4E0A;&#x5C42;&#x5C01;&#x88C5;&#x7684;&#x65F6;&#x5019;&#x66F4;&#x6539;&#x5176;&#x5355;&#x4F4D;</span>
+<span class="hljs-keyword">var</span> rowConf = excel.makeRowConfig({
+    <span class="hljs-number">1</span>: <span class="hljs-number">40</span>,
+    <span class="hljs-number">3</span>: <span class="hljs-number">120</span>
+}, <span class="hljs-number">80</span>);
+excel.exportExcel({
+    sheet1: data
+}, <span class="hljs-string">&apos;&#x6D4B;&#x8BD5;&#x5BFC;&#x51FA;&#x590D;&#x6742;&#x8868;&#x5934;.xlsx&apos;</span>, <span class="hljs-string">&apos;xlsx&apos;</span>, {
+    extend: {
+        <span class="hljs-string">&apos;!rows&apos;</span>: rowConf
+    }
+});
+</code></pre>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="导入相关函数.html" class="navigation navigation-prev " aria-label="Previous page: 导入相关函数">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="EXCEL时间处理函数.html" class="navigation navigation-next " aria-label="Next page: EXCEL时间处理函数">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"样式设置相关函数","level":"1.4.3","depth":2,"next":{"title":"EXCEL时间处理函数","level":"1.4.4","depth":2,"path":"docs/函数列表/EXCEL时间处理函数.md","ref":"docs/函数列表/EXCEL时间处理函数.md","articles":[]},"previous":{"title":"导入相关函数","level":"1.4.2","depth":2,"path":"docs/函数列表/导入相关函数.md","ref":"docs/函数列表/导入相关函数.md","articles":[]},"dir":"ltr"},"config":{"plugins":[],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"Jeffrey Wang <admin@wj2015.com>","pdf":{"pageBreaksBefore":"/","headerTemplate":null,"paperSize":"a4","margin":{"right":62,"left":62,"top":36,"bottom":36},"fontSize":12,"fontFamily":"Arial","footerTemplate":null,"chapterMark":"pagebreak","pageNumbers":false},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"isbn":"","variables":{},"title":"LAY-EXCEL 插件文档","links":{"sharing":{"all":null,"facebook":null,"google":null,"twitter":null,"weibo":null},"sidebar":{"作者博客":"https://blog.wj2015.com","功能演示":"http://excel.wj2015.com"}},"gitbook":"*","description":"This is a doc created by gitbook","extension":null},"file":{"path":"docs/函数列表/样式设置相关函数.md","mtime":"2022-09-06T02:16:17.406Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2022-09-06T02:17:00.736Z"},"basePath":"../..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="../../gitbook/gitbook.js"></script>
+    <script src="../../gitbook/theme.js"></script>
+    
+        
+        <script src="../../gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+
