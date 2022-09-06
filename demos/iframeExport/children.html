@@ -17,8 +17,8 @@
         <div class="layui-form-item">
           <div class="layui-form-label">边框操作</div>
           <div class="layui-form-block">
-            <button type="button" class="layui-btn layui-btn-primary" onclick="errorExport()">错误的调用</button>
-            <button type="button" class="layui-btn layui-btn-primary" onclick="correctExport()">正确的调用</button>
+            <button type="button" class="layui-btn layui-btn-primary" onclick="errorExport()">iframe页的导出功能</button>
+            <button type="button" class="layui-btn layui-btn-primary" onclick="correctExport()">父级页面的调用</button>
           </div>
         </div>
       </div>
@@ -51,14 +51,14 @@
   function errorExport() {
     layui.use(['layer'], function () {
       layui.layer.alert('部分情况下无法弹出下载');
-      // 直接调用iframe中的导出函数无法弹出下载
+      // 直接调用iframe中的导出函数
       LAY_EXCEL.exportExcel(getExportData(), 'test.xlsx', 'xlsx')
     });
   }
   function correctExport() {
     layui.use(['layer'], function () {
       layui.layer.alert('正常弹出下载');
-      // 直接调用iframe中的导出函数无法弹出下载
+      // 直接调用iframe中的导出函数
       parent.LAY_EXCEL.exportExcel(getExportData(), 'test.xlsx', 'xlsx')
       // 嵌套层级比较多，可以考虑用 top
       // top.LAY_EXCEL.exportExcel([[1, 2, 3]], 'test.xlsx', 'xlsx')
