@@ -3485,7 +3485,7 @@ function zip_add_file(zip, path, content, options) {
 	if(zip.FullPaths) {
 		if(typeof content == "string") {
 			var res;
-      if (options && options.base64) res = s2a(Base64_decode(content));
+			if (options && options.base64) res = s2a(Base64_decode(content));
 			else if(has_buf) res = Buffer_from(content);
 			/* TODO: investigate performance in Edge 13 */
 			//else if(typeof TextEncoder !== "undefined") res = new TextEncoder().encode(content);
