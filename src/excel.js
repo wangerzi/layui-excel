@@ -766,8 +766,8 @@ function make_lay_excel(global) {
           });
           data[index] = excelData;
           book[index] = wb;
-          // 全部读取完毕才执行
-          if (parseInt(index) === files.length - 1) {
+          // 全部读取完毕才执行，考虑后来的文件先解析完，判断长度更合理
+          if (Object.values(data).length === files.length) {
             callback && callback.apply && callback.apply(window, [data, book]);
           }
         };
