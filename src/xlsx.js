@@ -5302,6 +5302,7 @@ function write_ct(ct, opts, raw) {
 	f3('themes');
 	['strs', 'styles'].forEach(f1);
 	['coreprops', 'extprops', 'custprops'].forEach(f3);
+  o[o.length] = '<Override PartName="/xl/drawings/drawing1.xml" ContentType="application/vnd.openxmlformats-officedocument.drawing+xml"/>';
 	f3('vba');
 	f3('comments');
 	f3('threadedcomments');
