@@ -5398,9 +5398,9 @@ function write_drawing(images, rId) {
 
 			var twoCell = '<xdr:from><xdr:col>' + fromCol + '</xdr:col><xdr:colOff>0</xdr:colOff><xdr:row>' + fromRow + '</xdr:row><xdr:rowOff>0</xdr:rowOff></xdr:from>';
 			twoCell += '<xdr:to><xdr:col>' + toCol + '</xdr:col><xdr:colOff>0</xdr:colOff><xdr:row>' + toRow + '</xdr:row><xdr:rowOff>0</xdr:rowOff></xdr:to>';
-			twoCell += '<xdr:pic><xdr:nvPicPr><xdr:cNvPr id="' + rId + '" name="' + image.name + '">';
+			twoCell += '<xdr:pic><xdr:nvPicPr><xdr:cNvPr id="' + (i+1) + '" name="' + image.name + '">';
 			twoCell += '</xdr:cNvPr><xdr:cNvPicPr><a:picLocks noChangeAspect="1"/></xdr:cNvPicPr></xdr:nvPicPr>';
-			twoCell += '<xdr:blipFill><a:blip xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" r:embed="rId' + rId + '"/>';
+			twoCell += '<xdr:blipFill><a:blip xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" r:embed="rId' + (i+1) + '"/>';
 			twoCell += '<a:stretch><a:fillRect/></a:stretch></xdr:blipFill><xdr:spPr><a:prstGeom prst="rect"><a:avLst/></a:prstGeom></xdr:spPr></xdr:pic><xdr:clientData/>';
 			o[o.length] = (writextag('xdr:twoCellAnchor', twoCell, images[i].attrs));
 		}
