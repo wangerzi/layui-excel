@@ -3481,11 +3481,12 @@ function zipentries(zip) {
 	return o.sort();
 }
 
-function zip_add_file(zip, path, content) {
+function zip_add_file(zip, path, content, options) {
 	if(zip.FullPaths) {
 		if(typeof content == "string") {
 			var res;
-			if(has_buf) res = Buffer_from(content);
+			if (options && options.base64) res = s2a(Base64_decode(content));
+			else if(has_buf) res = Buffer_from(content);
 			/* TODO: investigate performance in Edge 13 */
 			//else if(typeof TextEncoder !== "undefined") res = new TextEncoder().encode(content);
 			else res = utf8decode(content);
@@ -5301,6 +5302,7 @@ function write_ct(ct, opts, raw) {
 	f3('themes');
 	['strs', 'styles'].forEach(f1);
 	['coreprops', 'extprops', 'custprops'].forEach(f3);
+	o[o.length] = '<Override PartName="/xl/drawings/drawing1.xml" ContentType="application/vnd.openxmlformats-officedocument.drawing+xml"/>';
 	f3('vba');
 	f3('comments');
 	f3('threadedcomments');
@@ -5397,9 +5399,9 @@ function write_drawing(images, rId) {
 
 			var twoCell = '<xdr:from><xdr:col>' + fromCol + '</xdr:col><xdr:colOff>0</xdr:colOff><xdr:row>' + fromRow + '</xdr:row><xdr:rowOff>0</xdr:rowOff></xdr:from>';
 			twoCell += '<xdr:to><xdr:col>' + toCol + '</xdr:col><xdr:colOff>0</xdr:colOff><xdr:row>' + toRow + '</xdr:row><xdr:rowOff>0</xdr:rowOff></xdr:to>';
-			twoCell += '<xdr:pic><xdr:nvPicPr><xdr:cNvPr id="' + rId + '" name="' + image.name + '">';
+			twoCell += '<xdr:pic><xdr:nvPicPr><xdr:cNvPr id="' + (i+1) + '" name="' + image.name + '">';
 			twoCell += '</xdr:cNvPr><xdr:cNvPicPr><a:picLocks noChangeAspect="1"/></xdr:cNvPicPr></xdr:nvPicPr>';
-			twoCell += '<xdr:blipFill><a:blip xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" r:embed="rId' + rId + '"/>';
+			twoCell += '<xdr:blipFill><a:blip xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" r:embed="rId' + (i+1) + '"/>';
 			twoCell += '<a:stretch><a:fillRect/></a:stretch></xdr:blipFill><xdr:spPr><a:prstGeom prst="rect"><a:avLst/></a:prstGeom></xdr:spPr></xdr:pic><xdr:clientData/>';
 			o[o.length] = (writextag('xdr:twoCellAnchor', twoCell, images[i].attrs));
 		}
