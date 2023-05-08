@@ -3,7 +3,7 @@ name: Build Gitbook Doc
 on:
   push:
     branches:
-      - master
+      - dev
 
 jobs:
   build_doc:

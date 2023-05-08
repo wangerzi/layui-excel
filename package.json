@@ -6,7 +6,7 @@
   "scripts": {
     "test": "",
     "build": "./node_modules/.bin/webpack-cli -c webpack.config.js",
-    "build-doc": "node ./node_modules/gitbook-cli/bin/gitbook.js -V && node ./node_modules/gitbook-cli/bin/gitbook.js build",
+    "build-doc": "honkit build",
     "server": "serve"
   },
   "repository": {
@@ -39,7 +39,7 @@
     "babel-plugin-transform-remove-strict-mode": "0.0.2",
     "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.7.0",
-    "gitbook-cli": "^2.3.2",
+    "honkit": "^4.0.7",
     "serve": "^14.2.0",
     "webpack": "^4.0.0",
     "webpack-cli": "^4.2.0"
