@@ -877,6 +877,47 @@ function make_lay_excel(global) {
      */
     dateCodeFormat: function (code, format) {
       return this.dateFormat(this.dateCodeToDate(code), format)
+    },
+    /**
+     * 
+     * 提取 url 中的后缀
+     * @param {string} url 
+     * @returns 
+     */
+    getUrlSuffix(url) {
+      const match = /\.(\w+)(\?.*|#.*)?$/.exec(url);
+      return match ? match[1] : '';
+    },
+    /**
+     * 
+     * 远程下载图片，可能有跨域问题，IE 可能报 SCRIPT5022: SecurityError
+     * @param {string} url 
+     * @param {string} ext 
+     * @returns 
+     */
+    imageUrlToBase64(url, ext="") {
+      if (!ext) {
+        ext = getUrlSuffix(url);
+      }
+      return new Promise((resolve,reject) => {
+        let canvas=document.createElement("canvas");
+        const ctx=canvas.getContext("2d");
+        let img=new Image();
+        img.crossOrigin="Anonymous"; //解决Canvas.toDataURL 图片跨域问题
+        img.src=url;
+        img.onload=function() {
+          canvas.height=img.height;
+          canvas.width=img.width;
+          ctx.drawImage(img,0,0,img.width,img.height); //参数可自定义
+          const dataURL=canvas.toDataURL(`image/${ext}`,1); //获取Base64编码
+          resolve(dataURL);
+          canvas=null; //清除canvas元素
+          img=null; //清除img元素
+        };
+        img.onerror=function() {
+          reject(new Error("Could not load image at "+url));
+        };
+      });
     }
   }
   return global;

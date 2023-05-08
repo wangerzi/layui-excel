@@ -5394,8 +5394,8 @@ function write_drawing(images, rId) {
 		var pos = image.position || {};
 		if (pos.type === 'twoCellAnchor') {
 			var from = pos.from || {}, to = pos.to || {},
-				fromCol = from.col || 0, toCol = to.col || 0,
-				fromRow = from.row || 0, toRow = to.row || 0;
+				fromCol = from.c || 0, toCol = to.c || 0,
+				fromRow = from.r || 0, toRow = to.r || 0;
 
 			var twoCell = '<xdr:from><xdr:col>' + fromCol + '</xdr:col><xdr:colOff>0</xdr:colOff><xdr:row>' + fromRow + '</xdr:row><xdr:rowOff>0</xdr:rowOff></xdr:from>';
 			twoCell += '<xdr:to><xdr:col>' + toCol + '</xdr:col><xdr:colOff>0</xdr:colOff><xdr:row>' + toRow + '</xdr:row><xdr:rowOff>0</xdr:rowOff></xdr:to>';

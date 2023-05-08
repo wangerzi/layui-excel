@@ -533,6 +533,13 @@ function getDemoListContent(callback) {
 
     var list = [
       {
+        href: 'demos/imageExport/index.html',
+        path: 'demos/imageExport/index.html',
+        person: 'Sight-wcg',
+        email: 'https://github.com/Sight-wcg',
+        desc: '图片导出的 DEMO'
+      },
+      {
         href: 'demos/tableExport/index.html',
         path: 'demos/tableExport/index.html',
         person: '雨桐',

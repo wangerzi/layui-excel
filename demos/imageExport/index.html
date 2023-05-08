@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>导出图片</title>
+    <meta name="renderer" content="webkit" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="/layui/css/layui.css" rel="stylesheet" />
+  </head>
+
+  <body>
+    <div class="layui-container">
+      <div class="layui-row">
+        <div class="layui-col-md11 layui-col-md-offset1">
+          <fieldset class="layui-elem-field layui-field-title">
+            <legend>图片导出demo</legend>
+            <blockquote class="layui-elem-quote">
+              图片导出是一个长期困扰本插件的功能，直到这个 PR 的出现：
+              <a
+                href="https://github.com/wangerzi/layui-excel/pull/41"
+                target="_blank"
+                >https://github.com/wangerzi/layui-excel/pull/41</a
+              >
+              感谢 Sight-wcg 的辛勤付出
+            </blockquote>
+          </fieldset>
+          <table id="dataTable" lay-filter="test"></table>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script type="text/html" id="toolbarDemo">
+    <div class="layui-row">
+      <div
+        class="layui-col-md2 layui-col-sm3 layui-col-xs6"
+        style="text-align: left;padding-left: 10px;"
+      >
+      </div>
+      <div
+        class="layui-col-md10 layui-col-sm9 layui-col-xs6"
+        style="text-align: right;"
+      >
+        <div
+          class="layui-input-inline yutons-btn-margin-right"
+          style="margin-right: 0px;"
+        >
+          <span
+            class="layui-inline yutons-header-tool"
+            title="筛选列"
+            lay-event="LAYTABLE_COLS"
+          >
+            <i class="layui-icon layui-icon-cols"></i
+          ></span>
+          <span
+            class="layui-inline yutons-header-tool"
+            title="导出"
+            lay-event="LAYTABLE_EXPORTS"
+          >
+            <i class="layui-icon layui-icon-export"></i
+          ></span>
+          <span
+            class="layui-inline yutons-header-tool"
+            title="打印"
+            lay-event="LAYTABLE_PRINT"
+          >
+            <i class="layui-icon layui-icon-print"></i>
+          </span>
+        </div>
+      </div>
+    </div>
+  </script>
+
+  <script src="/layui/layui.js"></script>
+  <script>
+    layui.config({
+      base: "/layui_exts/",
+    });
+    layui.use(["table"], () => {
+      const { table, jquery: $ } = layui;
+
+      const data = new Array(5).fill({}).map((_, idx) => {
+        return {
+          id: idx,
+          username: `name${idx}`,
+          city: `城市${idx}`,
+          picture:
+            "https://img0.baidu.com/it/u=1588905690,3738625613&fm=253&fmt=auto&app=120&f=JPEG?w=801&h=500",
+        };
+      });
+
+      const insTb = table.render({
+        elem: "#dataTable",
+        data: data,
+        width: "auto",
+        height: "auto",
+        toolbar: "#toolbarDemo",
+        defaultToolbar: [
+          // 新版 layui 可以这样用
+          //   "filter",
+          //   "print",
+          //   {
+          //     title: "导出",
+          //     layEvent: "LAYTABLE_EXPORTS",
+          //     icon: "layui-icon-export",
+          //   },
+        ],
+        cols: [
+          [
+            { type: "checkbox" },
+            { field: "id", width: 80, title: "ID", sort: true },
+            { field: "username", width: 80, title: "用户名" },
+            { field: "city", width: 80, title: "城市" },
+            {
+              field: "picture",
+              width: 80,
+              title: "图片",
+              templet: function (d) {
+                return `<span><img src="${d.picture}"></img></span>`;
+              },
+            },
+          ],
+        ],
+        loading: false,
+        page: false,
+      });
+
+      table.on("toolbar(test)", function (obj) {
+        //const checkStatus=table.checkStatus(obj.config.id);
+        switch (obj.event) {
+          case "LAYTABLE_EXPORTS":
+            exportData({
+              cols: insTb.config.cols,
+              data: table.cache.dataTable,
+              fileName: "test",
+              ext: "xlsx",
+            });
+            break;
+        }
+      });
+
+      function exportData(options) {
+        layui.use(["excel"], async () => {
+          const { excel } = layui;
+          const { cols, data, fileName, ext } = options;
+          const titles = {},
+            fields = [],
+            pictures = [];
+
+          // 这一段代码是异步请求图片的示例，如果本身能够拿到图片 base64，则无需这个步骤
+          const asyncConcurrencyTask = [];
+          for (let index = 0; index < data.length; index++) {
+            asyncConcurrencyTask.push(
+              new Promise((resolve, reject) => {
+                excel
+                  .imageUrlToBase64(data[index].picture, "jpg")
+                  .then((val) => {
+                    pictures.push(val.split(",")[1]);
+                    // 可选：如果不希望出现实际地址，可以循环驱除
+                    data[index].picture = ""
+                    resolve();
+                  });
+              })
+            );
+          }
+          await Promise.allSettled(asyncConcurrencyTask);
+
+          table.eachCols(
+            undefined,
+            function (i, item) {
+              if (item.type === "normal" && !item.hide) {
+                let field = item.field;
+                fields.push(field);
+                titles[field] = item.title || "";
+              }
+            },
+            cols
+          );
+
+          var filteredData = excel.filterExportData(data, fields);
+          filteredData.unshift(titles);
+          excel.exportExcel(
+            { sheet1: filteredData },
+            `${fileName || `用户表${new Date().toLocaleString()}`}.${ext}`,
+            ext,
+            {
+              extend: {
+                sheet1: {
+                  "!images": [
+                    //需要为每个图片设置位置, 可根据需求动态生成图片位置（拼接字符串）, 此处仅演示用法
+                    {
+                      name: "image1.jpg",
+                      data: pictures[0],
+                      opts: { base64: true },
+                      position: {
+                        type: "twoCellAnchor",
+                        attrs: { editAs: "oneCell" },
+                        from: excel.splitPosition("D2"),
+                        to: excel.splitPosition("E3"),
+                      },
+                    },
+                    {
+                      name: "image2.jpg",
+                      data: pictures[1],
+                      opts: { base64: true },
+                      position: {
+                        type: "twoCellAnchor",
+                        attrs: { editAs: "oneCell" },
+                        from: excel.splitPosition("D3"),
+                        to: excel.splitPosition("E4"),
+                      },
+                    },
+                    {
+                      name: "image3.jpg",
+                      data: pictures[2],
+                      opts: { base64: true },
+                      position: {
+                        type: "twoCellAnchor",
+                        attrs: { editAs: "oneCell" },
+                        from: excel.splitPosition("D4"),
+                        to: excel.splitPosition("E5"),
+                      },
+                    },
+                    {
+                      name: "image4.jpg",
+                      data: pictures[3],
+                      opts: { base64: true },
+                      position: {
+                        type: "twoCellAnchor",
+                        attrs: { editAs: "oneCell" },
+                        from: excel.splitPosition("D5"),
+                        to: excel.splitPosition("E6"),
+                      },
+                    },
+                    {
+                      name: "image5.jpg",
+                      data: pictures[4],
+                      opts: { base64: true },
+                      position: {
+                        type: "twoCellAnchor",
+                        attrs: { editAs: "oneCell" },
+                        from: excel.splitPosition("D6"),
+                        to: excel.splitPosition("F10"),
+                      },
+                    },
+                  ],
+                },
+              },
+            }
+          );
+        });
+      }
+    });
+  </script>
+</html>
