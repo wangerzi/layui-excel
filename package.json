@@ -1,6 +1,6 @@
 {
   "name": "lay-excel",
-  "version": "1.8.3",
+  "version": "1.8.4",
   "description": "简单快捷的导出插件，导出仅需一句话",
   "main": "src/excel.js",
   "scripts": {

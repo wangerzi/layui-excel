@@ -22,10 +22,17 @@
 
 ## 使用本项目的几种方式
 
-### npm安装
+### 包管理工具安装
 
 ```shell
+# npm 安装
 $ npm i lay-excel
+
+# pnpm 安装
+$ pnpm add lay-excel
+
+# yarn 安装
+$ yarn add lay-excel
 ```
 
 然后使用 `import` 引入并调用导出函数

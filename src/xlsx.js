@@ -5404,6 +5404,24 @@ function write_drawing(images, rId) {
 			twoCell += '<xdr:blipFill><a:blip xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" r:embed="rId' + (i+1) + '"/>';
 			twoCell += '<a:stretch><a:fillRect/></a:stretch></xdr:blipFill><xdr:spPr><a:prstGeom prst="rect"><a:avLst/></a:prstGeom></xdr:spPr></xdr:pic><xdr:clientData/>';
 			o[o.length] = (writextag('xdr:twoCellAnchor', twoCell, images[i].attrs));
+		} else if (pos.type === 'oneCellAnchor') {
+			var from = pos.from || {};
+			var ext = pos.ext || {};
+			var fromCol = from.c || 0;
+			var fromRow = from.r || 0;
+			var fromColOff = from.colOff || 0;
+			var fromRowOff = from.rowOff || 0;
+			// 默认尺寸，如果没有指定则使用默认值（约 200x150 像素对应的 EMU 单位）
+			var cx = ext.cx || 1905000; // 宽度，EMU 单位（1英寸=914400 EMU）
+			var cy = ext.cy || 1428750; // 高度，EMU 单位
+
+			var oneCell = '<xdr:from><xdr:col>' + fromCol + '</xdr:col><xdr:colOff>' + fromColOff + '</xdr:colOff><xdr:row>' + fromRow + '</xdr:row><xdr:rowOff>' + fromRowOff + '</xdr:rowOff></xdr:from>';
+			oneCell += '<xdr:ext cx="' + cx + '" cy="' + cy + '"/>';
+			oneCell += '<xdr:pic><xdr:nvPicPr><xdr:cNvPr id="' + (i+1) + '" name="' + image.name + '">';
+			oneCell += '</xdr:cNvPr><xdr:cNvPicPr><a:picLocks noChangeAspect="1"/></xdr:cNvPicPr></xdr:nvPicPr>';
+			oneCell += '<xdr:blipFill><a:blip xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" r:embed="rId' + (i+1) + '"/>';
+			oneCell += '<a:stretch><a:fillRect/></a:stretch></xdr:blipFill><xdr:spPr><a:prstGeom prst="rect"><a:avLst/></a:prstGeom></xdr:spPr></xdr:pic><xdr:clientData/>';
+			o[o.length] = (writextag('xdr:oneCellAnchor', oneCell, images[i].attrs));
 		}
 	}
 

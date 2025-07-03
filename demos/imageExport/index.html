@@ -20,11 +20,27 @@
               <a
                 href="https://github.com/wangerzi/layui-excel/pull/41"
                 target="_blank"
-                >https://github.com/wangerzi/layui-excel/pull/41</a
-              >
+                rel="noopener noreferrer"
+                >https://github.com/wangerzi/layui-excel/pull/41</a>
               感谢 Sight-wcg 的辛勤付出
+              <br><br>
+              <strong>功能特性：</strong>
+              <ul>
+                <li><strong>twoCellAnchor</strong>：图片会填充指定的单元格范围，大小随单元格变化</li>
+                <li><strong>oneCellAnchor</strong>：图片使用精确尺寸，不会随单元格大小变化</li>
+              </ul>
             </blockquote>
           </fieldset>
+          <div class="layui-form">
+            <div class="layui-form-item">
+              <div class="layui-form-label">导出类型</div>
+              <div class="layui-form-block">
+                <button type="button" class="layui-btn layui-btn-primary" id="exportTwoCell">twoCellAnchor 导出</button>
+                <button type="button" class="layui-btn layui-btn-normal" id="exportOneCell">oneCellAnchor 导出</button>
+                <button type="button" class="layui-btn layui-btn-warm" id="exportMixed">混合模式导出</button>
+              </div>
+            </div>
+          </div>
           <table id="dataTable" lay-filter="test"></table>
         </div>
       </div>
@@ -132,17 +148,49 @@
             exportData({
               cols: insTb.config.cols,
               data: table.cache.dataTable,
-              fileName: "test",
+              fileName: "test_默认导出",
               ext: "xlsx",
+              type: "default"
             });
             break;
         }
       });
 
+      // 绑定导出按钮事件
+      $('#exportTwoCell').click(function() {
+        exportData({
+          cols: insTb.config.cols,
+          data: table.cache.dataTable,
+          fileName: "twoCellAnchor_导出",
+          ext: "xlsx",
+          type: "twoCell"
+        });
+      });
+
+      $('#exportOneCell').click(function() {
+        exportData({
+          cols: insTb.config.cols,
+          data: table.cache.dataTable,
+          fileName: "oneCellAnchor_导出",
+          ext: "xlsx",
+          type: "oneCell"
+        });
+      });
+
+      $('#exportMixed').click(function() {
+        exportData({
+          cols: insTb.config.cols,
+          data: table.cache.dataTable,
+          fileName: "混合模式_导出",
+          ext: "xlsx",
+          type: "mixed"
+        });
+      });
+
       function exportData(options) {
         layui.use(["excel"], async () => {
           const { excel } = layui;
-          const { cols, data, fileName, ext } = options;
+          const { cols, data, fileName, ext, type } = options;
           const titles = {},
             fields = [],
             pictures = [];
@@ -179,71 +227,213 @@
 
           var filteredData = excel.filterExportData(data, fields);
           filteredData.unshift(titles);
+
+          // 根据不同类型生成不同的图片配置
+          let imageConfig = [];
+          
+          if (type === "twoCell" || type === "default") {
+            // twoCellAnchor 模式：图片填充单元格范围
+            imageConfig = [
+              {
+                name: "image1.jpg",
+                data: pictures[0],
+                opts: { base64: true },
+                position: {
+                  type: "twoCellAnchor",
+                  attrs: { editAs: "oneCell" },
+                  from: excel.splitPosition("D2"),
+                  to: excel.splitPosition("E3"),
+                },
+              },
+              {
+                name: "image2.jpg",
+                data: pictures[1],
+                opts: { base64: true },
+                position: {
+                  type: "twoCellAnchor",
+                  attrs: { editAs: "oneCell" },
+                  from: excel.splitPosition("D3"),
+                  to: excel.splitPosition("E4"),
+                },
+              },
+              {
+                name: "image3.jpg",
+                data: pictures[2],
+                opts: { base64: true },
+                position: {
+                  type: "twoCellAnchor",
+                  attrs: { editAs: "oneCell" },
+                  from: excel.splitPosition("D4"),
+                  to: excel.splitPosition("E5"),
+                },
+              },
+              {
+                name: "image4.jpg",
+                data: pictures[3],
+                opts: { base64: true },
+                position: {
+                  type: "twoCellAnchor",
+                  attrs: { editAs: "oneCell" },
+                  from: excel.splitPosition("D5"),
+                  to: excel.splitPosition("E6"),
+                },
+              },
+              {
+                name: "image5.jpg",
+                data: pictures[4],
+                opts: { base64: true },
+                position: {
+                  type: "twoCellAnchor",
+                  attrs: { editAs: "oneCell" },
+                  from: excel.splitPosition("D6"),
+                  to: excel.splitPosition("F10"),
+                },
+              },
+            ];
+          } else if (type === "oneCell") {
+            // oneCellAnchor 模式：精确尺寸控制
+            imageConfig = [
+              {
+                name: "image1.jpg",
+                data: pictures[0],
+                opts: { base64: true },
+                position: {
+                  type: "oneCellAnchor",
+                  from: excel.splitPosition("D2"),
+                  ext: {
+                    cx: 914400,  // 1英寸宽 = 914400 EMU
+                    cy: 685800   // 0.75英寸高 = 685800 EMU
+                  }
+                },
+              },
+              {
+                name: "image2.jpg",
+                data: pictures[1],
+                opts: { base64: true },
+                position: {
+                  type: "oneCellAnchor",
+                  from: excel.splitPosition("D3"),
+                  ext: {
+                    cx: 1371600, // 1.5英寸宽
+                    cy: 914400   // 1英寸高
+                  }
+                },
+              },
+              {
+                name: "image3.jpg",
+                data: pictures[2],
+                opts: { base64: true },
+                position: {
+                  type: "oneCellAnchor",
+                  from: excel.splitPosition("D4"),
+                  ext: {
+                    cx: 1828800, // 2英寸宽
+                    cy: 914400   // 1英寸高
+                  }
+                },
+              },
+              {
+                name: "image4.jpg",
+                data: pictures[3],
+                opts: { base64: true },
+                position: {
+                  type: "oneCellAnchor",
+                  from: excel.splitPosition("D5"),
+                  ext: {
+                    cx: 914400,  // 1英寸宽
+                    cy: 1371600  // 1.5英寸高
+                  }
+                },
+              },
+              {
+                name: "image5.jpg",
+                data: pictures[4],
+                opts: { base64: true },
+                position: {
+                  type: "oneCellAnchor",
+                  from: excel.splitPosition("D6"),
+                  ext: {
+                    cx: 2286000, // 2.5英寸宽
+                    cy: 1828800  // 2英寸高
+                  }
+                },
+              },
+            ];
+          } else if (type === "mixed") {
+            // 混合模式：同时展示两种类型
+            imageConfig = [
+              {
+                name: "twoCell1.jpg",
+                data: pictures[0],
+                opts: { base64: true },
+                position: {
+                  type: "twoCellAnchor",
+                  attrs: { editAs: "oneCell" },
+                  from: excel.splitPosition("D2"),
+                  to: excel.splitPosition("E3"),
+                },
+              },
+              {
+                name: "oneCell1.jpg",
+                data: pictures[1],
+                opts: { base64: true },
+                position: {
+                  type: "oneCellAnchor",
+                  from: excel.splitPosition("F2"),
+                  ext: {
+                    cx: 914400,  // 1英寸宽
+                    cy: 914400   // 1英寸高 - 正方形
+                  }
+                },
+              },
+              {
+                name: "twoCell2.jpg",
+                data: pictures[2],
+                opts: { base64: true },
+                position: {
+                  type: "twoCellAnchor",
+                  attrs: { editAs: "oneCell" },
+                  from: excel.splitPosition("D4"),
+                  to: excel.splitPosition("E5"),
+                },
+              },
+              {
+                name: "oneCell2.jpg",
+                data: pictures[3],
+                opts: { base64: true },
+                position: {
+                  type: "oneCellAnchor",
+                  from: excel.splitPosition("F4"),
+                  ext: {
+                    cx: 1371600, // 1.5英寸宽
+                    cy: 685800   // 0.75英寸高 - 宽矩形
+                  }
+                },
+              },
+              {
+                name: "oneCell3.jpg",
+                data: pictures[4],
+                opts: { base64: true },
+                position: {
+                  type: "oneCellAnchor",
+                  from: excel.splitPosition("D6"),
+                  ext: {
+                    cx: 2743200, // 3英寸宽
+                    cy: 914400   // 1英寸高
+                  }
+                },
+              },
+            ];
+          }
+
           excel.exportExcel(
             { sheet1: filteredData },
-            `${fileName || `用户表${new Date().toLocaleString()}`}.${ext}`,
+            `${fileName || `图片导出测试${new Date().toLocaleString()}`}.${ext}`,
             ext,
             {
               extend: {
                 sheet1: {
-                  "!images": [
-                    //需要为每个图片设置位置, 可根据需求动态生成图片位置（拼接字符串）, 此处仅演示用法
-                    {
-                      name: "image1.jpg",
-                      data: pictures[0],
-                      opts: { base64: true },
-                      position: {
-                        type: "twoCellAnchor",
-                        attrs: { editAs: "oneCell" },
-                        from: excel.splitPosition("D2"),
-                        to: excel.splitPosition("E3"),
-                      },
-                    },
-                    {
-                      name: "image2.jpg",
-                      data: pictures[1],
-                      opts: { base64: true },
-                      position: {
-                        type: "twoCellAnchor",
-                        attrs: { editAs: "oneCell" },
-                        from: excel.splitPosition("D3"),
-                        to: excel.splitPosition("E4"),
-                      },
-                    },
-                    {
-                      name: "image3.jpg",
-                      data: pictures[2],
-                      opts: { base64: true },
-                      position: {
-                        type: "twoCellAnchor",
-                        attrs: { editAs: "oneCell" },
-                        from: excel.splitPosition("D4"),
-                        to: excel.splitPosition("E5"),
-                      },
-                    },
-                    {
-                      name: "image4.jpg",
-                      data: pictures[3],
-                      opts: { base64: true },
-                      position: {
-                        type: "twoCellAnchor",
-                        attrs: { editAs: "oneCell" },
-                        from: excel.splitPosition("D5"),
-                        to: excel.splitPosition("E6"),
-                      },
-                    },
-                    {
-                      name: "image5.jpg",
-                      data: pictures[4],
-                      opts: { base64: true },
-                      position: {
-                        type: "twoCellAnchor",
-                        attrs: { editAs: "oneCell" },
-                        from: excel.splitPosition("D6"),
-                        to: excel.splitPosition("F10"),
-                      },
-                    },
-                  ],
+                  "!images": imageConfig,
                 },
               },
             }

@@ -918,6 +918,97 @@ function make_lay_excel(global) {
           reject(new Error("Could not load image at "+url));
         };
       });
+    },
+    /**
+     * EMU 单位转换辅助函数
+     * EMU (English Metric Units) 是 Office 文档中的度量单位
+     * @param {number} value 输入值
+     * @param {string} fromUnit 输入单位：'inch'(英寸), 'cm'(厘米), 'px'(像素), 'emu'
+     * @param {string} toUnit 输出单位：'inch'(英寸), 'cm'(厘米), 'px'(像素), 'emu'
+     * @returns {number} 转换后的值
+     */
+    convertEMU(value, fromUnit, toUnit = 'emu') {
+      // EMU 转换常数
+      const EMU_PER_INCH = 914400;
+      const EMU_PER_CM = 360000;
+      const EMU_PER_PIXEL = 9525; // 基于 96 DPI
+      
+      // 先转换为 EMU
+      let emuValue;
+      switch (fromUnit.toLowerCase()) {
+        case 'inch':
+        case 'in':
+          emuValue = value * EMU_PER_INCH;
+          break;
+        case 'cm':
+          emuValue = value * EMU_PER_CM;
+          break;
+        case 'px':
+        case 'pixel':
+          emuValue = value * EMU_PER_PIXEL;
+          break;
+        case 'emu':
+          emuValue = value;
+          break;
+        default:
+          throw new Error('不支持的输入单位: ' + fromUnit + '。支持的单位: inch, cm, px, emu');
+      }
+      
+      // 从 EMU 转换为目标单位
+      switch (toUnit.toLowerCase()) {
+        case 'inch':
+        case 'in':
+          return emuValue / EMU_PER_INCH;
+        case 'cm':
+          return emuValue / EMU_PER_CM;
+        case 'px':
+        case 'pixel':
+          return emuValue / EMU_PER_PIXEL;
+        case 'emu':
+          return Math.round(emuValue); // 返回整数
+        default:
+          throw new Error('不支持的输出单位: ' + toUnit + '。支持的单位: inch, cm, px, emu');
+      }
+    },
+    /**
+     * 创建 oneCellAnchor 类型的图片位置配置
+     * @param {string|object} position 位置，如 "D2" 或 {c: 3, r: 1}
+     * @param {number} width 宽度
+     * @param {number} height 高度
+     * @param {string} unit 尺寸单位，默认 'emu'
+     * @param {object} options 可选配置 {colOff, rowOff}
+     * @returns {object} oneCellAnchor 位置配置对象
+     */
+    createOneCellAnchor(position, width, height, unit = 'emu', options = {}) {
+      const { colOff = 0, rowOff = 0 } = options;
+      
+      // 处理位置参数
+      let from;
+      if (typeof position === 'string') {
+        from = this.splitPosition(position);
+      } else if (typeof position === 'object' && position.c !== undefined && position.r !== undefined) {
+        from = position;
+      } else {
+        throw new Error('position 参数格式错误，应为字符串（如 "D2"）或对象（如 {c: 3, r: 1}）');
+      }
+      
+      // 转换尺寸为 EMU
+      const cx = this.convertEMU(width, unit, 'emu');
+      const cy = this.convertEMU(height, unit, 'emu');
+      
+      return {
+        type: "oneCellAnchor",
+        from: {
+          c: from.c,
+          r: from.r,
+          colOff: colOff,
+          rowOff: rowOff
+        },
+        ext: {
+          cx: cx,
+          cy: cy
+        }
+      };
     }
   }
   return global;

@@ -27,6 +27,9 @@
 | makeColConfig(data, defaultNum)                     | 生成列宽配置，返回结果需放置于opt.extend['!cols']中         | [makeColConfig参数配置](./样式设置相关函数.html#makecolconfig参数配置) |
 | makeRowConfig(data, defaultNum)                     | 生成行高配置，返回结果需放置于opt.extend['!rows']           | [makeRowConfig参数配置](./样式设置相关函数.html#makerowconfig参数配置) |
 | **setRoundBorder(data, range ,config)**             | 设置范围环绕的边框                                          | [setRoundBorder参数配置](./样式设置相关函数.html#setroundborder参数配置) |
+| **imageUrlToBase64(url, ext)**                      | 下载图片并转换为base64格式                                  | [imageUrlToBase64参数配置](./样式设置相关函数.html#imageurltobase64参数配置) |
+| **convertEMU(value, fromUnit, toUnit)**             | EMU单位转换函数，简化图片尺寸计算                           | [convertEMU参数配置](./样式设置相关函数.html#convertemu参数配置) |
+| **createOneCellAnchor(position, width, height, unit, options)** | 快速创建oneCellAnchor类型的图片位置配置                     | [createOneCellAnchor参数配置](./样式设置相关函数.html#createonecellanchor参数配置) |
 
 ### 时间处理相关函数
 
