@@ -1,33 +1,43 @@
-name: Build Gitbook Doc
+name: Build Gitbook Doc and Deploy to COS
 
 on:
   push:
     branches:
-      - dev
+      - master
+# 实现自动构建文档，并发布到 cos 存储库，敏感信息通过 secrets 传递
+# 
+# 需要在 GitHub Secrets 中配置以下变量：
+# TENCENT_SECRET_ID: 腾讯云 API 密钥 SecretId（例如：AKIDxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx）
+# TENCENT_SECRET_KEY: 腾讯云 API 密钥 SecretKey（例如：xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx）
+# COS_BUCKET: COS 存储桶名称（例如：my-docs-1234567890）
+# COS_REGION: COS 存储桶地区（例如：ap-beijing）
+# COS_UPLOAD_PATH: COS 目标目录路径，可选，默认为根目录（例如：docs/layui-excel）
+name: Upload to Tencent COS
+
+on:
+  push:
+    branches:
+      - master
 
 jobs:
-  build_doc:
-    name: Build doc
-    runs-on: ubuntu-18.04
+  deploy:
+    runs-on: ubuntu-latest
+
     steps:
-      - name: build doc by gitbook
-        uses: zanderzhao/gitbook-action@v1.2
-        with:
-          token: ${{ secrets.PERSONAL_TOKEN }}
-          time_zone: Asia/Shanghai
-          source_branch: master             # clone source master
-          source_dir:  .                  # gitbook-sorce at dir:docs
-          publish_dir: _book            # publish for this repo dir:gitbook-docs
-          publish_branch: gh-pages
-      - name: Checkout doc
-        if: success()
-        uses: actions/checkout@master
-        with:
-          ref: gh-pages
-      - name: Deploy to GitHub Pages
-        if: success()
-        uses: crazy-max/ghaction-github-pages@v1
-        with:
-          build_dir: _book
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Install dependencies
+      run: npm install -g pnpm && pnpm install
+
+    - name: Build project
+      run: pnpm run build-doc
+
+    - name: Upload files to COS
+      env:
+        COS_BUCKET: ${{ secrets.COS_BUCKET }} # webstatic-1252276051
+        COS_REGION: ${{ secrets.COS_REGION }} # ap-shanghai
+        COS_UPLOAD_PATH: ${{ secrets.COS_UPLOAD_PATH }} # excel.wj2015.com
+        TENCENT_SECRET_ID: ${{ secrets.TENCENT_SECRET_ID }}
+        TENCENT_SECRET_KEY: ${{ secrets.TENCENT_SECRET_KEY }}
+      run: node publish-cos.js
