@@ -7,8 +7,8 @@ on:
 # 实现自动构建文档，并发布到 cos 存储库，敏感信息通过 secrets 传递
 # 
 # 需要在 GitHub Secrets 中配置以下变量：
-# TENCENT_SECRET_ID: 腾讯云 API 密钥 SecretId（例如：AKIDxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx）
-# TENCENT_SECRET_KEY: 腾讯云 API 密钥 SecretKey（例如：xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx）
+# TENCENT_SECRET_ID: 腾讯云 API 密钥 SecretId
+# TENCENT_SECRET_KEY: 腾讯云 API 密钥 SecretKey
 # COS_BUCKET: COS 存储桶名称（例如：my-docs-1234567890）
 # COS_REGION: COS 存储桶地区（例如：ap-beijing）
 # COS_UPLOAD_PATH: COS 目标目录路径，可选，默认为根目录（例如：docs/layui-excel）
