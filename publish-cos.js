@@ -15,8 +15,11 @@ const getAllFiles = (dir, prefix) => {
     const filePath = path.join(dir, file);
     const stat = fs.statSync(filePath);
     if (stat && stat.isDirectory()) {
-      // 递归子目录
-      results = results.concat(getAllFiles(filePath, path.join(prefix, file)));
+        // 忽略 node_modules 目录
+        if (file !== 'node_modules') {
+            // 递归子目录
+            results = results.concat(getAllFiles(filePath, path.join(prefix, file)));
+        }
     } else {
       results.push({
         Key: path.join(prefix, file),
@@ -29,8 +32,7 @@ const getAllFiles = (dir, prefix) => {
 };
 
 const uploadDir = async (dir, bucket, region, prefix) => {
-    // 忽略 node_modules 目录
-    const files = getAllFiles(dir, prefix).filter((file) => !file.Key.includes('node_modules')).map((file) => ({
+    const files = getAllFiles(dir, prefix).map((file) => ({
     Bucket: bucket,
     Region: region,
     Key: file.Key,
