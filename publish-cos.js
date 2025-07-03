@@ -29,7 +29,8 @@ const getAllFiles = (dir, prefix) => {
 };
 
 const uploadDir = async (dir, bucket, region, prefix) => {
-  const files = getAllFiles(dir, prefix).map((file) => ({
+    // 忽略 node_modules 目录
+    const files = getAllFiles(dir, prefix).filter((file) => !file.Key.includes('node_modules')).map((file) => ({
     Bucket: bucket,
     Region: region,
     Key: file.Key,
@@ -99,9 +100,15 @@ const uploadDir = async (dir, bucket, region, prefix) => {
   }
 };
 
-uploadDir(
-  "public",
-  process.env.COS_BUCKET,
-  process.env.COS_REGION,
-  process.env.COS_UPLOAD_PATH
-);
+// 循环上传多个目录
+const dirs = [
+    './'
+];
+dirs.forEach(dir => {
+  uploadDir(
+    dir,
+    process.env.COS_BUCKET,
+    process.env.COS_REGION,
+    process.env.COS_UPLOAD_PATH
+  );
+});
