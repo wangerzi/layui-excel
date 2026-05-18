@@ -11,15 +11,9 @@ importers:
       blob:
         specifier: ^0.1.0
         version: 0.1.0
-      cos-nodejs-sdk-v5:
-        specifier: 2.16.0-beta.3
-        version: 2.16.0-beta.3
       file-saver:
         specifier: ^2.0.2
         version: 2.0.5
-      fs:
-        specifier: 0.0.1-security
-        version: 0.0.1-security
       jszip:
         specifier: ^3.5.0
         version: 3.10.1
@@ -48,6 +42,9 @@ importers:
       babel-preset-env:
         specifier: ^1.7.0
         version: 1.7.0
+      cos-nodejs-sdk-v5:
+        specifier: 2.16.0-beta.3
+        version: 2.16.0-beta.3
       honkit:
         specifier: ^4.0.7
         version: 4.0.8
@@ -1381,9 +1378,6 @@ packages:
 
   fs.realpath@1.0.0:
     resolution: {integrity: sha512-OO0pH2lK6a0hZnAdau5ItzHPI6pUlvI7jMVnxUQRtw4owF2wk8lOSabtGDCTP4Ggrg2MbGnWO9X8K1t4+fGMDw==}
-
-  fs@0.0.1-security:
-    resolution: {integrity: sha512-3XY9e1pP0CVEUCdj5BmfIZxRBTSDycnbqhIOGec9QYtmVH2fbLpj86CFWkrNOkt/Fvty4KZG5lTglL9j/gJ87w==}
 
   fsevents@1.2.13:
     resolution: {integrity: sha512-oWb1Z6mkHIskLzEJ/XWX0srkpkTQ7vaopMQkyaEIoq0fmtFVxOthb8cCxeT+p3ynTdkk/RZwbgG4brR5BeWECw==}
@@ -4963,8 +4957,6 @@ snapshots:
       readable-stream: 2.3.8
 
   fs.realpath@1.0.0: {}
-
-  fs@0.0.1-security: {}
 
   fsevents@1.2.13:
     dependencies:
