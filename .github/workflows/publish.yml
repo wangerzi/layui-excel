@@ -1,0 +1,48 @@
+name: Publish to npm & Deploy Docs
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        registry-url: 'https://registry.npmjs.org'
+
+    - name: Install dependencies
+      run: npm install -g pnpm && pnpm install
+
+    - name: Build
+      run: pnpm run build
+
+    - name: Build docs and upload to COS
+      env:
+        COS_BUCKET: ${{ secrets.COS_BUCKET }}
+        COS_REGION: ${{ secrets.COS_REGION }}
+        COS_UPLOAD_PATH: ${{ secrets.COS_UPLOAD_PATH }}
+        TENCENT_SECRET_ID: ${{ secrets.TENCENT_SECRET_ID }}
+        TENCENT_SECRET_KEY: ${{ secrets.TENCENT_SECRET_KEY }}
+      run: |
+        pnpm run build-doc
+        node publish-cos.js
+
+    - name: Set version from tag
+      run: |
+        VERSION=${GITHUB_REF_NAME#v}
+        jq --arg v "$VERSION" '.version = $v' package.json > tmp.json && mv tmp.json package.json
+        echo "Publishing version: $VERSION"
+
+    - name: Publish to npm
+      run: npm publish
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
