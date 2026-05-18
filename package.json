@@ -2,7 +2,8 @@
   "name": "lay-excel",
   "version": "1.8.4",
   "description": "简单快捷的导出插件，导出仅需一句话",
-  "main": "src/excel.js",
+  "main": "cjs.js",
+  "module": "index.mjs",
   "scripts": {
     "test": "",
     "build": "./node_modules/.bin/webpack-cli -c webpack.config.js",
@@ -26,14 +27,13 @@
   "homepage": "https://github.com/wangerzi/layui-excel#readme",
   "dependencies": {
     "blob": "^0.1.0",
-    "cos-nodejs-sdk-v5": "2.16.0-beta.3",
     "file-saver": "^2.0.2",
-    "fs": "0.0.1-security",
     "jszip": "^3.5.0",
     "lodash": "^4.17.21",
     "npm": "^6.14.6"
   },
   "devDependencies": {
+    "cos-nodejs-sdk-v5": "2.16.0-beta.3",
     "@babel/plugin-transform-modules-commonjs": "^7.12.1",
     "babel-core": "^6.26.3",
     "babel-loader": "^7.1.5",
